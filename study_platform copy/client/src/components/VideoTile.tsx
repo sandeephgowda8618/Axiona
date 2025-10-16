@@ -1,1 +1,0 @@
-// VideoTile component

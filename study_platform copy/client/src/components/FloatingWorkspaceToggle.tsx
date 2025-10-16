@@ -1,1 +1,0 @@
-// FloatingWorkspaceToggle component
