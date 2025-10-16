@@ -1,0 +1,1 @@
+// NotesPad component
