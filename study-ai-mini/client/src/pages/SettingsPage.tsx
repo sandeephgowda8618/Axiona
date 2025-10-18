@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import '../styles/settings.css'
 import { Monitor, Smartphone, Laptop, Download, Trash2, Shield, Bell, Globe, User, ChevronDown } from 'lucide-react'
 
 interface UserProfile {
@@ -164,22 +165,22 @@ const SettingsPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="settings-container">
         {/* Page Header */}
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-gray-900">Settings</h1>
+          <h1 className="text-3xl font-bold text-gray-900">Settings</h1>
           <p className="text-gray-600 mt-1">Manage your account preferences and security settings</p>
         </div>
 
         <div className="space-y-8">
           {/* Account Section */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="settings-card">
             <h2 className="text-lg font-semibold text-gray-900 mb-6">Account</h2>
             
             {/* Profile Info */}
             <div className="flex items-center space-x-4 mb-8">
-              <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
-                <User className="h-6 w-6 text-gray-400" />
+              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
+                <User className="h-8 w-8 text-gray-400" />
               </div>
               <div>
                 <h3 className="font-medium text-gray-900">{userProfile.name}</h3>
@@ -230,7 +231,7 @@ const SettingsPage: React.FC = () => {
               <button
                 onClick={handlePasswordUpdate}
                 disabled={isLoading || !settings.currentPassword || !settings.newPassword || !settings.confirmPassword}
-                className="bg-slate-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="btn-primary-action"
               >
                 {isLoading ? 'Updating...' : 'Update Password'}
               </button>
@@ -244,7 +245,7 @@ const SettingsPage: React.FC = () => {
               </p>
               <button
                 onClick={() => setShowDeleteConfirm(true)}
-                className="bg-slate-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-slate-700"
+                className="btn-danger"
               >
                 Delete Account
               </button>
@@ -252,7 +253,7 @@ const SettingsPage: React.FC = () => {
           </div>
 
           {/* General Section */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="settings-card">
             <h2 className="text-lg font-semibold text-gray-900 mb-6">General</h2>
             
             <div className="space-y-6">
@@ -310,7 +311,7 @@ const SettingsPage: React.FC = () => {
           </div>
 
           {/* Notifications Section */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="settings-card">
             <h2 className="text-lg font-semibold text-gray-900 mb-6">Notifications</h2>
             
             <div className="space-y-6">
@@ -382,7 +383,7 @@ const SettingsPage: React.FC = () => {
           </div>
 
           {/* Privacy Section */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="settings-card">
             <h2 className="text-lg font-semibold text-gray-900 mb-6">Privacy</h2>
             
             <div className="space-y-6">
@@ -418,7 +419,7 @@ const SettingsPage: React.FC = () => {
           </div>
 
           {/* Security Section */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="settings-card">
             <h2 className="text-lg font-semibold text-gray-900 mb-6">Security</h2>
             
             <div className="space-y-6">
@@ -478,7 +479,7 @@ const SettingsPage: React.FC = () => {
             <button
               onClick={handleSaveChanges}
               disabled={isLoading}
-              className="px-6 py-3 bg-slate-600 text-white font-medium rounded-md hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="btn-primary-action px-6 py-3"
             >
               {isLoading ? 'Saving...' : 'Save Changes'}
             </button>

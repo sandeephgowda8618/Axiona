@@ -27,8 +27,8 @@ const AppRoutes: React.FC = () => {
   return (
     <Routes>
       {/* Public Routes - No Navigation */}
-      <Route path="/" element={<TestLanding />} />
-      <Route path="/landing" element={<LandingPage />} />
+  <Route path="/" element={<LandingPage />} />
+  <Route path="/landing" element={<TestLanding />} />
       <Route path="/auth" element={<AuthPage />} />
       <Route path="/forgot-password" element={<ForgotPasswordPage />} />
       

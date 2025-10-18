@@ -91,7 +91,7 @@ const ProfileDashboard: React.FC = () => {
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Tab Navigation */}
-        <div className="flex mb-8 bg-gray-100 rounded-lg p-1 w-fit">
+          <div className="flex mb-8 bg-gray-100 rounded-lg p-1 w-fit">
           <button
             onClick={() => setActiveTab('overview')}
             className={`px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
@@ -103,7 +103,7 @@ const ProfileDashboard: React.FC = () => {
             Overview
           </button>
           <button
-            onClick={() => setActiveTab('settings')}
+            onClick={() => navigate('/settings')}
             className={`px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
               activeTab === 'settings'
                 ? 'bg-white text-gray-900 shadow-sm border border-gray-200'
@@ -197,6 +197,15 @@ const ProfileDashboard: React.FC = () => {
                   <p className="text-gray-500 text-sm">Chart.js Line Graph</p>
                   <p className="text-gray-400 text-xs">Weekly activity visualization</p>
                 </div>
+              </div>
+              <div className="mt-4 flex justify-end">
+                <button
+                  onClick={() => navigate('/my-rack')}
+                  className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                  <FileText className="w-4 h-4 mr-2" />
+                  My Rack
+                </button>
               </div>
             </div>
 
