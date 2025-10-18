@@ -14,10 +14,11 @@ const ConferenceLobby: React.FC = () => {
   };
 
   const [generatedRoomId] = useState(generateRoomId());
+  const [createRoomId, setCreateRoomId] = useState(generatedRoomId);
 
   const handleCreateRoom = () => {
-    // Navigate to conference meeting with generated room ID
-    navigate(`/conference/${generatedRoomId}${createRoomPassword ? `?password=${createRoomPassword}` : ''}`);
+    // Navigate to conference meeting with the current room ID
+    navigate(`/conference/${createRoomId}${createRoomPassword ? `?password=${createRoomPassword}` : ''}`);
   };
 
   const handleJoinRoom = () => {
@@ -96,15 +97,15 @@ const ConferenceLobby: React.FC = () => {
                 <div className="flex">
                   <input
                     type="text"
-                    value={generatedRoomId}
-                    readOnly
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded-l-md bg-gray-50 text-gray-600 focus:outline-none"
+                    value={createRoomId}
+                    onChange={(e) => setCreateRoomId(e.target.value)}
+                    className="flex-1 px-3 py-2 border border-gray-300 rounded-l-md bg-white text-gray-900 focus:outline-none"
                   />
                   <button className="px-3 py-2 bg-gray-200 border border-l-0 border-gray-300 rounded-r-md hover:bg-gray-300 transition-colors">
                     <FileText className="w-4 h-4 text-gray-600" />
                   </button>
                 </div>
-                <p className="text-xs text-gray-500 mt-1">Room ID generated automatically</p>
+                <p className="text-xs text-gray-500 mt-1">Room ID generated automatically — you can edit it before creating</p>
               </div>
 
               <div>

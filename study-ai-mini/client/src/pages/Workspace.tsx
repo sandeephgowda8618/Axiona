@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import '../styles/workspace-charts.css'
 import { useNavigate } from 'react-router-dom'
 import { 
   Play,
@@ -448,52 +449,54 @@ const Workspace: React.FC = () => {
                 </div>
               </>
             ) : (
-              <>
-                {/* Chat Messages */}
-                <div className="flex-1 overflow-y-auto p-4 space-y-4">
-                  {chatMessages.map((message) => (
-                    <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
-                      <div className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
-                        message.type === 'user'
-                          ? 'bg-indigo-600 text-white'
-                          : 'bg-gray-100 text-gray-800'
-                      }`}>
-                        <div className="flex items-center space-x-2 mb-1">
-                          {message.type === 'assistant' ? (
-                            <Bot className="h-4 w-4" />
-                          ) : (
-                            <User className="h-4 w-4" />
-                          )}
-                          <span className="text-xs opacity-75">
-                            {message.timestamp.toLocaleTimeString()}
-                          </span>
+                <>
+                  <div className="workspace-ai-chart flex-1 flex flex-col">
+                    {/* Chat Messages (scrollable area) */}
+                    <div className="flex-1 overflow-y-auto p-4 space-y-4">
+                      {chatMessages.map((message) => (
+                        <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
+                          <div className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
+                            message.type === 'user'
+                              ? 'bg-indigo-600 text-white'
+                              : 'bg-gray-100 text-gray-800'
+                          }`}>
+                            <div className="flex items-center space-x-2 mb-1">
+                              {message.type === 'assistant' ? (
+                                <Bot className="h-4 w-4" />
+                              ) : (
+                                <User className="h-4 w-4" />
+                              )}
+                              <span className="text-xs opacity-75">
+                                {message.timestamp.toLocaleTimeString()}
+                              </span>
+                            </div>
+                            <p className="text-sm">{message.content}</p>
+                          </div>
                         </div>
-                        <p className="text-sm">{message.content}</p>
+                      ))}
+                    </div>
+
+                    {/* Chat Input (fixed at bottom of panel) */}
+                    <div className="p-4 border-t bg-gray-50">
+                      <div className="flex space-x-2">
+                        <input
+                          type="text"
+                          value={newMessage}
+                          onChange={(e) => setNewMessage(e.target.value)}
+                          onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                          placeholder="Ask me anything about the content..."
+                          className="flex-1 p-3 border border-gray-300 rounded-lg text-sm"
+                        />
+                        <button
+                          onClick={handleSendMessage}
+                          className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
+                        >
+                          <Send className="h-4 w-4" />
+                        </button>
                       </div>
                     </div>
-                  ))}
-                </div>
-
-                {/* Chat Input */}
-                <div className="p-4 border-t bg-gray-50">
-                  <div className="flex space-x-2">
-                    <input
-                      type="text"
-                      value={newMessage}
-                      onChange={(e) => setNewMessage(e.target.value)}
-                      onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                      placeholder="Ask me anything about the content..."
-                      className="flex-1 p-3 border border-gray-300 rounded-lg text-sm"
-                    />
-                    <button
-                      onClick={handleSendMessage}
-                      className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
-                    >
-                      <Send className="h-4 w-4" />
-                    </button>
                   </div>
-                </div>
-              </>
+                </>
             )}
           </div>
         </div>
