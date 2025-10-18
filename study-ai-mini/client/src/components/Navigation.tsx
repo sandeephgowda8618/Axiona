@@ -18,11 +18,11 @@ import {
   Play,
   StickyNote
 } from 'lucide-react'
-
+ 
 interface NavigationItem {
   name: string
   href: string
-  icon: React.ComponentType<any>
+  icon: any
   description?: string
 }
 
@@ -299,8 +299,7 @@ const Navigation: React.FC = () => {
         )}
       </nav>
 
-      {/* Spacer for fixed navigation */}
-      <div className="h-16"></div>
+  {/* Spacer for fixed navigation removed to keep nav flush at top */}
     </>
   )
 }

@@ -95,7 +95,7 @@ const QuizSelection: React.FC = () => {
               <Link to="/tutorial-hub" className="text-gray-600 hover:text-gray-900">Tutorial Hub</Link>
               <Link to="/study-pes" className="text-gray-600 hover:text-gray-900">StudyPES</Link>
               <Link to="/conference" className="text-gray-600 hover:text-gray-900">Conference</Link>
-              <Link to="/my-rack" className="text-gray-600 hover:text-gray-900">My Rack</Link>
+              <Link to="/library" className="text-gray-600 hover:text-gray-900">Library</Link>
               <Link to="/profile" className="text-gray-600 hover:text-gray-900">Profile</Link>
             </nav>
 
@@ -195,7 +195,7 @@ const QuizSelection: React.FC = () => {
             <p className="text-gray-600">Try adjusting your filters or search terms.</p>
           </div>
         ) : (
-          <div className="quiz-grid">
+          <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
             {filteredQuizzes.map(quiz => {
               // Mock previous attempt data
               const hasAttempted = Math.random() > 0.6

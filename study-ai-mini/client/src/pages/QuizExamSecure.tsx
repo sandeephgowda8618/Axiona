@@ -46,10 +46,10 @@ interface QuizExamState {
 const QuizExamSecure: React.FC = () => {
   const { quizId } = useParams<{ quizId: string }>()
   const navigate = useNavigate()
-  const timerRef = useRef<number | null>(null)
-  const idleTimerRef = useRef<number | null>(null)
-  const warningTimeoutRef = useRef<number | null>(null)
-  const securityCheckRef = useRef<number | null>(null)
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const idleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const warningTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const securityCheckRef = useRef<ReturnType<typeof setInterval> | null>(null)
   
   const [state, setState] = useState<QuizExamState>({
     quiz: null,

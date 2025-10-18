@@ -232,10 +232,7 @@ const StudyMaterialsPES: React.FC = () => {
                 </p>
               </div>
               <div className="flex items-center space-x-3">
-                <button className="btn-primary">
-                  <Plus className="h-4 w-4" />
-                  <span>Upload Material</span>
-                </button>
+                {/* Upload button intentionally removed per design request */}
               </div>
             </div>
           </div>
