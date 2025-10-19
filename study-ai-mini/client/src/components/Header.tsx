@@ -33,7 +33,7 @@ const Header: React.FC<HeaderProps> = ({
     { name: 'Study Materials', href: '/study-materials', icon: FileText },
     { name: 'Library', href: '/library', icon: Library },
     { name: 'Tutorial Hub', href: '/tutorial-hub', icon: Play },
-    { name: 'My Rack', href: '/my-rack', icon: BookOpen },
+  { name: 'Library', href: '/library', icon: BookOpen },
     { name: 'Study Buddy', href: '/study-buddy', icon: Brain },
     { name: 'Quizzes', href: '/quiz', icon: Trophy },
     { name: 'Conference', href: '/conference', icon: MessageSquare },

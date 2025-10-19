@@ -9,6 +9,7 @@ import {
   Download,
   Bookmark,
   Play,
+  Plus,
   Clock,
   Eye,
   X,
@@ -57,6 +58,7 @@ const TutorialHub: React.FC = () => {
     liked: [],
     downloaded: []
   })
+  const [selectedTopics, setSelectedTopics] = useState<string[]>([])
 
   // Mock data for tutorials
   useEffect(() => {
@@ -196,6 +198,12 @@ const TutorialHub: React.FC = () => {
     tutorial.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
     tutorial.instructor.toLowerCase().includes(searchQuery.toLowerCase())
   )
+
+  // Apply topic filters if any selected
+  const topicFilteredTutorials = filteredTutorials.filter(t => {
+    if (selectedTopics.length === 0) return true
+    return selectedTopics.includes(t.category)
+  })
 
   const handleTutorialAction = (tutorialId: string, action: 'like' | 'save' | 'download') => {
     setTutorials(prev => prev.map(tutorial => {
@@ -349,10 +357,10 @@ const TutorialHub: React.FC = () => {
   return (
     <div className="min-h-screen dashboard-bg">
       {/* Header */}
-      <div className="app-header sticky top-0 z-40">
+  <div className="app-header bg-white/80 backdrop-blur-sm shadow-sm" style={{ position: 'sticky', top: '0px', zIndex: 40 }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center space-x-4">
+          <div className="flex items-center justify-between h-20 gap-6">
+            <div className="flex items-center space-x-4 min-w-0">
               {/* Hamburger Menu */}
               <button
                 onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -362,33 +370,41 @@ const TutorialHub: React.FC = () => {
               </button>
               
               <div className="flex items-center space-x-2">
-                <div className="flex items-center space-x-2">
-                  <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
-                    <span className="text-white font-bold text-sm">SA</span>
+                  <div className="flex items-center space-x-3">
+                    <div className="w-9 h-9 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-md flex items-center justify-center shadow-sm flex-shrink-0">
+                      <span className="text-white font-semibold text-sm">SA</span>
+                    </div>
+                    <div className="min-w-0">
+                      <div className="text-lg font-semibold text-gray-900 truncate">Study-AI</div>
+                    </div>
                   </div>
-                  <span className="font-bold text-xl text-gray-900">Study-AI</span>
-                </div>
-                <span className="text-gray-400">•</span>
-                <span className="text-gray-600">Tutorial Hub</span>
               </div>
             </div>
 
-            <div className="flex-1 max-w-2xl mx-8">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+            <div className="flex-1 flex justify-center">
+              <div className="flex items-center w-full max-w-xl">
                 <input
                   type="text"
+                  aria-label="Search tutorials"
                   placeholder="Search tutorials..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-full focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="flex-1 px-4 py-2 border border-gray-300 rounded-full focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white"
                 />
+                <button
+                  onClick={() => {/* explicit search trigger - no-op for now */}}
+                  className="ml-3 px-4 py-2 bg-indigo-600 text-white rounded-full hover:bg-indigo-700 transition-colors flex items-center space-x-2"
+                  aria-label="Search"
+                >
+                  <Search className="h-4 w-4" />
+                  <span className="hidden sm:inline">Search</span>
+                </button>
               </div>
             </div>
 
-            <div className="flex items-center space-x-4">
-              <button className="p-2 hover:bg-gray-100 rounded-lg">
-                <MoreVertical className="h-6 w-6" />
+            <div className="flex items-center space-x-3">
+              <button className="p-2 hover:bg-gray-100 rounded-lg" title="More">
+                <MoreVertical className="h-6 w-6 text-gray-700" />
               </button>
             </div>
           </div>
@@ -396,56 +412,63 @@ const TutorialHub: React.FC = () => {
       </div>
 
       <div className="flex">
-        {/* Collapsible Sidebar */}
-        <div className={`bg-white border-r border-gray-200 transition-all duration-300 ${
-          sidebarOpen ? 'w-64' : 'w-0'
-        } overflow-hidden`}>
-          <div className="p-4 space-y-2">
+        {/* Left Filter Sidebar (visible on md+) */}
+        <aside className="hidden md:block w-64 bg-white border-r border-gray-200 p-6">
+          <h4 className="font-semibold text-gray-900 mb-3">Filter by Topic</h4>
+          <div className="space-y-2 text-sm text-gray-700">
+            {Array.from(new Set(tutorials.map(t => t.category))).map(topic => (
+              <label key={topic} className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  checked={selectedTopics.includes(topic)}
+                  onChange={() => {
+                    setSelectedTopics(prev => prev.includes(topic) ? prev.filter(t => t !== topic) : [...prev, topic])
+                  }}
+                  className="form-checkbox h-4 w-4 text-indigo-600"
+                />
+                <span>{topic}</span>
+              </label>
+            ))}
+          </div>
+
+          <div className="mt-6 border-t pt-4 space-y-2">
             <button
               onClick={() => setActiveModal('history')}
               className="w-full flex items-center space-x-3 px-3 py-2 hover:bg-gray-100 rounded-lg text-left"
             >
               <History className="h-5 w-5" />
               <span>History</span>
-              <span className="ml-auto text-sm text-gray-500">
-                {sidebarData.history.length}
-              </span>
+              <span className="ml-auto text-sm text-gray-500">{sidebarData.history.length}</span>
             </button>
-            
+
             <button
               onClick={() => setActiveModal('saved')}
               className="w-full flex items-center space-x-3 px-3 py-2 hover:bg-gray-100 rounded-lg text-left"
             >
               <Bookmark className="h-5 w-5" />
               <span>Saved</span>
-              <span className="ml-auto text-sm text-gray-500">
-                {sidebarData.saved.length}
-              </span>
+              <span className="ml-auto text-sm text-gray-500">{sidebarData.saved.length}</span>
             </button>
-            
+
             <button
               onClick={() => setActiveModal('liked')}
               className="w-full flex items-center space-x-3 px-3 py-2 hover:bg-gray-100 rounded-lg text-left"
             >
               <Heart className="h-5 w-5" />
               <span>Liked</span>
-              <span className="ml-auto text-sm text-gray-500">
-                {sidebarData.liked.length}
-              </span>
+              <span className="ml-auto text-sm text-gray-500">{sidebarData.liked.length}</span>
             </button>
-            
+
             <button
               onClick={() => setActiveModal('downloaded')}
               className="w-full flex items-center space-x-3 px-3 py-2 hover:bg-gray-100 rounded-lg text-left"
             >
               <Download className="h-5 w-5" />
               <span>Downloaded</span>
-              <span className="ml-auto text-sm text-gray-500">
-                {sidebarData.downloaded.length}
-              </span>
+              <span className="ml-auto text-sm text-gray-500">{sidebarData.downloaded.length}</span>
             </button>
           </div>
-        </div>
+        </aside>
 
         {/* Main Content */}
         <div className="flex-1 p-6">
@@ -455,8 +478,8 @@ const TutorialHub: React.FC = () => {
           </div>
 
           {/* Tutorials Grid */}
-          <div className="tutorial-grid">
-            {filteredTutorials.map((tutorial) => (
+          <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+            {topicFilteredTutorials.map((tutorial) => (
               <div key={tutorial.id} className="tutorial-card">
                 <div className="relative group cursor-pointer">
                   <img
@@ -528,6 +551,13 @@ const TutorialHub: React.FC = () => {
                         }`}
                       >
                         <Download className="h-4 w-4" />
+                      </button>
+                      <button
+                        onClick={() => console.log('add to playlist', tutorial.id)}
+                        className="p-2 rounded-lg text-gray-600 hover:bg-gray-100"
+                        title="Add"
+                      >
+                        <Plus className="h-4 w-4" />
                       </button>
                     </div>
                     

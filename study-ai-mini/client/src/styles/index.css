@@ -367,14 +367,19 @@ a:hover {
 .nav-header {
   background: #374151;
   border-bottom: none;
-  position: sticky;
-  top: 0;
-  z-index: 50;
+  /* make header part of normal flow so page titles don't slide under it */
+  position: relative;
+  z-index: 10;
   height: 64px;
 }
 
 [data-theme="dark"] .nav-header {
   background: #374151;
+}
+
+/* Utility to add page top spacing when a sticky nav is used elsewhere */
+.page-with-nav-header {
+  padding-top: 72px; /* header height + small gap */
 }
 
 .nav-link {
@@ -3193,7 +3198,12 @@ a:hover {
   border: 1px solid #e2e8f0;
   border-radius: var(--radius-xl);
   padding: var(--spacing-6);
-  min-height: 400px;
+  /* keep charts from expanding the page; allow internal scrolling */
+  max-height: 480px;
+  min-height: 200px;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .admin-chart-header {
