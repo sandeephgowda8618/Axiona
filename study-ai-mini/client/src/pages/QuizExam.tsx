@@ -23,8 +23,8 @@ interface QuizExamState {
 const QuizExam: React.FC = () => {
   const { quizId } = useParams<{ quizId: string }>()
   const navigate = useNavigate()
-  const timerRef = useRef<number | null>(null)
-  const warningTimeoutRef = useRef<number | null>(null)
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const warningTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   
   const [state, setState] = useState<QuizExamState>({
     quiz: null,
@@ -272,6 +272,29 @@ const QuizExam: React.FC = () => {
     }))
   }
 
+  const handleOptionToggle = (questionId: string, option: any) => {
+    setState(prev => {
+      const current = prev.answers[questionId]
+      let updated: any[] = []
+      if (Array.isArray(current)) {
+        if (current.includes(option)) {
+          updated = current.filter((o: any) => o !== option)
+        } else {
+          updated = [...current, option]
+        }
+      } else {
+        // start a new multi-select array
+        updated = [option]
+      }
+
+      return { ...prev, answers: { ...prev.answers, [questionId]: updated } }
+    })
+  }
+
+  const handleWorkspaceChange = (questionId: string, value: string) => {
+    setState(prev => ({ ...prev, answers: { ...prev.answers, [`${questionId}_workspace`]: value } }))
+  }
+
   const toggleMarkForReview = (questionId: string) => {
     setState(prev => {
       const newMarked = new Set(prev.markedForReview)
@@ -512,14 +535,22 @@ const QuizExam: React.FC = () => {
 
             {/* Answer Options */}
             <div className="space-y-3">
-              {currentQuestion.type === 'multiple-choice' && currentQuestion.options?.map((option, index) => (
+              {(currentQuestion.type === 'multiple-choice' || currentQuestion.type === 'single-choice') && currentQuestion.options?.map((option, index) => (
                 <label key={index} className="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
                   <input
-                    type="radio"
+                    type={currentQuestion.type === 'multiple-choice' ? 'checkbox' : 'radio'}
                     name={`question_${currentQuestion.id}`}
                     value={option}
-                    checked={state.answers[currentQuestion.id] === option}
-                    onChange={(e) => handleAnswerChange(currentQuestion.id, e.target.value)}
+                    checked={currentQuestion.type === 'multiple-choice'
+                      ? Array.isArray(state.answers[currentQuestion.id]) && state.answers[currentQuestion.id].includes(option)
+                      : state.answers[currentQuestion.id] === option}
+                    onChange={(e) => {
+                      if (currentQuestion.type === 'multiple-choice') {
+                        handleOptionToggle(currentQuestion.id, option)
+                      } else {
+                        handleAnswerChange(currentQuestion.id, e.target.value)
+                      }
+                    }}
                     className="mr-3"
                   />
                   <span className="font-medium text-gray-700 mr-2">{String.fromCharCode(65 + index)}.</span>
@@ -538,6 +569,26 @@ const QuizExam: React.FC = () => {
                   />
                 </div>
               )}
+
+              {/* Workspace / Scratchpad for solving problems */}
+              <div className="mt-4 bg-gray-50 border border-gray-200 rounded-lg p-4">
+                <div className="flex items-center justify-between mb-2">
+                  <h4 className="text-sm font-medium text-gray-800">Workspace</h4>
+                  <button
+                    onClick={() => handleWorkspaceChange(currentQuestion.id, '')}
+                    className="text-xs text-gray-500 hover:text-gray-700"
+                  >
+                    Clear
+                  </button>
+                </div>
+                <textarea
+                  value={state.answers[`${currentQuestion.id}_workspace`] || ''}
+                  onChange={(e) => handleWorkspaceChange(currentQuestion.id, e.target.value)}
+                  rows={8}
+                  placeholder="Work out your solution here. Notes are saved automatically for this question."
+                  className="w-full p-3 border border-gray-300 rounded resize-none text-sm"
+                />
+              </div>
             </div>
           </div>
 
