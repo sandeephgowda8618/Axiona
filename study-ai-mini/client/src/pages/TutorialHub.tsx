@@ -17,6 +17,7 @@ import {
   Share2,
   MoreVertical
 } from 'lucide-react'
+import { videosAPI, userAPI } from '../api/studyAI'
 
 interface Tutorial {
   id: string
@@ -60,137 +61,83 @@ const TutorialHub: React.FC = () => {
   })
   const [selectedTopics, setSelectedTopics] = useState<string[]>([])
 
-  // Mock data for tutorials
+  // Load tutorials from backend API
   useEffect(() => {
-    const mockTutorials: Tutorial[] = [
-      {
-        id: '1',
-        title: 'Introduction to SQL Databases',
-        description: 'Learn the basics of relational databases and SQL queries with practical examples.',
-        thumbnail: '/api/placeholder/320/180',
-        videoId: 'dQw4w9WgXcQ', // Mock YouTube video ID
-        duration: '15:42',
-        views: 45823,
-        publishedAt: new Date('2024-01-15'),
-        category: 'Database Management',
-        tags: ['SQL', 'Database', 'Backend'],
-        instructor: 'Dr. Sarah Johnson',
-        difficulty: 'Beginner',
-        rating: 4.8,
-        isLiked: false,
-        isSaved: true,
-        isDownloaded: false
-      },
-      {
-        id: '2',
-        title: 'TCP/IP Protocol Suite',
-        description: 'Comprehensive guide to understanding TCP/IP networking protocols and their applications.',
-        thumbnail: '/api/placeholder/320/180',
-        videoId: 'xyz123abc',
-        duration: '22:18',
-        views: 32156,
-        publishedAt: new Date('2024-02-10'),
-        category: 'Computer Networks',
-        tags: ['TCP/IP', 'Networking', 'Protocols'],
-        instructor: 'Prof. Michael Chen',
-        difficulty: 'Intermediate',
-        rating: 4.6,
-        isLiked: true,
-        isSaved: false,
-        isDownloaded: true,
-        lastWatched: new Date('2024-09-15'),
-        watchProgress: 65
-      },
-      {
-        id: '3',
-        title: 'Object-Oriented Programming in Java',
-        description: 'Master the principles of OOP including inheritance, polymorphism, and encapsulation.',
-        thumbnail: '/api/placeholder/320/180',
-        videoId: 'abc456def',
-        duration: '28:33',
-        views: 67432,
-        publishedAt: new Date('2024-01-28'),
-        category: 'Object-Oriented Programming',
-        tags: ['Java', 'OOP', 'Programming'],
-        instructor: 'Dr. Emily Rodriguez',
-        difficulty: 'Intermediate',
-        rating: 4.9,
-        isLiked: true,
-        isSaved: true,
-        isDownloaded: false,
-        lastWatched: new Date('2024-09-20'),
-        watchProgress: 30
-      },
-      {
-        id: '4',
-        title: 'Linux System Administration',
-        description: 'Essential Linux commands and system administration techniques for beginners.',
-        thumbnail: '/api/placeholder/320/180',
-        videoId: 'def789ghi',
-        duration: '18:45',
-        views: 28934,
-        publishedAt: new Date('2024-03-05'),
-        category: 'Operating Systems',
-        tags: ['Linux', 'System Admin', 'Command Line'],
-        instructor: 'Mark Thompson',
-        difficulty: 'Beginner',
-        rating: 4.5,
-        isLiked: false,
-        isSaved: false,
-        isDownloaded: true,
-        lastWatched: new Date('2024-09-10'),
-        watchProgress: 100
-      },
-      {
-        id: '5',
-        title: 'Arrays and Linked Lists',
-        description: 'Fundamental data structures with implementation examples and use cases.',
-        thumbnail: '/api/placeholder/320/180',
-        videoId: 'ghi012jkl',
-        duration: '24:12',
-        views: 41287,
-        publishedAt: new Date('2024-02-22'),
-        category: 'Data Structures',
-        tags: ['Arrays', 'Linked Lists', 'Data Structures'],
-        instructor: 'Dr. Alex Kumar',
-        difficulty: 'Intermediate',
-        rating: 4.7,
-        isLiked: true,
-        isSaved: false,
-        isDownloaded: false
-      },
-      {
-        id: '6',
-        title: 'Sorting and Searching Algorithms',
-        description: 'Explore efficient sorting and searching techniques with time complexity analysis.',
-        thumbnail: '/api/placeholder/320/180',
-        videoId: 'jkl345mno',
-        duration: '31:28',
-        views: 53621,
-        publishedAt: new Date('2024-03-12'),
-        category: 'Algorithms',
-        tags: ['Sorting', 'Searching', 'Algorithms'],
-        instructor: 'Prof. Lisa Wang',
-        difficulty: 'Advanced',
-        rating: 4.8,
-        isLiked: false,
-        isSaved: true,
-        isDownloaded: true,
-        lastWatched: new Date('2024-09-18'),
-        watchProgress: 85
+    const loadTutorials = async () => {
+      try {
+        const response = await videosAPI.getAllVideos(1, 50) // Get first 50 videos
+        
+        // Transform backend data to frontend format
+        const transformedTutorials: Tutorial[] = response.data.map((video: any) => ({
+          id: video._id,
+          title: video.title,
+          description: video.description,
+          thumbnail: video.thumbnailUrl,
+          videoId: video.youtubeId,
+          duration: formatDuration(video.durationSec),
+          views: video.views,
+          publishedAt: new Date(video.uploadedAt),
+          category: video.topicTags[0] || 'General',
+          tags: video.topicTags,
+          instructor: video.channelName,
+          difficulty: 'Intermediate', // Default difficulty as backend doesn't have this field
+          rating: 4.5, // Default rating
+          isLiked: false,
+          isSaved: false,
+          isDownloaded: false
+        }))
+
+        setTutorials(transformedTutorials)
+
+        // Load user's saved and liked videos
+        try {
+          const [savedVideos, likedVideos] = await Promise.all([
+            userAPI.getSavedVideos(),
+            userAPI.getLikedVideos()
+          ])
+
+          // Update tutorials with user's interaction data
+          const updatedTutorials = transformedTutorials.map(tutorial => ({
+            ...tutorial,
+            isSaved: savedVideos.some((saved: any) => saved.videoId === tutorial.id),
+            isLiked: likedVideos.some((liked: any) => liked.videoId === tutorial.id)
+          }))
+
+          setTutorials(updatedTutorials)
+
+          // Populate sidebar data based on tutorial properties
+          setSidebarData({
+            history: [], // TODO: Implement watch history from backend
+            saved: updatedTutorials.filter(t => t.isSaved),
+            liked: updatedTutorials.filter(t => t.isLiked),
+            downloaded: [] // TODO: Implement downloaded videos from backend
+          })
+        } catch (userError) {
+          console.warn('Could not load user data:', userError)
+          // Continue with basic tutorial data even if user data fails
+          setSidebarData({
+            history: [],
+            saved: [],
+            liked: [],
+            downloaded: []
+          })
+        }
+      } catch (error) {
+        console.error('Failed to load tutorials:', error)
+        // Fallback to empty state or show error message
+        setTutorials([])
       }
-    ]
+    }
 
-    setTutorials(mockTutorials)
-
-    // Populate sidebar data based on tutorial properties
-    setSidebarData({
-      history: mockTutorials.filter(t => t.lastWatched),
-      saved: mockTutorials.filter(t => t.isSaved),
-      liked: mockTutorials.filter(t => t.isLiked),
-      downloaded: mockTutorials.filter(t => t.isDownloaded)
-    })
+    loadTutorials()
   }, [])
+
+  // Helper function to format duration from seconds to MM:SS format
+  const formatDuration = (seconds: number): string => {
+    const minutes = Math.floor(seconds / 60)
+    const remainingSeconds = seconds % 60
+    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`
+  }
 
   const filteredTutorials = tutorials.filter(tutorial =>
     tutorial.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -205,52 +152,67 @@ const TutorialHub: React.FC = () => {
     return selectedTopics.includes(t.category)
   })
 
-  const handleTutorialAction = (tutorialId: string, action: 'like' | 'save' | 'download') => {
-    setTutorials(prev => prev.map(tutorial => {
-      if (tutorial.id === tutorialId) {
-        const updated = { ...tutorial }
-        switch (action) {
-          case 'like':
-            updated.isLiked = !updated.isLiked
-            break
-          case 'save':
-            updated.isSaved = !updated.isSaved
-            break
-          case 'download':
-            updated.isDownloaded = !updated.isDownloaded
-            break
-        }
-        return updated
+  const handleTutorialAction = async (tutorialId: string, action: 'like' | 'save' | 'download') => {
+    try {
+      // Call backend API for like and save actions
+      if (action === 'like') {
+        await videosAPI.likeVideo(tutorialId)
+      } else if (action === 'save') {
+        await videosAPI.saveVideo(tutorialId)
       }
-      return tutorial
-    }))
+      // Note: download functionality would need to be implemented separately
 
-    // Update sidebar data
-    const updatedTutorials = tutorials.map(tutorial => {
-      if (tutorial.id === tutorialId) {
-        const updated = { ...tutorial }
-        switch (action) {
-          case 'like':
-            updated.isLiked = !updated.isLiked
-            break
-          case 'save':
-            updated.isSaved = !updated.isSaved
-            break
-          case 'download':
-            updated.isDownloaded = !updated.isDownloaded
-            break
+      // Update local state
+      setTutorials(prev => prev.map(tutorial => {
+        if (tutorial.id === tutorialId) {
+          const updated = { ...tutorial }
+          switch (action) {
+            case 'like':
+              updated.isLiked = !updated.isLiked
+              break
+            case 'save':
+              updated.isSaved = !updated.isSaved
+              break
+            case 'download':
+              updated.isDownloaded = !updated.isDownloaded
+              break
+          }
+          return updated
         }
-        return updated
-      }
-      return tutorial
-    })
+        return tutorial
+      }))
 
-    setSidebarData({
-      history: updatedTutorials.filter(t => t.lastWatched),
-      saved: updatedTutorials.filter(t => t.isSaved),
-      liked: updatedTutorials.filter(t => t.isLiked),
-      downloaded: updatedTutorials.filter(t => t.isDownloaded)
-    })
+      // Update sidebar data
+      const updatedTutorials = tutorials.map(tutorial => {
+        if (tutorial.id === tutorialId) {
+          const updated = { ...tutorial }
+          switch (action) {
+            case 'like':
+              updated.isLiked = !updated.isLiked
+              break
+            case 'save':
+              updated.isSaved = !updated.isSaved
+              break
+            case 'download':
+              updated.isDownloaded = !updated.isDownloaded
+              break
+          }
+          return updated
+        }
+        return tutorial
+      })
+
+      setSidebarData({
+        history: updatedTutorials.filter(t => t.lastWatched),
+        saved: updatedTutorials.filter(t => t.isSaved),
+        liked: updatedTutorials.filter(t => t.isLiked),
+        downloaded: updatedTutorials.filter(t => t.isDownloaded)
+      })
+    } catch (error) {
+      console.error(`Failed to ${action} video:`, error)
+      // Show error message to user
+      alert(`Failed to ${action} video. Please try again.`)
+    }
   }
 
   const formatViews = (views: number) => {

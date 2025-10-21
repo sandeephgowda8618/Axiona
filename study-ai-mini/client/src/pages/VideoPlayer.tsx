@@ -26,6 +26,7 @@ import {
   X
 } from 'lucide-react'
 import FloatingWorkspaceButton from '../components/FloatingWorkspaceButton'
+import { videosAPI, userAPI } from '../api/studyAI'
 
 interface Tutorial {
   id: string
@@ -93,6 +94,8 @@ const VideoPlayer: React.FC = () => {
   const [showComments, setShowComments] = useState(true)
   const [showNotes, setShowNotes] = useState(true)
   const [activeTab, setActiveTab] = useState<'comments' | 'notes'>('comments')
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   
   // Comments and Notes
   const [comments, setComments] = useState<Comment[]>([])
@@ -100,110 +103,41 @@ const VideoPlayer: React.FC = () => {
   const [newComment, setNewComment] = useState('')
   const [newNote, setNewNote] = useState('')
 
-  // Mock data
+  // Load tutorial data from API
   useEffect(() => {
-    // Mock tutorial data
-    const mockTutorial: Tutorial = {
-      id: tutorialId || '1',
-      title: 'Introduction to SQL Databases',
-      description: 'Learn the basics of relational databases and SQL queries with practical examples. This comprehensive tutorial covers database design principles, SQL syntax, and hands-on exercises to help you master database management.',
-      thumbnail: '/api/placeholder/320/180',
-      videoId: 'dQw4w9WgXcQ',
-      duration: '15:42',
-      views: 45823,
-      publishedAt: new Date('2024-01-15'),
-      category: 'Database Management',
-      tags: ['SQL', 'Database', 'Backend'],
-      instructor: 'Dr. Sarah Johnson',
-      difficulty: 'Beginner',
-      rating: 4.8,
-      isLiked: false,
-      isSaved: true,
-      isDownloaded: false
-    }
+    const loadTutorialData = async () => {
+      if (!tutorialId) {
+        navigate('/tutorial-hub')
+        return
+      }
 
-    const mockPlaylist: Playlist = {
-      id: '1',
-      title: 'Complete Database Management Course',
-      description: 'Master database concepts from basics to advanced topics',
-      totalDuration: '2h 15m',
-      createdBy: 'Dr. Sarah Johnson',
-      createdAt: new Date('2024-01-01'),
-      tutorials: [
-        mockTutorial,
-        {
-          id: '2',
-          title: 'Advanced SQL Queries',
-          description: 'Complex queries, joins, and subqueries',
-          thumbnail: '/api/placeholder/320/180',
-          videoId: 'xyz123',
-          duration: '22:30',
-          views: 32156,
-          publishedAt: new Date('2024-01-20'),
-          category: 'Database Management',
-          tags: ['SQL', 'Advanced'],
-          instructor: 'Dr. Sarah Johnson',
-          difficulty: 'Intermediate',
-          rating: 4.7
-        },
-        {
-          id: '3',
-          title: 'Database Design Principles',
-          description: 'Normalization, ER diagrams, and best practices',
-          thumbnail: '/api/placeholder/320/180',
-          videoId: 'abc456',
-          duration: '18:45',
-          views: 28934,
-          publishedAt: new Date('2024-01-25'),
-          category: 'Database Management',
-          tags: ['Design', 'Normalization'],
-          instructor: 'Dr. Sarah Johnson',
-          difficulty: 'Intermediate',
-          rating: 4.6
+      try {
+        setLoading(true)
+        
+        // Load tutorial/video data from backend
+        const videoResponse = await videosAPI.getVideoById(tutorialId)
+        const tutorial = videoResponse.data
+        
+        if (!tutorial) {
+          navigate('/tutorial-hub')
+          return
         }
-      ]
+
+        setCurrentTutorial(tutorial)
+        setLoading(false)
+        
+        // TODO: Load playlist data if tutorial is part of a playlist
+        // TODO: Load comments and notes from backend
+        
+      } catch (error) {
+        console.error('Failed to load tutorial:', error)
+        setError('Failed to load tutorial')
+        setLoading(false)
+      }
     }
 
-    const mockComments: Comment[] = [
-      {
-        id: '1',
-        user: 'Alex Kumar',
-        avatar: '/api/placeholder/40/40',
-        content: 'Great explanation of SQL basics! Really helped me understand the concepts.',
-        timestamp: new Date('2024-09-20'),
-        likes: 12
-      },
-      {
-        id: '2',
-        user: 'Maria Garcia',
-        avatar: '/api/placeholder/40/40',
-        content: 'The examples are very clear. Could you make a video about advanced joins?',
-        timestamp: new Date('2024-09-19'),
-        likes: 8
-      }
-    ]
-
-    const mockNotes: Note[] = [
-      {
-        id: '1',
-        content: 'SQL stands for Structured Query Language',
-        timestamp: 120, // 2 minutes
-        createdAt: new Date('2024-09-20')
-      },
-      {
-        id: '2',
-        content: 'Remember: SELECT * FROM table_name WHERE condition',
-        timestamp: 300, // 5 minutes
-        createdAt: new Date('2024-09-20')
-      }
-    ]
-
-    setCurrentTutorial(mockTutorial)
-    setPlaylist(mockPlaylist)
-    setComments(mockComments)
-    setNotes(mockNotes)
-    setDuration(942) // 15:42 in seconds
-  }, [tutorialId])
+    loadTutorialData()
+  }, [tutorialId, navigate])
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60)
@@ -257,6 +191,28 @@ const VideoPlayer: React.FC = () => {
     navigate(`/tutorial-player/${tutorial.id}`)
   }
 
+  const handleLike = async () => {
+    if (!currentTutorial) return
+    
+    try {
+      await videosAPI.likeVideo(currentTutorial.id)
+      setCurrentTutorial(prev => prev ? { ...prev, isLiked: !prev.isLiked } : null)
+    } catch (error) {
+      console.error('Failed to like video:', error)
+    }
+  }
+
+  const handleSave = async () => {
+    if (!currentTutorial) return
+    
+    try {
+      await videosAPI.saveVideo(currentTutorial.id)
+      setCurrentTutorial(prev => prev ? { ...prev, isSaved: !prev.isSaved } : null)
+    } catch (error) {
+      console.error('Failed to save video:', error)
+    }
+  }
+
   const workspaceContext = currentTutorial ? {
     type: 'video' as const,
     content: currentTutorial,
@@ -268,6 +224,49 @@ const VideoPlayer: React.FC = () => {
     return <div className="min-h-screen bg-gray-50 flex items-center justify-center">
       <div className="text-lg">Loading...</div>
     </div>
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading tutorial...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-600 mb-4">{error}</p>
+          <button 
+            onClick={() => navigate('/tutorial-hub')} 
+            className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
+          >
+            Back to Tutorial Hub
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  if (!currentTutorial) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-gray-600 mb-4">Tutorial not found</p>
+          <button 
+            onClick={() => navigate('/tutorial-hub')} 
+            className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
+          >
+            Back to Tutorial Hub
+          </button>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -343,7 +342,14 @@ const VideoPlayer: React.FC = () => {
                 <span>{formatDate(currentTutorial.publishedAt)}</span>
               </div>
               <div className="flex items-center space-x-2">
-                <button className="flex items-center space-x-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg">
+                <button 
+                  onClick={handleLike}
+                  className={`flex items-center space-x-2 px-4 py-2 rounded-lg ${
+                    currentTutorial?.isLiked 
+                      ? 'bg-blue-100 text-blue-600 hover:bg-blue-200' 
+                      : 'bg-gray-100 hover:bg-gray-200'
+                  }`}
+                >
                   <ThumbsUp className="h-5 w-5" />
                   <span>Like</span>
                 </button>
@@ -355,7 +361,14 @@ const VideoPlayer: React.FC = () => {
                   <Download className="h-5 w-5" />
                   <span>Download</span>
                 </button>
-                <button className="flex items-center space-x-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg">
+                <button 
+                  onClick={handleSave}
+                  className={`flex items-center space-x-2 px-4 py-2 rounded-lg ${
+                    currentTutorial?.isSaved 
+                      ? 'bg-green-100 text-green-600 hover:bg-green-200' 
+                      : 'bg-gray-100 hover:bg-gray-200'
+                  }`}
+                >
                   <Bookmark className="h-5 w-5" />
                   <span>Save</span>
                 </button>

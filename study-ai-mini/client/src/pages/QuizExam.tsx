@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { Quiz, QuizQuestion, QuizAttempt, QuizSession } from '../types/quiz'
-import { getQuizById } from '../data/mockQuizzes'
-import { examRestrictions } from '../types/quiz'
+import { quizzesAPI } from '../api/studyAI'
 
 interface QuizExamState {
   quiz: Quiz | null
@@ -49,60 +48,71 @@ const QuizExam: React.FC = () => {
       return
     }
 
-    const quiz = getQuizById(quizId)
-    if (!quiz) {
-      navigate('/quiz-selection')
-      return
-    }
+    const loadQuiz = async () => {
+      try {
+        const response = await quizzesAPI.getQuizQuestions(quizId)
+        const quiz = response.data
 
-    // Create new attempt
-    const attempt: QuizAttempt = {
-      id: `attempt_${Date.now()}`,
-      quizId: quiz.id,
-      userId: 'current_user', // In real app, get from auth context
-      startTime: new Date().toISOString(),
-      status: 'in-progress',
-      answers: {},
-      markedForReview: [],
-      score: 0,
-      percentage: 0,
-      passed: false,
-      currentQuestionIndex: 0,
-      visitedQuestions: [],
-      flaggedQuestions: [],
-      duration: 0
-    }
+        if (!quiz) {
+          navigate('/quiz-selection')
+          return
+        }
 
-    // Create session
-    const session: QuizSession = {
-      attemptId: attempt.id,
-      quizId: quiz.id,
-      isActive: true,
-      startTime: Date.now(),
-      timeLimit: quiz.duration * 60 * 1000, // Convert to milliseconds
-      warningShown: false,
-      tabSwitchCount: 0,
-      maxTabSwitches: examRestrictions.tabSwitchLimit,
-      fullscreenExited: false,
-      allowTabSwitch: false,
-      proctoring: {
-        enabled: true,
-        tabSwitchDetection: examRestrictions.detectTabSwitch,
-        fullscreenRequired: examRestrictions.fullscreenRequired,
-        timeTrackingEnabled: true,
-        copyPasteDisabled: examRestrictions.preventCopyPaste,
-        rightClickDisabled: examRestrictions.preventRightClick
+        // Create new attempt
+        const attempt: QuizAttempt = {
+          id: `attempt_${Date.now()}`,
+          quizId: quiz.id,
+          userId: 'current_user', // In real app, get from auth context
+          startTime: new Date().toISOString(),
+          status: 'in-progress',
+          answers: {},
+          markedForReview: [],
+          score: 0,
+          percentage: 0,
+          passed: false,
+          currentQuestionIndex: 0,
+          visitedQuestions: [],
+          duration: 0,
+          flaggedQuestions: []
+        }
+
+        // Create session
+        const session: QuizSession = {
+          attemptId: attempt.id,
+          quizId: quiz.id,
+          isActive: true,
+          startTime: Date.now(),
+          timeLimit: quiz.duration * 60 * 1000, // Convert to milliseconds
+          warningShown: false,
+          tabSwitchCount: 0,
+          maxTabSwitches: 3, // Default tab switch limit
+          fullscreenExited: false,
+          allowTabSwitch: false,
+          proctoring: {
+            enabled: true,
+            tabSwitchDetection: true,
+            fullscreenRequired: false,
+            timeTrackingEnabled: true,
+            copyPasteDisabled: true,
+            rightClickDisabled: true
+          }
+        }
+
+        setState(prev => ({
+          ...prev,
+          quiz,
+          attempt,
+          session,
+          timeRemaining: quiz.duration * 60,
+          visitedQuestions: new Set(['0'])
+        }))
+      } catch (error) {
+        console.error('Failed to load quiz:', error)
+        navigate('/quiz-selection')
       }
     }
 
-    setState(prev => ({
-      ...prev,
-      quiz,
-      attempt,
-      session,
-      timeRemaining: quiz.duration * 60,
-      visitedQuestions: new Set(['0'])
-    }))
+    loadQuiz()
   }, [quizId, navigate])
 
   // Timer effect
@@ -113,8 +123,8 @@ const QuizExam: React.FC = () => {
       setState(prev => {
         const newTimeRemaining = prev.timeRemaining - 1
         
-        // Show warning at 5 minutes
-        if (newTimeRemaining === examRestrictions.timeWarningAt && !prev.showWarning) {
+        // Show warning at configured time
+        if (newTimeRemaining === prev.quiz?.proctoring.timeWarningAt && !prev.showWarning) {
           return { ...prev, timeRemaining: newTimeRemaining, showWarning: true }
         }
         
@@ -202,7 +212,7 @@ const QuizExam: React.FC = () => {
     setState(prev => {
       const newTabSwitchCount = prev.tabSwitchCount + 1
       
-      if (newTabSwitchCount >= examRestrictions.tabSwitchLimit) {
+      if (newTabSwitchCount >= (prev.quiz?.proctoring.tabSwitchLimit || 2)) {
         // Auto-submit exam
         setTimeout(() => {
           handleAutoSubmit('Tab switch limit exceeded')
@@ -214,11 +224,14 @@ const QuizExam: React.FC = () => {
   }, [])
 
   const handleFullscreenExit = useCallback(() => {
-    if (examRestrictions.fullscreenRequired) {
-      setTimeout(() => {
-        handleAutoSubmit('Exited fullscreen mode')
-      }, 2000)
-    }
+    setState(prev => {
+      if (prev.quiz?.proctoring.fullscreenRequired) {
+        setTimeout(() => {
+          handleAutoSubmit('Exited fullscreen mode')
+        }, 2000)
+      }
+      return prev
+    })
   }, [])
 
   const handleTimeExpiry = useCallback(() => {
@@ -248,7 +261,8 @@ const QuizExam: React.FC = () => {
   }
 
   const startQuiz = () => {
-    if (examRestrictions.fullscreenRequired) {
+    const quiz = state.quiz
+    if (quiz?.proctoring.fullscreenRequired) {
       enterFullscreen()
     } else {
       setState(prev => ({ ...prev, showInstructions: false }))
@@ -307,28 +321,31 @@ const QuizExam: React.FC = () => {
     })
   }
 
-  const submitQuiz = (isAutoSubmit = false) => {
+  const submitQuiz = async (isAutoSubmit = false) => {
     if (!state.quiz || !state.attempt) return
 
     setState(prev => ({ ...prev, isSubmitting: true }))
     
-    // Calculate results
-    const results = calculateResults()
-    
-    // In real app, send to backend
-    console.log('Quiz submitted:', { 
-      attempt: state.attempt, 
-      answers: state.answers, 
-      results,
-      isAutoSubmit 
-    })
-    
-    // Navigate to results page
-    setTimeout(() => {
-      navigate(`/quiz/${state.quiz?.id}/results`, { 
+    try {
+      // Calculate time spent
+      const timeSpent = (Date.now() - new Date(state.attempt.startTime).getTime()) / 1000
+      
+      // Submit to backend
+      const response = await quizzesAPI.submitQuiz(state.quiz.id, state.answers, timeSpent)
+      const results = response.data
+      
+      // Navigate to results page
+      navigate(`/quiz/${state.quiz.id}/results`, { 
         state: { results, answers: state.answers, attempt: state.attempt }
       })
-    }, 2000)
+    } catch (error) {
+      console.error('Failed to submit quiz:', error)
+      // Fallback: calculate results locally
+      const results = calculateResults()
+      navigate(`/quiz/${state.quiz.id}/results`, { 
+        state: { results, answers: state.answers, attempt: state.attempt }
+      })
+    }
   }
 
   const calculateResults = () => {
@@ -454,7 +471,7 @@ const QuizExam: React.FC = () => {
           <div className="mb-8 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
             <h3 className="font-semibold text-yellow-800 mb-2">⚠️ Important Warnings</h3>
             <ul className="text-yellow-700 text-sm space-y-1">
-              <li>• Do not switch tabs or minimize the browser (Max {examRestrictions.tabSwitchLimit} switches allowed)</li>
+              <li>• Do not switch tabs or minimize the browser (Max {state.quiz?.proctoring.tabSwitchLimit || 2} switches allowed)</li>
               <li>• Stay in fullscreen mode throughout the exam</li>
               <li>• Right-click and copy-paste are disabled</li>
               <li>• The exam will auto-submit if you violate any rules</li>
@@ -468,7 +485,7 @@ const QuizExam: React.FC = () => {
               onClick={startQuiz}
               className="bg-indigo-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-indigo-700 transition-colors"
             >
-              {examRestrictions.fullscreenRequired ? 'Start Quiz (Enter Fullscreen)' : 'Start Quiz'}
+              {state.quiz?.proctoring.fullscreenRequired ? 'Start Quiz (Enter Fullscreen)' : 'Start Quiz'}
             </button>
           </div>
         </div>
@@ -493,7 +510,7 @@ const QuizExam: React.FC = () => {
             {/* Tab Switch Warning */}
             {state.tabSwitchCount > 0 && (
               <div className="text-red-600 text-sm font-medium">
-                ⚠️ Tab switches: {state.tabSwitchCount}/{examRestrictions.tabSwitchLimit}
+                ⚠️ Tab switches: {state.tabSwitchCount}/{state.quiz?.proctoring.tabSwitchLimit || 2}
               </div>
             )}
             
