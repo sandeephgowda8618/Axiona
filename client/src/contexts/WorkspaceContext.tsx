@@ -51,15 +51,7 @@ interface WorkspaceProviderProps {
 export const WorkspaceProvider: React.FC<WorkspaceProviderProps> = ({ children }) => {
   const [state, setState] = useState<WorkspaceState>(() => {
     const saved = localStorage.getItem('workspaceState')
-    if (!saved) return defaultState
-    try {
-      const parsed = JSON.parse(saved)
-      return { ...defaultState, ...parsed }
-    } catch (error) {
-      console.error('Failed to parse workspaceState from localStorage, resetting to default', error)
-      localStorage.removeItem('workspaceState')
-      return defaultState
-    }
+    return saved ? { ...defaultState, ...JSON.parse(saved) } : defaultState
   })
 
   // Save state to localStorage whenever it changes
@@ -104,7 +96,7 @@ export const WorkspaceProvider: React.FC<WorkspaceProviderProps> = ({ children }
 
   const resetWorkspace = useCallback(() => {
     setState(defaultState)
-    localStorage.removeItem('workspaceState')
+    localStorage.removeUser('workspaceState')
   }, [])
 
   const value = {

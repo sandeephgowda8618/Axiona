@@ -11,54 +11,6 @@
   </head>
   <body>
     <div id="root"></div>
-
-    <!-- Runtime error overlay: displays uncaught errors and promise rejections in-page -->
-    <script>
-      (function(){
-        if (window.__errorOverlayInstalled) return;
-        window.__errorOverlayInstalled = true;
-        const overlay = document.createElement('div');
-        overlay.id = 'dev-error-overlay';
-        overlay.style.position = 'fixed';
-        overlay.style.left = '12px';
-        overlay.style.right = '12px';
-        overlay.style.top = '12px';
-        overlay.style.maxHeight = '60vh';
-        overlay.style.overflow = 'auto';
-        overlay.style.background = 'rgba(191, 45, 45, 0.95)';
-        overlay.style.color = 'white';
-        overlay.style.padding = '12px';
-        overlay.style.fontFamily = 'monospace, monospace';
-        overlay.style.fontSize = '13px';
-        overlay.style.zIndex = '2147483647';
-        overlay.style.borderRadius = '6px';
-        overlay.style.display = 'none';
-        overlay.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><strong>Runtime Error</strong><button id="dev-error-overlay-close" style="background:#fff;color:#b91c1c;border:none;padding:4px 8px;border-radius:4px;cursor:pointer">Close</button></div><pre id="dev-error-overlay-pre" style="white-space:pre-wrap"></pre>';
-        document.body.appendChild(overlay);
-        const pre = overlay.querySelector('#dev-error-overlay-pre');
-        const closeBtn = document.getElementById('dev-error-overlay-close');
-        if (closeBtn) closeBtn.addEventListener('click', ()=> overlay.style.display='none');
-
-        function renderError(title, msg, stack){
-          overlay.style.display = 'block';
-          const text = (title ? title + '\n\n' : '') + (msg || '') + (stack ? '\n\n' + stack : '');
-          if (pre) pre.textContent = text;
-          console.error('Dev overlay error:', title, msg, stack);
-        }
-
-        window.addEventListener('error', function(e){
-          try{ renderError(e.message || 'Error', (e.filename ? e.filename+ ':' + e.lineno + ':' + e.colno : ''), (e.error && e.error.stack) || ''); }catch(err){console.error(err)}
-        });
-
-        window.addEventListener('unhandledrejection', function(e){
-          try{ const r = e.reason || {}; renderError('Unhandled Rejection', r.message || String(r), r.stack || (typeof r === 'string' ? r : '')); }catch(err){console.error(err)}
-        });
-
-        // expose helper
-        window.__renderDevError = renderError;
-      })();
-    </script>
-
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

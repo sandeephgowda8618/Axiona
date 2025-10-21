@@ -2,6 +2,7 @@ import React from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import Layout from '../components/Layout'
 import LandingPage from '../pages/LandingPage'
+import TestLanding from '../pages/TestLanding'
 import AuthPage from '../pages/AuthPage'
 import ProfileDashboard from '../pages/ProfileDashboard'
 import ConferenceLobby from '../pages/ConferenceLobby'
@@ -10,7 +11,7 @@ import QuizSelection from '../pages/QuizSelection'
 import QuizExam from '../pages/QuizExam'
 import QuizExamSecure from '../pages/QuizExamSecure'
 import QuizResults from '../pages/QuizResults'
-import SettingsPage from '../pages/SettingsPageClean'
+import SettingsPage from '../pages/SettingsPage'
 import MyRack from '../pages/MyRack'
 import StudyBuddy from '../pages/StudyBuddy'
 import StudyMaterialsPES from '../pages/StudyMaterialsPES'
@@ -26,7 +27,8 @@ const AppRoutes: React.FC = () => {
   return (
     <Routes>
       {/* Public Routes - No Navigation */}
-      <Route path="/" element={<LandingPage />} />
+  <Route path="/" element={<LandingPage />} />
+  <Route path="/landing" element={<TestLanding />} />
       <Route path="/auth" element={<AuthPage />} />
       <Route path="/forgot-password" element={<ForgotPasswordPage />} />
       
@@ -58,7 +60,7 @@ const AppRoutes: React.FC = () => {
       <Route path="/workspace" element={<Layout><Workspace /></Layout>} />
       
       {/* Settings */}
-  <Route path="/settings" element={<Layout><SettingsPage /></Layout>} />
+      <Route path="/settings" element={<Layout><SettingsPage /></Layout>} />
       
       {/* Admin Routes */}
       <Route path="/admin/*" element={<Layout><AdminConsole /></Layout>} />

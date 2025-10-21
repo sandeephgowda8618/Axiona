@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useWorkspace } from '../contexts/WorkspaceContext'
+import '../styles/landing.css'
 
 const LandingPage: React.FC = () => {
   const { openWorkspace } = useWorkspace()
@@ -49,7 +50,7 @@ const LandingPage: React.FC = () => {
       title: "StudyPES",
       description: "College notes by class/year/subject – zero spam, maximum quality content. Collaborative note-taking with highlighting and search capabilities.",
       image: "/api/placeholder/540/220",
-      link: "/study-pes",
+      link: "/study-materials",
       alignment: "right"
     },
     {
@@ -122,8 +123,8 @@ const LandingPage: React.FC = () => {
               <Link to="/conference" className="nav-link">
                 Conference
               </Link>
-              <Link to="/study-buddy" className="nav-link">
-                Study Buddy
+              <Link to="/library" className="nav-link">
+                Library
               </Link>
               <Link to="/dashboard" className="nav-link">
                 Profile
@@ -158,24 +159,22 @@ const LandingPage: React.FC = () => {
           >
             {heroSlides.map((slide, index) => (
               <div key={index} className="hero-slide">
-                <div className="container">
-                  <div className="hero-content">
-                    <div className="hero-text">
-                      <h1>{slide.title}</h1>
-                      <p className="subtitle">{slide.subtitle}</p>
-                      <div className="hero-buttons">
-                        <Link to="/auth" className="btn btn-primary">
-                          {slide.primaryButton}
-                        </Link>
-                        <button className="btn btn-outline-white">
-                          {slide.secondaryButton}
-                        </button>
-                      </div>
+                <div className="hero-content">
+                  <div className="hero-text">
+                    <h1>{slide.title}</h1>
+                    <p className="subtitle">{slide.subtitle}</p>
+                    <div className="hero-buttons">
+                      <Link to="/auth" className="btn btn-primary">
+                        {slide.primaryButton}
+                      </Link>
+                      <button className="btn btn-outline-white">
+                        {slide.secondaryButton}
+                      </button>
                     </div>
-                    <div className="hero-visual">
-                      <div className="hero-mockup">
-                        <img src={slide.image} alt={slide.title} />
-                      </div>
+                  </div>
+                  <div className="hero-visual">
+                    <div className="hero-mockup">
+                      <img src={slide.image} alt={slide.title} />
                     </div>
                   </div>
                 </div>
@@ -236,22 +235,6 @@ const LandingPage: React.FC = () => {
                 <div className="content">
                   <h3>{feature.title}</h3>
                   <p>{feature.description}</p>
-                  {index === 0 && (
-                    <div className="flex gap-4">
-                      <button 
-                        className="btn-primary"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        Open Workspace
-                      </button>
-                      <button 
-                        className="btn-outline"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        See Features
-                      </button>
-                    </div>
-                  )}
                 </div>
 
                 {/* Visual mockup */}

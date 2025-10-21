@@ -1,503 +1,306 @@
-import React, { useState, useEffect } from 'react'
-import { 
-  Download, 
-  Filter, 
+import React, { useState, useEffect } from 'react';
+import {
+  Download,
   Search,
   Plus,
-  FileText,
   Calendar,
   User,
-  BookOpen,
   ChevronRight,
-  ChevronLeft,
-  MoreVertical
-} from 'lucide-react'
-import FloatingWorkspaceButton from '../components/FloatingWorkspaceButton'
-import { studyMaterialsAPI } from '../api/endpoints'
+  ChevronLeft
+} from 'lucide-react';
+import FloatingWorkspaceButton from '../components/FloatingWorkspaceButton';
 
 interface StudyMaterial {
-  id: string
-  title: string
-  subject: string
-  class: string
-  year: string
-  pages: number
-  downloadUrl: string
-  thumbnail: string
-  author?: string
-  description?: string
-  uploadDate: Date
-  downloadCount: number
-  fileSize: string
-  category: 'lecture-notes' | 'assignments' | 'past-papers' | 'reference'
+  id: string;
+  title: string;
+  subject: string;
+  class: string;
+  year: string;
+  pages: number;
+  downloadUrl: string;
+  thumbnail: string;
+  author?: string;
+  description?: string;
+  uploadDate: Date;
+  downloadCount: number;
+  fileSize: string;
+  category: 'lecture-notes' | 'assignments' | 'past-papers' | 'reference';
 }
 
 const StudyMaterialsPES: React.FC = () => {
-  const [materials, setMaterials] = useState<StudyMaterial[]>([])
-  const [filteredMaterials, setFilteredMaterials] = useState<StudyMaterial[]>([])
-  const [selectedClass, setSelectedClass] = useState<string>('all')
-  const [selectedYear, setSelectedYear] = useState<string>('all')
-  const [selectedSubject, setSelectedSubject] = useState<string>('all')
-  const [searchQuery, setSearchQuery] = useState('')
-  const [sortBy, setSortBy] = useState<'recent' | 'popular' | 'title' | 'subject'>('recent')
-  const [showFilters, setShowFilters] = useState(false)
-  const [currentPage, setCurrentPage] = useState(1)
-  const [itemsPerPage] = useState(6)
+  const [materials, setMaterials] = useState<StudyMaterial[]>([]);
+  const [filteredMaterials, setFilteredMaterials] = useState<StudyMaterial[]>([]);
+  const [selectedClass, setSelectedClass] = useState<string>('all');
+  const [selectedYear, setSelectedYear] = useState<string>('all');
+  const [selectedSubject, setSelectedSubject] = useState<string>('all');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [sortBy, setSortBy] = useState<'recent' | 'popular' | 'title' | 'subject'>('recent');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(6);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [subjects, setSubjects] = useState<string[]>([]);
+  const [classes, setClasses] = useState<string[]>([]);
 
-  // Load data: try API first, fallback to mock data to preserve UI
-  useEffect(() => {
-    const mockMaterials: StudyMaterial[] = [
-      {
-        id: '1',
-        title: 'Operating Systems Fundamentals',
-        subject: 'IT',
-        class: '3rd Year',
-        year: 'CS',
-        pages: 42,
-        downloadUrl: '#',
-        thumbnail: '/api/placeholder/300/400',
-        author: 'Prof. Smith',
-        description: 'Comprehensive guide to operating system concepts',
-        uploadDate: new Date('2024-09-15'),
-        downloadCount: 1250,
-        fileSize: '2.5 MB',
-        category: 'lecture-notes'
-      },
-      {
-        id: '2',
-        title: 'Database Design Principles',
-        subject: 'IT',
-        class: '2nd Year',
-        year: 'DBMS',
-        pages: 38,
-        downloadUrl: '#',
-        thumbnail: '/api/placeholder/300/400',
-        author: 'Dr. Johnson',
-        description: 'Database design and normalization principles',
-        uploadDate: new Date('2024-09-10'),
-        downloadCount: 890,
-        fileSize: '1.8 MB',
-        category: 'lecture-notes'
-      },
-      {
-        id: '3',
-        title: 'Computer Architecture Basics',
-        subject: 'CS',
-        class: '2nd Year',
-        year: 'COA',
-        pages: 56,
-        downloadUrl: '#',
-        thumbnail: '/api/placeholder/300/400',
-        author: 'Prof. Williams',
-        description: 'Introduction to computer architecture and organization',
-        uploadDate: new Date('2024-09-08'),
-        downloadCount: 742,
-        fileSize: '3.2 MB',
-        category: 'reference'
-      },
-      {
-        id: '4',
-        title: 'Advanced Database Concepts',
-        subject: 'CS',
-        class: '3rd Year',
-        year: 'DBMS',
-        pages: 64,
-        downloadUrl: '#',
-        thumbnail: '/api/placeholder/300/400',
-        author: 'Dr. Brown',
-        description: 'Advanced topics in database management systems',
-        uploadDate: new Date('2024-09-05'),
-        downloadCount: 623,
-        fileSize: '4.1 MB',
-        category: 'reference'
-      },
-      {
-        id: '5',
-        title: 'Process Management in OS',
-        subject: 'IT',
-        class: '3rd Year',
-        year: 'OS',
-        pages: 28,
-        downloadUrl: '#',
-        thumbnail: '/api/placeholder/300/400',
-        author: 'Prof. Davis',
-        description: 'Process scheduling and management techniques',
-        uploadDate: new Date('2024-09-01'),
-        downloadCount: 445,
-        fileSize: '1.5 MB',
-        category: 'assignments'
-      },
-      {
-        id: '6',
-        title: 'Memory Management Systems',
-        subject: 'CS',
-        class: '3rd Year',
-        year: 'COA',
-        pages: 47,
-        downloadUrl: '#',
-        thumbnail: '/api/placeholder/300/400',
-        author: 'Dr. Wilson',
-        description: 'Memory allocation and management strategies',
-        uploadDate: new Date('2024-08-28'),
-        downloadCount: 567,
-        fileSize: '2.8 MB',
-        category: 'lecture-notes'
-      }
-    ]
-
-    const load = async () => {
-      try {
-        const resp = await studyMaterialsAPI.getMaterials()
-        const items = Array.isArray(resp)
-          ? resp
-          : (resp?.items || resp?.data || resp?.materials)
-
-        if (Array.isArray(items) && items.length > 0) {
-          setMaterials(items as StudyMaterial[])
-          setFilteredMaterials(items as StudyMaterial[])
-        } else {
-          setMaterials(mockMaterials)
-          setFilteredMaterials(mockMaterials)
-        }
-      } catch (err) {
-        console.error('Failed to load study materials from API, using mock data.', err)
-        setMaterials(mockMaterials)
-        setFilteredMaterials(mockMaterials)
-      }
+  // Sample data for demonstration
+  const sampleMaterials: StudyMaterial[] = [
+    {
+      id: '1',
+      title: 'Operating Systems Fundamentals',
+      subject: 'IT',
+      class: '3rd Year',
+      year: 'CS',
+      pages: 42,
+      downloadUrl: '#',
+      thumbnail: '/api/placeholder/300/400',
+      author: 'Prof. Smith',
+      description: 'Comprehensive guide to operating system concepts',
+      uploadDate: new Date('2024-09-15'),
+      downloadCount: 1250,
+      fileSize: '2.5 MB',
+      category: 'lecture-notes'
+    },
+    {
+      id: '2',
+      title: 'Database Design Principles',
+      subject: 'IT',
+      class: '2nd Year',
+      year: 'DBMS',
+      pages: 38,
+      downloadUrl: '#',
+      thumbnail: '/api/placeholder/300/400',
+      author: 'Dr. Johnson',
+      description: 'Database design principles',
+      uploadDate: new Date('2024-09-10'),
+      downloadCount: 890,
+      fileSize: '1.8 MB',
+      category: 'lecture-notes'
     }
+  ];
 
-    load()
-  }, [])
+  // Load data on component mount
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        setLoading(true);
+        setMaterials(sampleMaterials);
+        setFilteredMaterials(sampleMaterials);
+        setSubjects(['IT', 'CS', 'EC', 'ME']);
+        setClasses(['1st Year', '2nd Year', '3rd Year', '4th Year']);
+        setLoading(false);
+      } catch (error) {
+        console.error('Failed to load study materials:', error);
+        setError('Failed to load study materials');
+        setLoading(false);
+      }
+    };
+    loadData();
+  }, []);
 
-  // Filter and search logic
+  // Filter materials
   useEffect(() => {
     let filtered = materials.filter(material => {
-      const matchesClass = selectedClass === 'all' || material.class === selectedClass
-      const matchesYear = selectedYear === 'all' || material.year === selectedYear
-      const matchesSubject = selectedSubject === 'all' || material.subject === selectedSubject
-      const matchesSearch = material.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                           material.subject.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                           material.author?.toLowerCase().includes(searchQuery.toLowerCase())
+      const matchesClass = selectedClass === 'all' || material.class === selectedClass;
+      const matchesYear = selectedYear === 'all' || material.year === selectedYear;
+      const matchesSubject = selectedSubject === 'all' || material.subject === selectedSubject;
+      const matchesSearch = searchQuery === '' || 
+        material.title.toLowerCase().includes(searchQuery.toLowerCase());
+      
+      return matchesClass && matchesYear && matchesSubject && matchesSearch;
+    });
 
-      return matchesClass && matchesYear && matchesSubject && matchesSearch
-    })
-
-    // Sort materials
     filtered.sort((a, b) => {
       switch (sortBy) {
         case 'recent':
-          return new Date(b.uploadDate).getTime() - new Date(a.uploadDate).getTime()
+          return new Date(b.uploadDate).getTime() - new Date(a.uploadDate).getTime();
         case 'popular':
-          return b.downloadCount - a.downloadCount
+          return b.downloadCount - a.downloadCount;
         case 'title':
-          return a.title.localeCompare(b.title)
-        case 'subject':
-          return a.subject.localeCompare(b.subject)
+          return a.title.localeCompare(b.title);
         default:
-          return 0
+          return 0;
       }
-    })
+    });
 
-    setFilteredMaterials(filtered)
-    setCurrentPage(1)
-  }, [materials, selectedClass, selectedYear, selectedSubject, searchQuery, sortBy])
+    setFilteredMaterials(filtered);
+    setCurrentPage(1);
+  }, [materials, selectedClass, selectedYear, selectedSubject, searchQuery, sortBy]);
+
+  const handleDownload = async (material: StudyMaterial) => {
+    console.log('Downloading:', material.title);
+    setMaterials(prev => prev.map(m =>
+      m.id === material.id ? { ...m, downloadCount: m.downloadCount + 1 } : m
+    ));
+  };
 
   // Pagination
-  const totalPages = Math.ceil(filteredMaterials.length / itemsPerPage)
-  const startIndex = (currentPage - 1) * itemsPerPage
-  const paginatedMaterials = filteredMaterials.slice(startIndex, startIndex + itemsPerPage)
+  const totalPages = Math.ceil(filteredMaterials.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentMaterials = filteredMaterials.slice(startIndex, endIndex);
 
-  const handleDownload = (material: StudyMaterial) => {
-    // Simulate download
-    console.log(`Downloading: ${material.title}`)
-    // In a real app, this would trigger the actual download
-    setMaterials(prev => 
-      prev.map(m => 
-        m.id === material.id 
-          ? { ...m, downloadCount: m.downloadCount + 1 }
-          : m
-      )
-    )
-  }
-
-  const resetFilters = () => {
-    setSelectedClass('all')
-    setSelectedYear('all')
-    setSelectedSubject('all')
-    setSearchQuery('')
-    setSortBy('recent')
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="text-gray-600 mt-4">Loading study materials...</p>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div className="min-h-screen">
-      {/* Floating Workspace Button */}
-      <FloatingWorkspaceButton 
-        context={{
-          type: 'material',
-          content: { 
-            title: 'Study Materials - PES',
-            materials: filteredMaterials,
-            filters: { selectedClass, selectedYear, selectedSubject, searchQuery }
-          }
-        }} 
-      />
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       {/* Header */}
-      <div className="nav-header">
-        <div className="container">
-          <div className="py-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Study Materials</h1>
-                <p className="mt-2 text-gray-600 dark:text-gray-300">
-                  Access comprehensive study materials and resources for your courses
-                </p>
-              </div>
-              <div className="flex items-center space-x-3">
-                <button className="btn-primary">
-                  <Plus className="h-4 w-4" />
-                  <span>Upload Material</span>
-                </button>
-              </div>
+      <div className="bg-white shadow-sm border-b">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center py-6">
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900">Study Materials</h1>
+              <p className="text-gray-600">Access lecture notes, assignments, and resources</p>
             </div>
+            <button className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+              <Plus className="w-4 h-4" />
+              <span>Upload Material</span>
+            </button>
           </div>
         </div>
       </div>
 
+      {/* Filters */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        {/* Filters and Search */}
-        <div className="bg-white rounded-lg border border-gray-200 p-6 mb-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
-            {/* Class Filter */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Class</label>
-              <select
-                value={selectedClass}
-                onChange={(e) => setSelectedClass(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-                <option value="all">All Classes</option>
-                <option value="1st Year">1st Year</option>
-                <option value="2nd Year">2nd Year</option>
-                <option value="3rd Year">3rd Year</option>
-                <option value="4th Year">4th Year</option>
-              </select>
+        <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
+          <div className="flex flex-wrap gap-4 items-center justify-between">
+            <div className="flex-1 min-w-64">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <input
+                  type="text"
+                  placeholder="Search materials..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
             </div>
-
-            {/* Year Filter */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Year</label>
-              <select
-                value={selectedYear}
-                onChange={(e) => setSelectedYear(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-                <option value="all">All Years</option>
-                <option value="CS">CS</option>
-                <option value="IT">IT</option>
-                <option value="DBMS">DBMS</option>
-                <option value="COA">COA</option>
-                <option value="OS">OS</option>
-              </select>
-            </div>
-
-            {/* Subject Filter */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Subject</label>
+            <div className="flex gap-4 items-center">
               <select
                 value={selectedSubject}
                 onChange={(e) => setSelectedSubject(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="all">All Subjects</option>
-                <option value="CS">Computer Science</option>
-                <option value="IT">Information Technology</option>
-                <option value="MATH">Mathematics</option>
-                <option value="ENG">Engineering</option>
+                {subjects.map(subject => (
+                  <option key={subject} value={subject}>{subject}</option>
+                ))}
               </select>
-            </div>
-
-            {/* Apply Filters Button */}
-            <div className="flex items-end">
-              <button
-                onClick={() => setShowFilters(!showFilters)}
-                className="flex items-center space-x-2 bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors w-full justify-center"
+              <select
+                value={selectedClass}
+                onChange={(e) => setSelectedClass(e.target.value)}
+                className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <Filter className="h-4 w-4" />
-                <span>Apply Filters</span>
-              </button>
-            </div>
-          </div>
-
-          {/* Search and Sort */}
-          <div className="flex flex-col md:flex-row gap-4">
-            <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search by title, subject, or author..."
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-            </div>
-            <div className="flex space-x-3">
+                <option value="all">All Classes</option>
+                {classes.map(cls => (
+                  <option key={cls} value={cls}>{cls}</option>
+                ))}
+              </select>
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as any)}
-                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="recent">Sort by: Recent</option>
-                <option value="popular">Sort by: Popular</option>
-                <option value="title">Sort by: Title</option>
-                <option value="subject">Sort by: Subject</option>
+                <option value="recent">Most Recent</option>
+                <option value="popular">Most Popular</option>
+                <option value="title">Title A-Z</option>
               </select>
-              <button
-                onClick={resetFilters}
-                className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
-              >
-                Clear All
-              </button>
             </div>
-          </div>
-
-          {/* Results Count */}
-          <div className="mt-4 text-sm text-gray-600">
-            Showing {filteredMaterials.length} study materials
           </div>
         </div>
 
         {/* Materials Grid */}
-        <div className="grid-cards mb-8">
-          {paginatedMaterials.map((material) => (
-            <div key={material.id} className="material-card hover-lift">
-              {/* Thumbnail */}
-              <div className="relative h-48 bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-900/20 dark:to-pink-900/20 flex items-center justify-center rounded-t-xl">
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-white/80 dark:bg-gray-800/80 rounded-xl flex items-center justify-center mx-auto mb-2 shadow-lg">
-                    <FileText className="h-8 w-8 text-purple-600" />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+          {currentMaterials.map((material) => (
+            <div key={material.id} className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+              <div className="aspect-[4/3] bg-gray-100">
+                <div className="w-full h-full flex items-center justify-center bg-gradient-to-r from-blue-500 to-purple-600 text-white">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold">{material.subject}</div>
+                    <div className="text-sm">{material.pages} pages</div>
                   </div>
-                  <span className="text-sm text-gray-600 dark:text-gray-300 font-medium">PDF Document</span>
                 </div>
               </div>
-
-              {/* Content */}
-              <div className="p-6">
-                <div className="flex items-start justify-between mb-3">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white line-clamp-2">
-                    {material.title}
-                  </h3>
-                  <button className="btn-ghost p-1">
-                    <MoreVertical className="h-4 w-4" />
-                  </button>
-                </div>
-
-                <div className="space-y-2 mb-4">
-                  <div className="flex items-center space-x-2 text-sm text-gray-600">
-                    <BookOpen className="h-4 w-4" />
-                    <span>{material.subject}</span>
-                    <span>•</span>
-                    <span>{material.class}</span>
-                    <span>•</span>
-                    <span>{material.year}</span>
-                  </div>
-                  
-                  {material.author && (
-                    <div className="flex items-center space-x-2 text-sm text-gray-600">
-                      <User className="h-4 w-4" />
-                      <span>{material.author}</span>
-                    </div>
-                  )}
-
-                  <div className="flex items-center space-x-2 text-sm text-gray-600">
-                    <FileText className="h-4 w-4" />
-                    <span>{material.pages} pages</span>
-                    <span>•</span>
-                    <span>{material.fileSize}</span>
-                  </div>
-
-                  <div className="flex items-center space-x-2 text-sm text-gray-600">
-                    <Calendar className="h-4 w-4" />
-                    <span>{material.uploadDate.toLocaleDateString()}</span>
-                  </div>
-                </div>
-
-                {material.description && (
-                  <p className="text-sm text-gray-600 mb-4 line-clamp-2">
-                    {material.description}
-                  </p>
-                )}
-
-                <div className="flex items-center justify-between">
-                  <span className="text-xs text-gray-500">
-                    {material.downloadCount.toLocaleString()} downloads
+              
+              <div className="p-4">
+                <h3 className="font-semibold text-gray-900 mb-2">{material.title}</h3>
+                <p className="text-sm text-gray-600 mb-3">{material.description}</p>
+                
+                <div className="flex items-center justify-between text-xs text-gray-500 mb-3">
+                  <span className="flex items-center">
+                    <User className="w-3 h-3 mr-1" />
+                    {material.author}
                   </span>
-                  <button
-                    onClick={() => handleDownload(material)}
-                    className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-                  >
-                    <Download className="h-4 w-4" />
-                    <span>Download</span>
-                  </button>
+                  <span className="flex items-center">
+                    <Calendar className="w-3 h-3 mr-1" />
+                    {material.uploadDate.toLocaleDateString()}
+                  </span>
                 </div>
+                
+                <div className="flex items-center justify-between text-xs text-gray-500 mb-3">
+                  <span>{material.subject} • {material.class}</span>
+                  <span>{material.fileSize}</span>
+                </div>
+                
+                <button
+                  onClick={() => handleDownload(material)}
+                  className="w-full flex items-center justify-center space-x-2 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                  <Download className="w-4 h-4" />
+                  <span>Download ({material.downloadCount})</span>
+                </button>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Empty State */}
-        {filteredMaterials.length === 0 && (
-          <div className="text-center py-12">
-            <FileText className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No materials found</h3>
-            <p className="text-gray-600 mb-4">
-              Try adjusting your filters or search criteria
-            </p>
-            <button
-              onClick={resetFilters}
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              Clear Filters
-            </button>
-          </div>
-        )}
-
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="flex items-center justify-center space-x-2">
+          <div className="flex justify-center items-center space-x-2">
             <button
               onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
               disabled={currentPage === 1}
-              className="p-2 text-gray-500 hover:text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="p-2 rounded-lg border border-gray-300 hover:bg-gray-50 disabled:opacity-50"
             >
-              <ChevronLeft className="h-5 w-5" />
+              <ChevronLeft className="w-4 h-4" />
             </button>
-
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+            
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
               <button
                 key={page}
                 onClick={() => setCurrentPage(page)}
-                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                className={`px-3 py-2 rounded-lg ${
                   currentPage === page
                     ? 'bg-blue-600 text-white'
-                    : 'text-gray-700 hover:bg-gray-100'
+                    : 'border border-gray-300 hover:bg-gray-50'
                 }`}
               >
                 {page}
               </button>
             ))}
-
+            
             <button
               onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
               disabled={currentPage === totalPages}
-              className="p-2 text-gray-500 hover:text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="p-2 rounded-lg border border-gray-300 hover:bg-gray-50 disabled:opacity-50"
             >
-              <ChevronRight className="h-5 w-5" />
+              <ChevronRight className="w-4 h-4" />
             </button>
           </div>
         )}
       </div>
+      <FloatingWorkspaceButton />
     </div>
-  )
-}
+  );
+};
 
-export default StudyMaterialsPES
+export default StudyMaterialsPES;

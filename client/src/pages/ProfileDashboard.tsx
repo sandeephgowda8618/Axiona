@@ -89,9 +89,9 @@ const ProfileDashboard: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Tab Navigation */}
-        <div className="flex mb-8 bg-gray-100 rounded-lg p-1 w-fit">
+          <div className="flex mb-8 bg-gray-100 rounded-lg p-1 w-fit">
           <button
             onClick={() => setActiveTab('overview')}
             className={`px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
@@ -104,7 +104,11 @@ const ProfileDashboard: React.FC = () => {
           </button>
           <button
             onClick={() => navigate('/settings')}
-            className={`px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 text-gray-600 hover:text-gray-900`}
+            className={`px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
+              activeTab === 'settings'
+                ? 'bg-white text-gray-900 shadow-sm border border-gray-200'
+                : 'text-gray-600 hover:text-gray-900'
+            }`}
           >
             Settings
           </button>
@@ -115,8 +119,8 @@ const ProfileDashboard: React.FC = () => {
             {/* Profile Header */}
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
               <div className="flex items-center space-x-4">
-                <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center border border-gray-200 shadow-sm overflow-hidden">
-                  <svg className="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center">
+                  <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                   </svg>
                 </div>
@@ -125,18 +129,6 @@ const ProfileDashboard: React.FC = () => {
                   <p className="text-gray-600">{userProfile.role}</p>
                 </div>
               </div>
-            </div>
-            {/* My Rack Button */}
-            <div>
-              <button
-                onClick={() => navigate('/my-rack')}
-                className="w-full flex items-center justify-center py-3 px-4 border border-blue-300 text-sm font-medium rounded-md text-blue-700 bg-white hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
-              >
-                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-                My Rack
-              </button>
             </div>
 
             {/* Stats Grid - Matches wireframe exactly */}
@@ -206,6 +198,15 @@ const ProfileDashboard: React.FC = () => {
                   <p className="text-gray-400 text-xs">Weekly activity visualization</p>
                 </div>
               </div>
+              <div className="mt-4 flex justify-end">
+                <button
+                  onClick={() => navigate('/my-rack')}
+                  className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                  <FileText className="w-4 h-4 mr-2" />
+                  My Rack
+                </button>
+              </div>
             </div>
 
             {/* AI Learning Roadmap - Matches wireframe */}
@@ -220,7 +221,7 @@ const ProfileDashboard: React.FC = () => {
                         item.status === 'in-progress' ? 'bg-blue-100 text-blue-700' :
                         'bg-gray-100 text-gray-400'
                       }`}>
-                        <span className="text-xs font-medium">{index + 1}</span>
+                        {index + 1}
                       </div>
                       <div>
                         <h3 className="font-medium text-gray-900">{item.title}</h3>
@@ -228,9 +229,7 @@ const ProfileDashboard: React.FC = () => {
                       </div>
                     </div>
                     <div className="flex items-center space-x-3">
-                      <div className="w-8 h-8 bg-gray-50 rounded-full flex items-center justify-center border border-gray-100">
-                        {getStatusIcon(item.status)}
-                      </div>
+                      {getStatusIcon(item.status)}
                     </div>
                   </div>
                 ))}
@@ -273,7 +272,7 @@ const ProfileDashboard: React.FC = () => {
                 </button>
                 <button 
                   onClick={() => navigate('/my-rack')}
-                  className="w-full flex items-center justify-center py-3 px-4 border border-blue-300 text-sm font-medium rounded-md text-blue-700 bg-white hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+                  className="w-full flex items-center justify-center py-3 px-4 border border-slate-300 text-sm font-medium rounded-md text-slate-700 bg-white hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 transition-colors"
                 >
                   <FileText className="w-4 h-4 mr-2" />
                   My Rack
@@ -282,13 +281,6 @@ const ProfileDashboard: React.FC = () => {
             </div>
           </div>
         )}
-      </div>
-
-      {/* Floating action pill (visual element from reference) */}
-      <div className="fixed bottom-6 right-6">
-        <div className="bg-gray-800 text-white px-5 py-3 rounded-full shadow-lg opacity-95">
-          &nbsp;
-        </div>
       </div>
     </div>
   )

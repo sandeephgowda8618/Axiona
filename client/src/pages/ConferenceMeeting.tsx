@@ -140,8 +140,8 @@ const ConferenceMeeting: React.FC = () => {
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="flex-1 flex">
+  {/* Main Content */}
+  <div className="flex-1 flex min-h-0">
         {/* Video Grid */}
         <div className="flex-1 p-4">
           <div className="grid grid-cols-2 gap-4 h-full">
@@ -187,7 +187,7 @@ const ConferenceMeeting: React.FC = () => {
 
         {/* Chat Sidebar */}
         {showChat && (
-          <div className="w-80 bg-white border-l border-gray-200 flex flex-col">
+          <div className="w-80 bg-white border-l border-gray-200 flex flex-col min-h-0">
             {/* Chat Header */}
             <div className="p-4 border-b border-gray-200">
               <div className="flex items-center justify-between">
@@ -205,7 +205,7 @@ const ConferenceMeeting: React.FC = () => {
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4">
+            <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-0">
               {chatMessages.map((message) => (
                 <div key={message.id} className="flex space-x-3">
                   <div className="flex-shrink-0">

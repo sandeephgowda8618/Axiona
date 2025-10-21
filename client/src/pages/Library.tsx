@@ -16,7 +16,6 @@ import {
   Share2
 } from 'lucide-react'
 import FloatingWorkspaceButton from '../components/FloatingWorkspaceButton'
-import { libraryAPI } from '../api/endpoints'
 
 interface LibraryBook {
   id: string
@@ -57,7 +56,7 @@ const Library: React.FC = () => {
   const [itemsPerPage] = useState(6)
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
 
-  // Load data: try API first, fallback to mock data to preserve UI
+  // Mock data
   useEffect(() => {
     const mockBooks: LibraryBook[] = [
       {
@@ -212,28 +211,8 @@ const Library: React.FC = () => {
       }
     ]
 
-    const load = async () => {
-      try {
-        const resp = await libraryAPI.getBooks()
-        const items = Array.isArray(resp)
-          ? resp
-          : (resp?.items || resp?.data || resp?.books)
-
-        if (Array.isArray(items) && items.length > 0) {
-          setBooks(items as LibraryBook[])
-          setFilteredBooks(items as LibraryBook[])
-        } else {
-          setBooks(mockBooks)
-          setFilteredBooks(mockBooks)
-        }
-      } catch (err) {
-        console.error('Failed to load books from API, using mock data.', err)
-        setBooks(mockBooks)
-        setFilteredBooks(mockBooks)
-      }
-    }
-
-    load()
+    setBooks(mockBooks)
+    setFilteredBooks(mockBooks)
   }, [])
 
   // Filter and search logic
@@ -332,34 +311,30 @@ const Library: React.FC = () => {
 
   return (
     <div className="min-h-screen dashboard-bg">
-      {/* Floating Workspace Button */}
-      <FloatingWorkspaceButton 
+      <FloatingWorkspaceButton
         context={{
           type: 'book',
-          content: { 
+          content: {
             title: 'Digital Library',
             books: filteredBooks,
             filters: { selectedCategory, selectedSubject, selectedLanguage, searchQuery }
           }
-        }} 
+        }}
       />
+
       {/* Header */}
       <div className="app-header">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="py-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <h1 className="text-2xl font-bold text-gray-900">Digital Library</h1>
-                <p className="mt-1 text-sm text-gray-600">
-                  Access our comprehensive collection of reference textbooks and academic resources
-                </p>
-              </div>
-              <div className="flex items-center space-x-3">
-                <button className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
-                  <Plus className="h-4 w-4" />
-                  <span>Request Book</span>
-                </button>
-              </div>
+          <div className="py-6 flex items-center justify-between">
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900">Digital Library</h1>
+              <p className="mt-1 text-sm text-gray-600">Access our comprehensive collection of reference textbooks and academic resources</p>
+            </div>
+            <div>
+              <button className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                <Plus className="h-4 w-4" />
+                <span>Request Book</span>
+              </button>
             </div>
           </div>
         </div>
@@ -369,14 +344,9 @@ const Library: React.FC = () => {
         {/* Filters and Search */}
         <div className="bg-white rounded-lg border border-gray-200 p-6 mb-6">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
-            {/* Category Filter */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
-              <select
-                value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
+              <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-lg">
                 <option value="all">All Categories</option>
                 <option value="Algorithms">Algorithms</option>
                 <option value="Database">Database</option>
@@ -386,15 +356,9 @@ const Library: React.FC = () => {
                 <option value="Software Development">Software Development</option>
               </select>
             </div>
-
-            {/* Subject Filter */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Subject</label>
-              <select
-                value={selectedSubject}
-                onChange={(e) => setSelectedSubject(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
+              <select value={selectedSubject} onChange={(e) => setSelectedSubject(e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-lg">
                 <option value="all">All Subjects</option>
                 <option value="Computer Science">Computer Science</option>
                 <option value="Database Systems">Database Systems</option>
@@ -404,15 +368,9 @@ const Library: React.FC = () => {
                 <option value="Software Engineering">Software Engineering</option>
               </select>
             </div>
-
-            {/* Language Filter */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Language</label>
-              <select
-                value={selectedLanguage}
-                onChange={(e) => setSelectedLanguage(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
+              <select value={selectedLanguage} onChange={(e) => setSelectedLanguage(e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-lg">
                 <option value="all">All Languages</option>
                 <option value="English">English</option>
                 <option value="Hindi">Hindi</option>
@@ -420,179 +378,61 @@ const Library: React.FC = () => {
                 <option value="French">French</option>
               </select>
             </div>
-
-            {/* Apply Filters Button */}
             <div className="flex items-end">
-              <button
-                onClick={() => setShowFilters(!showFilters)}
-                className="flex items-center space-x-2 bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors w-full justify-center"
-              >
+              <button onClick={() => setShowFilters(!showFilters)} className="flex items-center space-x-2 bg-gray-100 text-gray-700 px-4 py-2 rounded-lg w-full justify-center">
                 <Filter className="h-4 w-4" />
                 <span>Apply Filters</span>
               </button>
             </div>
           </div>
-
-          {/* Search and Sort */}
-          <div className="flex flex-col md:flex-row gap-4">
-            <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search by title, author, subject, or tags..."
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-            </div>
-            <div className="flex space-x-3">
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as any)}
-                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-                <option value="recent">Sort by: Recent</option>
-                <option value="popular">Sort by: Popular</option>
-                <option value="rating">Sort by: Rating</option>
-                <option value="title">Sort by: Title</option>
-                <option value="author">Sort by: Author</option>
-              </select>
-              <button
-                onClick={resetFilters}
-                className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
-              >
-                Clear All
-              </button>
-            </div>
-          </div>
-
-          {/* Results Count */}
-          <div className="mt-4 text-sm text-gray-600">
-            Showing {filteredBooks.length} books
-          </div>
         </div>
 
-        {/* Books Grid */}
-        <div className="books-grid mb-8">
-          {paginatedBooks.map((book) => (
-            <div key={book.id} className="book-card">
-              {/* Book Cover */}
-              <div className="relative h-48 bg-gray-100 flex items-center justify-center">
-                <div className="text-center">
-                  <BookOpen className="h-16 w-16 text-gray-400 mx-auto mb-2" />
-                  <span className="text-sm text-gray-500">Book Cover</span>
-                </div>
-                {/* Availability Badge */}
-                <div className={`absolute top-2 right-2 px-2 py-1 rounded-full text-xs font-medium ${getAvailabilityColor(book.availability)}`}>
-                  {book.availability.charAt(0).toUpperCase() + book.availability.slice(1)}
-                </div>
-                {/* Favorite Button */}
-                <button
-                  onClick={() => toggleFavorite(book.id)}
-                  className={`absolute top-2 left-2 p-2 rounded-full ${
-                    book.isFavorite ? 'bg-red-100 text-red-600' : 'bg-gray-100 text-gray-400'
-                  } hover:bg-opacity-80 transition-colors`}
-                >
-                  <Heart className={`h-4 w-4 ${book.isFavorite ? 'fill-current' : ''}`} />
-                </button>
-              </div>
-
-              {/* Content */}
-              <div className="p-4">
-                <div className="flex items-start justify-between mb-2">
-                  <h3 className="text-lg font-semibold text-gray-900 line-clamp-2">
-                    {book.title}
-                  </h3>
-                  <button className="p-1 text-gray-400 hover:text-gray-600 rounded">
-                    <MoreVertical className="h-4 w-4" />
-                  </button>
-                </div>
-
-                <div className="space-y-2 mb-4">
-                  <div className="flex items-center space-x-2 text-sm text-gray-600">
-                    <User className="h-4 w-4" />
-                    <span className="line-clamp-1">{book.author}</span>
-                  </div>
-                  
-                  <div className="flex items-center space-x-2 text-sm text-gray-600">
-                    <BookOpen className="h-4 w-4" />
-                    <span>{book.subject}</span>
-                    <span>•</span>
-                    <span>{book.edition}</span>
-                  </div>
-
-                  <div className="flex items-center space-x-2 text-sm text-gray-600">
-                    <Calendar className="h-4 w-4" />
-                    <span>{book.year}</span>
-                    <span>•</span>
-                    <span>{book.pages} pages</span>
-                    {book.fileSize && (
-                      <>
-                        <span>•</span>
-                        <span>{book.fileSize}</span>
-                      </>
-                    )}
-                  </div>
-
-                  {/* Rating */}
-                  <div className="flex items-center space-x-2">
-                    <div className="flex items-center space-x-1">
-                      {renderStars(book.rating)}
+        {/* Books Grid / List */}
+        <div className="mt-6">
+          {viewMode === 'grid' ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {paginatedBooks.map(book => (
+                <div key={book.id} className="bg-white rounded-lg shadow p-4 flex flex-col">
+                  <div className="flex items-start space-x-4">
+                    <img src={book.coverImage} alt={book.title} className="w-24 h-32 object-cover rounded" />
+                    <div className="flex-1">
+                      <h3 className="text-lg font-semibold">{book.title}</h3>
+                      <p className="text-sm text-gray-600">{book.author}</p>
+                      <p className="text-sm text-gray-500 mt-2 line-clamp-3">{book.description}</p>
                     </div>
-                    <span className="text-sm text-gray-600">
-                      {book.rating} ({book.reviewCount.toLocaleString()} reviews)
-                    </span>
+                  </div>
+
+                  <div className="mt-4 flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                      <span className={`text-xs px-2 py-1 rounded ${getAvailabilityColor(book.availability)}`}>{book.availability}</span>
+                      <button onClick={() => handleDownload(book)} className="text-sm text-blue-600 hover:underline flex items-center space-x-1"><Download className="w-4 h-4" /> <span>Download</span></button>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <button onClick={() => toggleFavorite(book.id)} className={`p-2 rounded ${book.isFavorite ? 'text-red-600' : 'text-gray-400'}`}><Heart className="w-4 h-4" /></button>
+                      <button className="p-2 rounded text-gray-400"><MoreVertical className="w-4 h-4" /></button>
+                    </div>
                   </div>
                 </div>
-
-                <p className="text-sm text-gray-600 mb-4 line-clamp-2">
-                  {book.description}
-                </p>
-
-                {/* Tags */}
-                <div className="flex flex-wrap gap-1 mb-4">
-                  {book.tags.slice(0, 3).map((tag, index) => (
-                    <span
-                      key={index}
-                      className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                  {book.tags.length > 3 && (
-                    <span className="text-xs text-gray-500">
-                      +{book.tags.length - 3} more
-                    </span>
-                  )}
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <span className="text-xs text-gray-500">
-                    {book.downloadCount.toLocaleString()} downloads
-                  </span>
-                  <div className="flex items-center space-x-2">
-                    {book.previewUrl && (
-                      <button className="flex items-center space-x-1 text-gray-600 hover:text-gray-800 transition-colors">
-                        <Eye className="h-4 w-4" />
-                        <span className="text-sm">Preview</span>
-                      </button>
-                    )}
-                    <button
-                      onClick={() => handleDownload(book)}
-                      disabled={book.availability !== 'available'}
-                      className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
-                    >
-                      <Download className="h-4 w-4" />
-                      <span>
-                        {book.availability === 'available' ? 'Download' : 
-                         book.availability === 'borrowed' ? 'Borrowed' : 'Reserved'}
-                      </span>
-                    </button>
-                  </div>
-                </div>
-              </div>
+              ))}
             </div>
-          ))}
+          ) : (
+            <div className="space-y-4">
+              {paginatedBooks.map(book => (
+                <div key={book.id} className="bg-white rounded-lg shadow p-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="text-lg font-semibold">{book.title}</h3>
+                      <p className="text-sm text-gray-600">{book.author}</p>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <button onClick={() => handleDownload(book)} className="text-sm text-blue-600 hover:underline flex items-center space-x-1"><Download className="w-4 h-4" /> <span>Download</span></button>
+                      <button onClick={() => toggleFavorite(book.id)} className={`p-2 rounded ${book.isFavorite ? 'text-red-600' : 'text-gray-400'}`}><Heart className="w-4 h-4" /></button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Empty State */}
@@ -600,50 +440,19 @@ const Library: React.FC = () => {
           <div className="text-center py-12">
             <BookOpen className="h-16 w-16 text-gray-300 mx-auto mb-4" />
             <h3 className="text-lg font-medium text-gray-900 mb-2">No books found</h3>
-            <p className="text-gray-600 mb-4">
-              Try adjusting your filters or search criteria
-            </p>
-            <button
-              onClick={resetFilters}
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              Clear Filters
-            </button>
+            <p className="text-gray-600 mb-4">Try adjusting your filters or search criteria</p>
+            <button onClick={resetFilters} className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">Clear Filters</button>
           </div>
         )}
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="flex items-center justify-center space-x-2">
-            <button
-              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-              disabled={currentPage === 1}
-              className="p-2 text-gray-500 hover:text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <ChevronLeft className="h-5 w-5" />
-            </button>
-
+          <div className="flex items-center justify-center space-x-2 mt-6">
+            <button onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))} disabled={currentPage === 1} className="p-2 text-gray-500 hover:text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"><ChevronLeft className="h-5 w-5" /></button>
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-              <button
-                key={page}
-                onClick={() => setCurrentPage(page)}
-                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  currentPage === page
-                    ? 'bg-blue-600 text-white'
-                    : 'text-gray-700 hover:bg-gray-100'
-                }`}
-              >
-                {page}
-              </button>
+              <button key={page} onClick={() => setCurrentPage(page)} className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${currentPage === page ? 'bg-blue-600 text-white' : 'text-gray-700 hover:bg-gray-100'}`}>{page}</button>
             ))}
-
-            <button
-              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-              disabled={currentPage === totalPages}
-              className="p-2 text-gray-500 hover:text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <ChevronRight className="h-5 w-5" />
-            </button>
+            <button onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))} disabled={currentPage === totalPages} className="p-2 text-gray-500 hover:text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"><ChevronRight className="h-5 w-5" /></button>
           </div>
         )}
       </div>

@@ -1,17 +1,11 @@
+/* Import Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
-.auth-card {
-  max-width: 400px;
-  width: 100%;
-  margin: 0 auto;
-  background: var(--bg-primary) !important;
-  color: var(--text-primary) !important;
-  border-radius: 1rem;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-  padding: 2.5rem 2rem;
-  border: 1px solid #e5e7eb;
-}
+/* Tailwind CSS directives */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* CSS Reset and Base Styles */
 * {
@@ -149,11 +143,6 @@ html {
   scroll-behavior: smooth;
   line-height: 1.6;
 }
-/* Make sure the document and root container have no default spacing so sticky headers sit flush */
-html, body, #root {
-  margin: 0;
-  padding: 0;
-}
 
 body {
   background: #ffffff;
@@ -162,19 +151,6 @@ body {
   font-feature-settings: 'cv03', 'cv04', 'cv11';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-/* Prevent light gap during pull-to-refresh / overscroll on mobile by containing overscroll effects.
-   Use the theme variable here so individual pages/components can control their own backgrounds. */
-html, body {
-  background-color: var(--bg-secondary);
-  overscroll-behavior-y: contain;
-  margin: 0; /* remove any default top gap */
-}
-
-/* Ensure the dashboard background still shows inside the app container */
-.dashboard-bg {
-  background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 50%, #e0e7ff 100%);
 }
 
 /* Dark mode body */
@@ -373,38 +349,13 @@ a:hover {
   gap: var(--spacing-6);
 }
 
-/* Ensure quiz two-column layout: main content + fixed right palette */
-.quiz-layout {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.5rem;
-}
-
-@media (min-width: 768px) {
-  .quiz-layout {
-    grid-template-columns: 1fr 24rem; /* left flexible, right fixed */
-    align-items: start;
-  }
-  .quiz-main {
-    grid-column: 1;
-  }
-  .quiz-aside {
-    grid-column: 2;
-  }
-  .quiz-aside .sticky-panel {
-    position: sticky;
-    top: 1.5rem;
-  }
-}
-
-
 /* Header/Navigation - Dark header as per wireframe */
 .app-header {
   background: #374151;
   border-bottom: none;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  position: sticky; /* keep pinned */
-  top: 0; /* flush to the very top */
+  position: sticky;
+  top: 0;
   z-index: 50;
   height: 64px;
 }
@@ -416,14 +367,19 @@ a:hover {
 .nav-header {
   background: #374151;
   border-bottom: none;
-  position: sticky;
-  top: 0;
-  z-index: 50;
+  /* make header part of normal flow so page titles don't slide under it */
+  position: relative;
+  z-index: 10;
   height: 64px;
 }
 
 [data-theme="dark"] .nav-header {
   background: #374151;
+}
+
+/* Utility to add page top spacing when a sticky nav is used elsewhere */
+.page-with-nav-header {
+  padding-top: 72px; /* header height + small gap */
 }
 
 .nav-link {
@@ -1570,24 +1526,6 @@ a:hover {
 .shadow-sm { box-shadow: var(--shadow-sm); }
 .shadow { box-shadow: var(--shadow-md); }
 .shadow-md { box-shadow: var(--shadow-md); }
-
-/* Auth card isolation: ensure the sign-in card renders consistently (white background,
-   dark text, solid inputs) even if a global dark theme is active. */
-.auth-card {
-  background: var(--bg-primary) !important;
-  color: var(--text-primary) !important;
-}
-.auth-card input,
-.auth-card .input,
-.auth-card .select,
-.auth-card button {
-  background: #ffffff !important;
-  color: var(--text-primary) !important;
-  border-color: var(--border-color) !important;
-}
-.auth-card .text-slate-500 { color: #6b7280 !important; }
-.auth-card .bg-white { background: #ffffff !important; }
-.auth-card .border-gray-200 { border-color: #e5e7eb !important; }
 .shadow-lg { box-shadow: var(--shadow-lg); }
 .shadow-xl { box-shadow: var(--shadow-xl); }
 .shadow-2xl { box-shadow: var(--shadow-2xl); }
@@ -3260,7 +3198,12 @@ a:hover {
   border: 1px solid #e2e8f0;
   border-radius: var(--radius-xl);
   padding: var(--spacing-6);
-  min-height: 400px;
+  /* keep charts from expanding the page; allow internal scrolling */
+  max-height: 480px;
+  min-height: 200px;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .admin-chart-header {

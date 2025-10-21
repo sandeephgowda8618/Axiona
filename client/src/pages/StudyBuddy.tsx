@@ -369,8 +369,8 @@ const StudyBuddy: React.FC = () => {
         </div>
       </div>
 
-  <div className="w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left Sidebar - Study Context */}
           <div className="lg:col-span-1 space-y-6">
             {/* Study Streak Card */}
@@ -492,7 +492,7 @@ const StudyBuddy: React.FC = () => {
           </div>
 
           {/* Main Content Area */}
-          <div className="col-span-1 w-full self-start">
+          <div className="lg:col-span-2">
             {/* Tab Navigation */}
             <div className="bg-white rounded-xl border border-gray-200 mb-6">
               <div className="border-b border-gray-200">
@@ -522,34 +522,11 @@ const StudyBuddy: React.FC = () => {
               {/* Tab Content */}
               <div className="p-6">
                 {activeTab === 'chat' && (
-                  <div
-                    className="flex flex-col h-[calc(100vh-12rem)] max-h-[calc(100vh-12rem)] min-h-0 space-y-4"
-                    style={{ height: 'calc(100vh - 12rem)', maxHeight: 'calc(100vh - 12rem)', minHeight: 0 }}
-                  >
-
-                    {/* Suggested topics pinned to top */}
-                    {suggestions.length > 0 && (
-                      <div className="space-y-2 mb-2">
-                        <p className="text-sm text-gray-600">Suggested topics:</p>
-                        <div className="flex flex-wrap gap-2">
-                          {suggestions.map((suggestion, index) => (
-                            <button
-                              key={index}
-                              onClick={() => setChatInput(suggestion)}
-                              className="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded-full transition-colors"
-                            >
-                              {suggestion}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Scrollable Output Area (messages only) */}
+                  <div className="space-y-4">
+                    {/* Chat Messages */}
                     <div 
                       ref={chatContainerRef}
-                      className="flex-1 min-h-0 overflow-y-auto space-y-4 bg-gray-50 rounded-lg p-4"
-                      style={{ overflowY: 'auto', minHeight: 0 }}
+                      className="h-96 overflow-y-auto space-y-4 bg-gray-50 rounded-lg p-4"
                     >
                       {messages.map((message) => (
                         <div
@@ -557,7 +534,7 @@ const StudyBuddy: React.FC = () => {
                           className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
                         >
                           <div
-                            className={`w-full px-4 py-2 rounded-lg ${
+                            className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
                               message.role === 'user'
                                 ? 'bg-blue-500 text-white'
                                 : 'bg-white text-gray-900 border border-gray-200'
@@ -585,8 +562,8 @@ const StudyBuddy: React.FC = () => {
                       )}
                     </div>
 
-                    {/* Input Bar pinned to bottom of chat panel */}
-                    <div className="flex items-center space-x-2 w-full">
+                    {/* Chat Input */}
+                    <div className="flex items-center space-x-2">
                       <input
                         ref={fileInputRef}
                         type="file"
@@ -600,7 +577,7 @@ const StudyBuddy: React.FC = () => {
                       >
                         <Paperclip className="h-5 w-5" />
                       </button>
-                      <div className="flex-1 relative w-full">
+                      <div className="flex-1 relative">
                         <input
                           type="text"
                           value={chatInput}
@@ -614,11 +591,28 @@ const StudyBuddy: React.FC = () => {
                         onClick={sendMessage}
                         disabled={!chatInput.trim() || isLoading}
                         className="p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
-                        style={{ minWidth: '48px' }}
                       >
                         <Send className="h-5 w-5" />
                       </button>
                     </div>
+
+                    {/* Suggestions */}
+                    {suggestions.length > 0 && (
+                      <div className="space-y-2">
+                        <p className="text-sm text-gray-600">Suggested topics:</p>
+                        <div className="flex flex-wrap gap-2">
+                          {suggestions.map((suggestion, index) => (
+                            <button
+                              key={index}
+                              onClick={() => setChatInput(suggestion)}
+                              className="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded-full transition-colors"
+                            >
+                              {suggestion}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
 
