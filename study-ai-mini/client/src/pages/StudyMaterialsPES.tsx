@@ -13,6 +13,7 @@ import {
   MoreVertical
 } from 'lucide-react'
 import FloatingWorkspaceButton from '../components/FloatingWorkspaceButton'
+import { studyMaterialsAPI } from '../api/studyAI'
 
 interface StudyMaterial {
   id: string
@@ -42,10 +43,53 @@ const StudyMaterialsPES: React.FC = () => {
   const [showFilters, setShowFilters] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const [itemsPerPage] = useState(6)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [subjects, setSubjects] = useState<string[]>([])
+  const [classes, setClasses] = useState<string[]>([])
+  const [categories, setCategories] = useState<string[]>([])
 
-  // Mock data
+  // Load materials and metadata from API
   useEffect(() => {
-    const mockMaterials: StudyMaterial[] = [
+    const loadData = async () => {
+      try {
+        setLoading(true)
+        
+        // Load materials
+        const filters = {
+          ...(selectedSubject !== 'all' && { subject: selectedSubject }),
+          ...(selectedClass !== 'all' && { class: selectedClass }),
+          ...(searchQuery && { search: searchQuery }),
+          sortBy
+        }
+        
+        const materialsResponse = await studyMaterialsAPI.getAllMaterials(1, 100, filters)
+        setMaterials(materialsResponse.materials || [])
+        setFilteredMaterials(materialsResponse.materials || [])
+        
+        // Load metadata
+        const [subjectsData, classesData, categoriesData] = await Promise.all([
+          studyMaterialsAPI.getSubjects(),
+          studyMaterialsAPI.getClasses(),
+          studyMaterialsAPI.getCategories()
+        ])
+        
+        setSubjects(subjectsData)
+        setClasses(classesData)
+        setCategories(categoriesData)
+        
+        setLoading(false)
+      } catch (error) {
+        console.error('Failed to load study materials:', error)
+        setError('Failed to load study materials')
+        setLoading(false)
+      }
+    }
+
+    loadData()
+  }, [selectedSubject, selectedClass, searchQuery, sortBy])
+
+  // Handle download
       {
         id: '1',
         title: 'Operating Systems Fundamentals',
@@ -144,9 +188,32 @@ const StudyMaterialsPES: React.FC = () => {
       }
     ]
 
-    setMaterials(mockMaterials)
-    setFilteredMaterials(mockMaterials)
-  }, [])
+    loadData()
+  }, [selectedSubject, selectedClass, searchQuery, sortBy])
+
+  // Handle download
+  const handleDownload = async (material: StudyMaterial) => {
+    try {
+      const response = await studyMaterialsAPI.downloadMaterial(material.id)
+      
+      // Update download count locally
+      setMaterials(prev => prev.map(m => 
+        m.id === material.id 
+          ? { ...m, downloadCount: response.downloadCount }
+          : m
+      ))
+      setFilteredMaterials(prev => prev.map(m => 
+        m.id === material.id 
+          ? { ...m, downloadCount: response.downloadCount }
+          : m
+      ))
+      
+      // Open download URL
+      window.open(response.downloadUrl, '_blank')
+    } catch (error) {
+      console.error('Failed to download material:', error)
+    }
+  }
 
   // Filter and search logic
   useEffect(() => {

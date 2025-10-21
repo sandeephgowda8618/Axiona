@@ -40,6 +40,26 @@ export interface Quiz {
   updatedAt: string
   tags: string[]
   prerequisites?: string[]
+  // Proctoring and Security Settings
+  proctoring: {
+    enabled: boolean
+    fullscreenRequired: boolean
+    tabSwitchLimit: number
+    timeWarningAt: number // seconds before end to show warning
+    criticalTimeWarningAt: number // seconds before end for critical warning
+    preventCopyPaste: boolean
+    preventRightClick: boolean
+    preventBrowserBack: boolean
+    detectTabSwitch: boolean
+    detectFullscreenExit: boolean
+    autoSubmitOnTimeExpiry: boolean
+    maxIdleTime: number // seconds of inactivity before warning
+    suspiciousActivityThreshold: number
+    blockDeveloperTools: boolean
+    preventTextSelection: boolean
+    disableZoom: boolean
+    monitorMouseActivity: boolean
+  }
 }
 
 export interface QuizAttempt {
