@@ -87,6 +87,7 @@ const StudyMaterialsPES: React.FC = () => {
         setFilteredMaterials(sampleMaterials);
         setSubjects(['IT', 'CS', 'EC', 'ME']);
         setClasses(['1st Year', '2nd Year', '3rd Year', '4th Year']);
+
         setLoading(false);
       } catch (error) {
         console.error('Failed to load study materials:', error);

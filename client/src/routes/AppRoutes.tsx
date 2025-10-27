@@ -52,6 +52,7 @@ const AppRoutes: React.FC = () => {
       <Route path="/library" element={<Layout><Library /></Layout>} />
       <Route path="/tutorial-hub" element={<Layout><TutorialHub /></Layout>} />
       <Route path="/tutorial-player/:tutorialId" element={<Layout><VideoPlayer /></Layout>} />
+      <Route path="/video/:id" element={<Layout><VideoPlayer /></Layout>} />
       
       {/* AI Assistant */}
       <Route path="/study-buddy" element={<Layout><StudyBuddy /></Layout>} />

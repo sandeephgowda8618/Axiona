@@ -63,6 +63,30 @@ export const videosAPI = {
   saveVideo: async (id: string) => {
     const response = await axios.post(`/videos/${id}/save`)
     return response.data
+  },
+  
+  downloadVideo: async (id: string) => {
+    const response = await axios.post(`/videos/${id}/download`)
+    return response.data
+  },
+  watchVideo: async (id: string) => {
+    const response = await axios.post(`/videos/${id}/watch`)
+    return response.data
+  },
+
+  getPlaylistVideos: async (playlistId: string) => {
+    const response = await axios.get(`/videos/playlist/${playlistId}`)
+    return response.data
+  },
+
+  getRelatedVideos: async (videoId: string, limit = 10) => {
+    const response = await axios.get(`/videos/${videoId}/related?limit=${limit}`)
+    return response.data
+  },
+
+  getAllPlaylists: async () => {
+    const response = await axios.get('/playlists')
+    return response.data
   }
 }
 
@@ -429,5 +453,50 @@ export const studyMaterialsAPI = {
   deleteMaterial: async (id: string) => {
     const response = await axios.delete(`/study-materials/${id}`);
     return response.data;
+  }
+}
+
+// AI API
+export const aiAPI = {
+  // General chat for StudyBuddy page
+  sendMessage: async (message: string, context?: any) => {
+    const response = await axios.post('/ai/chat', { message, context })
+    return response.data
+  },
+
+  // Workspace-specific chat
+  sendWorkspaceMessage: async (sessionId: string, message: string, context?: any) => {
+    const response = await axios.post(`/ai/workspace/${sessionId}/chat`, { message, context })
+    return response.data
+  },
+
+  // Get workspace chat history
+  getWorkspaceChatHistory: async (sessionId: string, limit = 50) => {
+    const response = await axios.get(`/ai/workspace/${sessionId}/chat/history?limit=${limit}`)
+    return response.data
+  },
+
+  // Get AI study suggestions
+  getStudySuggestions: async () => {
+    const response = await axios.get('/ai/suggestions')
+    return response.data
+  },
+
+  // Get AI performance analysis
+  getPerformanceAnalysis: async (period = '7d') => {
+    const response = await axios.get(`/ai/performance-analysis?period=${period}`)
+    return response.data
+  },
+
+  // Explain a concept
+  explainConcept: async (concept: string, context?: any) => {
+    const response = await axios.post('/ai/explain', { concept, context })
+    return response.data
+  },
+
+  // Health check for AI service
+  healthCheck: async () => {
+    const response = await axios.get('/ai/health')
+    return response.data
   }
 }

@@ -4,12 +4,12 @@
   "description": "Backend API server for Study-AI Mini platform",
   "main": "dist/app.js",
   "scripts": {
-    "start": "node dist/app.js",
-    "dev": "nodemon --exec ts-node src/app.ts",
-    "build": "tsc",
-    "lint": "eslint src/**/*.ts",
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js",
+    "build": "echo 'No build needed for JavaScript'",
+    "lint": "eslint src/**/*.js",
     "test": "jest",
-    "seed": "ts-node src/scripts/seed.ts"
+    "seed": "node src/scripts/seed.js"
   },
   "keywords": [
     "nodejs",
@@ -22,10 +22,13 @@
   "license": "MIT",
   "dependencies": {
     "@google-cloud/storage": "^7.7.0",
+    "@google/generative-ai": "^0.24.1",
+    "axios": "^1.12.2",
+    "bcrypt": "^6.0.0",
     "bcryptjs": "^2.4.3",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
-    "dotenv": "^16.3.1",
+    "dotenv": "^16.6.1",
     "express": "^4.18.2",
     "express-async-errors": "^3.1.1",
     "express-rate-limit": "^7.1.5",

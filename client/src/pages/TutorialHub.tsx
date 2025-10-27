@@ -152,16 +152,22 @@ const TutorialHub: React.FC = () => {
     return selectedTopics.includes(t.category)
   })
 
-  const handleTutorialAction = async (tutorialId: string, action: 'like' | 'save' | 'download') => {
+  const handleTutorialAction = async (tutorialId: string, action: 'like' | 'save' | 'download' | 'watch') => {
     try {
-      // Call backend API for like and save actions
+      if (action === 'watch') {
+        // Navigate to video player
+        navigate(`/video/${tutorialId}`)
+        return // Don't update tutorials state for navigation
+      }
+      
       if (action === 'like') {
         await videosAPI.likeVideo(tutorialId)
       } else if (action === 'save') {
         await videosAPI.saveVideo(tutorialId)
+      } else if (action === 'download') {
+        await videosAPI.downloadVideo(tutorialId)
       }
-      // Note: download functionality would need to be implemented separately
-
+      
       // Update local state
       setTutorials(prev => prev.map(tutorial => {
         if (tutorial.id === tutorialId) {
@@ -181,7 +187,7 @@ const TutorialHub: React.FC = () => {
         }
         return tutorial
       }))
-
+      
       // Update sidebar data
       const updatedTutorials = tutorials.map(tutorial => {
         if (tutorial.id === tutorialId) {
@@ -201,7 +207,7 @@ const TutorialHub: React.FC = () => {
         }
         return tutorial
       })
-
+      
       setSidebarData({
         history: updatedTutorials.filter(t => t.lastWatched),
         saved: updatedTutorials.filter(t => t.isSaved),
@@ -210,7 +216,6 @@ const TutorialHub: React.FC = () => {
       })
     } catch (error) {
       console.error(`Failed to ${action} video:`, error)
-      // Show error message to user
       alert(`Failed to ${action} video. Please try again.`)
     }
   }
@@ -524,7 +529,7 @@ const TutorialHub: React.FC = () => {
                     </div>
                     
                     <button 
-                      onClick={() => navigate(`/tutorial-player/${tutorial.id}`)}
+                      onClick={() => handleTutorialAction(tutorial.id, 'watch')}
                       className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors flex items-center space-x-2">
                       <Play className="h-4 w-4" />
                       <span>Watch</span>
