@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Plus, ArrowRight, Users, Lock, Lightbulb, Save, FileText } from 'lucide-react';
 import { meetingsAPI } from '../services/meetingsAPI';
 import { auth } from '../config/firebase';
-import { onAuthStateChanged, User } from 'firebase/auth';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 const ConferenceLobby: React.FC = () => {
   const navigate = useNavigate();
-  const [user, setUser] = useState<User | null>(null);
+  const [user] = useAuthState(auth);
   const [roomId, setRoomId] = useState('');
   const [password, setPassword] = useState('');
   const [createRoomPassword, setCreateRoomPassword] = useState('');
@@ -15,13 +15,6 @@ const ConferenceLobby: React.FC = () => {
   const [isCreating, setIsCreating] = useState(false);
   const [isJoining, setIsJoining] = useState(false);
   const [error, setError] = useState('');
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-    });
-    return () => unsubscribe();
-  }, []);
 
   const handleCreateRoom = async () => {
     if (!user) {
@@ -96,6 +89,7 @@ const ConferenceLobby: React.FC = () => {
   };
 
   const openWorkspace = () => {
+    // This would open the workspace in a new window/tab
     window.open('/workspace', '_blank');
   };
 
@@ -233,45 +227,81 @@ const ConferenceLobby: React.FC = () => {
             </div>
           </div>
         </div>
+                  onChange={(e) => setRoomId(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                />
+                <p className="text-xs text-gray-500 mt-1">Get Room ID from the room creator</p>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                <input
+                  type="password"
+                  placeholder="Enter room password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                />
+                <p className="text-xs text-gray-500 mt-1">Enter password if room is protected</p>
+              </div>
+
+              <button
+                onClick={handleJoinRoom}
+                disabled={!roomId.trim()}
+                className="w-full bg-gray-900 text-white py-3 px-4 rounded-md font-medium hover:bg-gray-800 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+              >
+                Join Room
+              </button>
+            </div>
+          </div>
+        </div>
 
         {/* Quick Tips */}
         <div className="bg-white rounded-2xl shadow-lg p-8 border">
           <h3 className="text-xl font-bold text-gray-900 mb-6 text-center">Quick Tips</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="flex items-start space-x-3">
-              <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                <Users className="w-4 h-4 text-blue-600" />
+              <div className="flex-shrink-0">
+                <Users className="w-5 h-5 text-blue-600 mt-0.5" />
               </div>
               <div>
-                <h4 className="font-medium text-gray-900 mb-1">Room Capacity</h4>
-                <p className="text-sm text-gray-600">Each room supports up to 6 participants for optimal performance</p>
+                <h4 className="font-medium text-gray-900 mb-1">Share your Room ID with study partners</h4>
               </div>
             </div>
             <div className="flex items-start space-x-3">
-              <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                <Lock className="w-4 h-4 text-green-600" />
+              <div className="flex-shrink-0">
+                <Lock className="w-5 h-5 text-green-600 mt-0.5" />
               </div>
               <div>
-                <h4 className="font-medium text-gray-900 mb-1">Password Protection</h4>
-                <p className="text-sm text-gray-600">Secure your study sessions with optional room passwords</p>
+                <h4 className="font-medium text-gray-900 mb-1">Use passwords for private sessions</h4>
               </div>
             </div>
             <div className="flex items-start space-x-3">
-              <div className="w-8 h-8 bg-yellow-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                <Lightbulb className="w-4 h-4 text-yellow-600" />
+              <div className="flex-shrink-0">
+                <Users className="w-5 h-5 text-purple-600 mt-0.5" />
               </div>
               <div>
-                <h4 className="font-medium text-gray-900 mb-1">Study Together</h4>
-                <p className="text-sm text-gray-600">Share screens, take notes, and collaborate in real-time</p>
+                <h4 className="font-medium text-gray-900 mb-1">Up to 200 participants supported</h4>
+              </div>
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+            <div className="flex items-start space-x-3">
+              <div className="flex-shrink-0">
+                <Lightbulb className="w-5 h-5 text-yellow-600 mt-0.5" />
+              </div>
+              <div>
+                <h4 className="font-medium text-gray-900 mb-1">Sessions auto-save your progress</h4>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Floating Action Button */}
+        {/* Floating Open Workspace Button */}
         <button
           onClick={openWorkspace}
-          className="fixed bottom-6 right-6 bg-indigo-600 text-white p-4 rounded-full shadow-lg hover:bg-indigo-700 transition-colors flex items-center space-x-2"
+          className="fixed bottom-6 right-6 bg-gray-900 text-white p-4 rounded-full shadow-lg hover:bg-gray-800 transition-colors z-50 flex items-center space-x-2"
         >
           <Save className="w-5 h-5" />
           <span className="text-sm font-medium">Open Workspace</span>

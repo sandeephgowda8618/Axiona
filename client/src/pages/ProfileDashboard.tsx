@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { CheckCircle, Lock, TrendingUp, Calendar, FileText, StickyNote, BookOpen } from 'lucide-react'
+import { CheckCircle, Lock, TrendingUp, Calendar, FileText } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
-import { apiService } from '../services/api'
 
 interface LearningRoadmapItem {
   id: string
@@ -15,11 +14,8 @@ interface LearningRoadmapItem {
 
 const ProfileDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'overview' | 'settings'>('overview')
-  const [userStats, setUserStats] = useState<any>(null)
-  const [recentNotes, setRecentNotes] = useState<any[]>([])
-  const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
-  const { user, isAuthenticated } = useAuth()
+  const { user } = useAuth()
 
   // Use real user data from AuthContext
   const userProfile = user || {
@@ -32,38 +28,6 @@ const ProfileDashboard: React.FC = () => {
     totalNotes: 0,
     weeklyActivity: '0h'
   }
-
-  // Fetch user stats and recent notes
-  useEffect(() => {
-    const fetchUserData = async () => {
-      if (!user?.id) return
-      
-      try {
-        setLoading(true)
-        
-        // Fetch user stats
-        const stats = await apiService.getUserStats(user.id)
-        setUserStats(stats)
-        
-        // Fetch recent notes (limit to 5 for dashboard)
-        const notes = await apiService.getUserNotes(user.id)
-        setRecentNotes(notes.slice(0, 5))
-        
-        console.log('📊 User stats loaded:', stats)
-        console.log('📝 Recent notes loaded:', notes.length)
-      } catch (error) {
-        console.error('❌ Error fetching user data:', error)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    if (isAuthenticated && user) {
-      fetchUserData()
-    } else {
-      setLoading(false)
-    }
-  }, [user, isAuthenticated])
 
   const learningRoadmap: LearningRoadmapItem[] = [
     {
@@ -167,9 +131,7 @@ const ProfileDashboard: React.FC = () => {
                   </div>
                   <div>
                     <p className="text-sm text-gray-600">Courses Finished</p>
-                    <p className="text-2xl font-semibold text-gray-900">
-                      {loading ? '...' : (userStats?.coursesCompleted || userProfile.coursesCompleted)}
-                    </p>
+                    <p className="text-2xl font-semibold text-gray-900">{userProfile.coursesCompleted}</p>
                   </div>
                 </div>
               </div>
@@ -182,9 +144,7 @@ const ProfileDashboard: React.FC = () => {
                   </div>
                   <div>
                     <p className="text-sm text-gray-600">Streak Days</p>
-                    <p className="text-2xl font-semibold text-gray-900">
-                      {loading ? '...' : (userStats?.streakDays || userProfile.streakDays)}
-                    </p>
+                    <p className="text-2xl font-semibold text-gray-900">{userProfile.streakDays}</p>
                   </div>
                 </div>
               </div>
@@ -193,13 +153,13 @@ const ProfileDashboard: React.FC = () => {
               <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
                 <div className="flex items-center">
                   <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center mr-3">
-                    <StickyNote className="h-5 w-5 text-purple-600" />
+                    <svg className="h-5 w-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
                   </div>
                   <div>
                     <p className="text-sm text-gray-600">Total Notes</p>
-                    <p className="text-2xl font-semibold text-gray-900">
-                      {loading ? '...' : (userStats?.totalNotes || userProfile.totalNotes)}
-                    </p>
+                    <p className="text-2xl font-semibold text-gray-900">{userProfile.totalNotes}</p>
                   </div>
                 </div>
               </div>
@@ -212,9 +172,7 @@ const ProfileDashboard: React.FC = () => {
                   </div>
                   <div>
                     <p className="text-sm text-gray-600">Weekly Activity</p>
-                    <p className="text-2xl font-semibold text-gray-900">
-                      {loading ? '...' : (userStats?.weeklyActivity || userProfile.weeklyActivity)}
-                    </p>
+                    <p className="text-2xl font-semibold text-gray-900">{userProfile.weeklyActivity}</p>
                   </div>
                 </div>
               </div>
@@ -239,72 +197,6 @@ const ProfileDashboard: React.FC = () => {
                   My Rack
                 </button>
               </div>
-            </div>
-
-            {/* Recent Notes Section */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-semibold text-gray-900">Recent Notes</h2>
-                <button
-                  onClick={() => navigate('/my-rack')}
-                  className="text-sm text-blue-600 hover:text-blue-700 font-medium"
-                >
-                  View All
-                </button>
-              </div>
-              
-              {loading ? (
-                <div className="space-y-3">
-                  {[1, 2, 3].map((i) => (
-                    <div key={i} className="animate-pulse flex space-x-3 p-3 border border-gray-200 rounded-lg">
-                      <div className="w-8 h-8 bg-gray-300 rounded"></div>
-                      <div className="flex-1 space-y-2">
-                        <div className="h-4 bg-gray-300 rounded w-3/4"></div>
-                        <div className="h-3 bg-gray-300 rounded w-1/2"></div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : recentNotes.length > 0 ? (
-                <div className="space-y-3">
-                  {recentNotes.map((note) => (
-                    <div key={note._id} className="flex items-start space-x-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-                      <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
-                        <StickyNote className="w-4 h-4 text-purple-600" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <h3 className="text-sm font-medium text-gray-900 truncate">
-                          {note.title}
-                        </h3>
-                        <p className="text-xs text-gray-600 truncate">
-                          {note.pdfTitle} {note.pageNumber && `• Page ${note.pageNumber}`}
-                        </p>
-                        <p className="text-xs text-gray-500 mt-1">
-                          {new Date(note.createdAt).toLocaleDateString()}
-                        </p>
-                      </div>
-                      <button
-                        onClick={() => navigate('/my-rack')}
-                        className="text-gray-400 hover:text-gray-600"
-                      >
-                        <BookOpen className="w-4 h-4" />
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-8">
-                  <StickyNote className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-                  <p className="text-gray-500 text-sm">No notes yet</p>
-                  <p className="text-gray-400 text-xs">Start taking notes while studying!</p>
-                  <button
-                    onClick={() => navigate('/study-materials')}
-                    className="mt-3 text-sm text-blue-600 hover:text-blue-700 font-medium"
-                  >
-                    Browse Study Materials
-                  </button>
-                </div>
-              )}
             </div>
 
             {/* AI Learning Roadmap - Matches wireframe */}

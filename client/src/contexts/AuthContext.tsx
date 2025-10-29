@@ -82,76 +82,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setIsLoading(true)
       
       if (firebaseUser) {
-        try {
-          // User is signed in
-          setFirebaseUser(firebaseUser)
-          
-          // Sync Firebase user with MongoDB
-          const mongoUser = await apiService.syncFirebaseUser({
-            uid: firebaseUser.uid,
-            email: firebaseUser.email || '',
-            displayName: firebaseUser.displayName || undefined,
-            photoURL: firebaseUser.photoURL || undefined
-          })
-          
-          // Create user profile with MongoDB data
-          const userProfile: UserProfile = {
-            id: mongoUser._id, // Use MongoDB _id for consistency
-            fullName: mongoUser.fullName,
-            email: mongoUser.email,
-            avatar: mongoUser.avatarUrl,
-            role: 'Student',
-            coursesCompleted: 0,
-            streakDays: 0,
-            totalNotes: 0,
-            weeklyActivity: '0h',
-            joinedDate: mongoUser.createdAt,
-            lastActive: new Date().toISOString(),
-            preferences: mongoUser.preferences || {
-              theme: 'light',
-              notifications: true,
-              language: 'en'
-            }
-          }
-          
-          // Fetch real user stats
-          try {
-            const stats = await apiService.getUserStats(mongoUser._id)
-            userProfile.totalNotes = stats.totalNotes
-            userProfile.coursesCompleted = stats.coursesCompleted
-            userProfile.streakDays = stats.streakDays
-            userProfile.weeklyActivity = stats.weeklyActivity
-          } catch (statsError) {
-            console.warn('Could not fetch user stats:', statsError)
-          }
-          
-          setUser(userProfile)
-          
-          // Get the ID token
-          const token = await firebaseUser.getIdToken()
-          setToken(token)
-          localStorage.setItem('auth_token', token)
-          localStorage.setItem('user_data', JSON.stringify(userProfile))
-          
-          console.log('✅ Firebase user authenticated and synced:', userProfile.email)
-        } catch (error) {
-          console.error('❌ Error syncing Firebase user:', error)
-          // Fallback to basic user profile if sync fails
-          const fallbackProfile = createUserProfile(firebaseUser)
-          setUser(fallbackProfile)
-          
-          const token = await firebaseUser.getIdToken()
-          setToken(token)
-          localStorage.setItem('auth_token', token)
-        }
+        // User is signed in
+        setFirebaseUser(firebaseUser)
+        const userProfile = createUserProfile(firebaseUser)
+        setUser(userProfile)
+        
+        // Get the ID token
+        const token = await firebaseUser.getIdToken()
+        setToken(token)
+        localStorage.setItem('auth_token', token)
       } else {
         // User is signed out
         setFirebaseUser(null)
         setUser(null)
         setToken(null)
         localStorage.removeItem('auth_token')
-        localStorage.removeItem('user_data')
-        console.log('👋 User signed out')
       }
       
       setIsLoading(false)
