@@ -83,7 +83,7 @@ const StudyMaterialSchema = new Schema({
     default: false
   },
   uploadedBy: {
-    type: Schema.Types.ObjectId,
+    type: String, // Firebase UID
     ref: 'User',
     required: true
   },

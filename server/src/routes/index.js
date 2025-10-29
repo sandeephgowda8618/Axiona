@@ -20,7 +20,9 @@ router.get('/', (req, res) => {
       topics: '/api/topics',
       rooms: '/api/rooms',
       ai: '/api/ai',
-      users: '/api/users'
+      users: '/api/users',
+      notes: '/api/notes',
+      meetings: '/api/meetings'
     }
   });
 });

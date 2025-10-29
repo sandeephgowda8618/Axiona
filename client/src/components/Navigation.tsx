@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { 
   Home, 
   BookOpen, 
@@ -18,6 +18,7 @@ import {
   Play,
   StickyNote
 } from 'lucide-react'
+import { useAuth } from '../contexts/AuthContext'
  
 interface NavigationItem {
   name: string
@@ -28,8 +29,19 @@ interface NavigationItem {
 
 const Navigation: React.FC = () => {
   const location = useLocation()
+  const navigate = useNavigate()
+  const { user, logout } = useAuth()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false)
+
+  const handleLogout = async () => {
+    try {
+      await logout()
+      navigate('/login')
+    } catch (error) {
+      console.error('Logout failed:', error)
+    }
+  }
 
   const navigation: NavigationItem[] = [
     { 
@@ -160,7 +172,7 @@ const Navigation: React.FC = () => {
                 >
                   <img
                     className="h-8 w-8 rounded-full"
-                    src="/api/placeholder/32/32"
+                    src={user?.avatar || "/api/placeholder/32/32"}
                     alt="Profile"
                   />
                 </button>
@@ -187,7 +199,7 @@ const Navigation: React.FC = () => {
                       className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                       onClick={() => {
                         setIsProfileMenuOpen(false)
-                        // Handle logout
+                        handleLogout()
                       }}
                     >
                       <LogOut className="h-4 w-4 mr-2" />

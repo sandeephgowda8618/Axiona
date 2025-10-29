@@ -1,9 +1,13 @@
 const { Router } = require('express');
 const dataService = require('../services/dataService');
 const { Video } = require('../models/Video');
+const { PDF } = require('../models/PDF');
+const { User } = require('../models/User');
 const aiService = require('../services/aiService');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const notesRouter = require('./notes'); // Add notes router
+const meetingsRouter = require('./meetings'); // Add meetings router
 
 const router = Router();
 
@@ -524,179 +528,531 @@ router.get('/study-materials', async (req, res) => {
   }
 });
 
-// ROADMAP ROUTES
-router.get('/roadmaps', authenticateToken, async (req, res) => {
+// PDF/STUDY MATERIALS ROUTES
+
+// Get all subjects (domains) with PDF counts and metadata
+router.get('/pdfs/subjects', async (req, res) => {
   try {
-    const roadmaps = await dataService.getRoadmapsByUserId(req.user.userId);
-    
+    const subjects = await PDF.aggregate([
+      { $match: { approved: true } },
+      {
+        $group: {
+          _id: '$domain',
+          count: { $sum: 1 },
+          totalPages: { $sum: '$pages' },
+          totalDownloads: { $sum: '$downloadCount' },
+          averagePages: { $avg: '$pages' },
+          subjects: { $addToSet: '$topic' },
+          sampleThumbnail: { $first: '$thumbnailUrl' },
+          latestUpload: { $max: '$publishedAt' }
+        }
+      },
+      { $sort: { _id: 1 } }
+    ]);
+
+    const subjectCards = subjects.map(subject => ({
+      domain: subject._id,
+      title: subject._id === 'DSA' ? 'Data Structures & Algorithms' : 
+             subject._id === 'AFLL' ? 'Automata & Formal Language Theory' :
+             subject._id === 'Math' ? 'Mathematics' : subject._id,
+      pdfCount: subject.count,
+      totalPages: subject.totalPages,
+      totalDownloads: subject.totalDownloads,
+      averagePages: Math.round(subject.averagePages),
+      topicCount: subject.subjects.length,
+      thumbnailUrl: subject.sampleThumbnail || '/api/placeholder-subject.jpg',
+      lastUpdated: subject.latestUpload,
+      description: getSubjectDescription(subject._id)
+    }));
+
     res.json({
       success: true,
-      roadmaps,
-      total: roadmaps.length
+      data: subjectCards
     });
   } catch (error) {
-    console.error('Roadmaps fetch error:', error);
+    console.error('Subjects fetch error:', error);
     res.status(500).json({ 
       success: false, 
-      message: 'Failed to fetch roadmaps' 
+      message: 'Failed to fetch subjects' 
     });
   }
 });
 
-// TOPICS ROUTES
-router.get('/topics', async (req, res) => {
+// Get PDFs for a specific subject/domain
+router.get('/pdfs/subject/:domain', async (req, res) => {
   try {
-    const { topFive } = req.query;
+    const { domain } = req.params;
+    const { page = 1, limit = 20, search } = req.query;
     
-    let topics;
-    if (topFive === 'true') {
-      topics = await dataService.getTopFiveTopics();
-    } else {
-      topics = await dataService.getAllTopics();
+    let query = { domain: domain, approved: true };
+    
+    if (search) {
+      query.$or = [
+        { topic: { $regex: search, $options: 'i' } },
+        { description: { $regex: search, $options: 'i' } },
+        { author: { $regex: search, $options: 'i' } }
+      ];
+    }
+
+    const skip = (parseInt(page) - 1) * parseInt(limit);
+    
+    const pdfs = await PDF.find(query)
+      .sort({ downloadCount: -1, publishedAt: -1 })
+      .skip(skip)
+      .limit(parseInt(limit))
+      .populate('uploadedBy', 'fullName email')
+      .lean();
+
+    const total = await PDF.countDocuments(query);
+
+    res.json({
+      success: true,
+      data: pdfs,
+      pagination: {
+        currentPage: parseInt(page),
+        totalPages: Math.ceil(total / parseInt(limit)),
+        totalItems: total,
+        hasNextPage: parseInt(page) < Math.ceil(total / parseInt(limit)),
+        hasPrevPage: parseInt(page) > 1
+      }
+    });
+  } catch (error) {
+    console.error('Subject PDFs fetch error:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Failed to fetch PDFs for subject' 
+    });
+  }
+});
+
+// Get specific PDF details
+router.get('/pdfs/:id', async (req, res) => {
+  try {
+    const pdf = await PDF.findById(req.params.id)
+      .populate('uploadedBy', 'fullName email')
+      .lean();
+      
+    if (!pdf) {
+      return res.status(404).json({ 
+        success: false, 
+        message: 'PDF not found' 
+      });
+    }
+
+    // Increment view count (optional)
+    await PDF.findByIdAndUpdate(req.params.id, { $inc: { viewCount: 1 } });
+
+    res.json({
+      success: true,
+      data: pdf
+    });
+  } catch (error) {
+    console.error('PDF fetch error:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Failed to fetch PDF' 
+    });
+  }
+});
+
+// Download PDF endpoint
+router.post('/pdfs/:id/download', async (req, res) => {
+  try {
+    // Increment download count
+    await PDF.findByIdAndUpdate(req.params.id, { $inc: { downloadCount: 1 } });
+    
+    res.json({
+      success: true,
+      message: 'Download count updated'
+    });
+  } catch (error) {
+    console.error('Download tracking error:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Failed to track download' 
+    });
+  }
+});
+
+// Search PDFs across all subjects
+router.get('/pdfs/search', async (req, res) => {
+  try {
+    const { q, domain, page = 1, limit = 20 } = req.query;
+    
+    if (!q) {
+      return res.status(400).json({
+        success: false,
+        message: 'Search query is required'
+      });
+    }
+
+    let query = {
+      approved: true,
+      $or: [
+        { topic: { $regex: q, $options: 'i' } },
+        { description: { $regex: q, $options: 'i' } },
+        { author: { $regex: q, $options: 'i' } }
+      ]
+    };
+
+    if (domain) {
+      query.domain = domain.toUpperCase();
+    }
+
+    const skip = (parseInt(page) - 1) * parseInt(limit);
+    
+    const pdfs = await PDF.find(query)
+      .sort({ downloadCount: -1, publishedAt: -1 })
+      .skip(skip)
+      .limit(parseInt(limit))
+      .populate('uploadedBy', 'fullName email')
+      .lean();
+
+    const total = await PDF.countDocuments(query);
+
+    res.json({
+      success: true,
+      data: pdfs,
+      pagination: {
+        currentPage: parseInt(page),
+        totalPages: Math.ceil(total / parseInt(limit)),
+        totalItems: total,
+        hasNextPage: parseInt(page) < Math.ceil(total / parseInt(limit)),
+        hasPrevPage: parseInt(page) > 1
+      },
+      searchQuery: q
+    });
+  } catch (error) {
+    console.error('PDF search error:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Failed to search PDFs' 
+    });
+  }
+});
+
+// GridFS PDF serving endpoint
+router.get('/pdfs/file/:fileId', async (req, res) => {
+  try {
+    const { fileId } = req.params;
+    const gridFSService = require('../services/gridFSService');
+    
+    // Check if file exists
+    const fileInfo = await gridFSService.getPDFInfo(fileId);
+    if (!fileInfo) {
+      return res.status(404).json({
+        success: false,
+        message: 'PDF file not found'
+      });
+    }
+
+    // Set appropriate headers
+    res.set({
+      'Content-Type': 'application/pdf',
+      'Content-Disposition': `inline; filename="${fileInfo.filename}"`,
+      'Content-Length': fileInfo.length
+    });
+
+    // Stream the file
+    const downloadStream = await gridFSService.downloadPDF(fileId);
+    
+    downloadStream.on('error', (error) => {
+      console.error('PDF stream error:', error);
+      if (!res.headersSent) {
+        res.status(500).json({
+          success: false,
+          message: 'Error streaming PDF'
+        });
+      }
+    });
+
+    downloadStream.pipe(res);
+    
+  } catch (error) {
+    console.error('PDF serve error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to serve PDF'
+    });
+  }
+});
+
+// Upload new PDF endpoint (for admin use)
+router.post('/pdfs/upload', authenticateToken, async (req, res) => {
+  try {
+    const multer = require('multer');
+    const gridFSService = require('../services/gridFSService');
+    
+    // Configure multer for memory storage
+    const storage = multer.memoryStorage();
+    const upload = multer({ 
+      storage,
+      fileFilter: (req, file, cb) => {
+        if (file.mimetype === 'application/pdf') {
+          cb(null, true);
+        } else {
+          cb(new Error('Only PDF files are allowed'));
+        }
+      },
+      limits: {
+        fileSize: 50 * 1024 * 1024 // 50MB limit
+      }
+    });
+
+    upload.single('pdf')(req, res, async (err) => {
+      if (err) {
+        return res.status(400).json({
+          success: false,
+          message: err.message
+        });
+      }
+
+      if (!req.file) {
+        return res.status(400).json({
+          success: false,
+          message: 'No PDF file uploaded'
+        });
+      }
+
+      // Upload to GridFS
+      const uploadResult = await gridFSService.uploadPDF(
+        req.file.buffer,
+        req.file.originalname,
+        {
+          uploadedBy: req.user.userId,
+          originalName: req.file.originalname,
+          domain: req.body.domain || 'Other'
+        }
+      );
+
+      // Create PDF record
+      const pdfRecord = await PDF.create({
+        topic: req.body.topic || req.file.originalname.replace('.pdf', ''),
+        fileName: req.file.originalname,
+        gridFSFileId: uploadResult.fileId,
+        fileUrl: `/api/pdfs/file/${uploadResult.fileId}`,
+        fileSize: req.file.size,
+        pages: req.body.pages || estimatePages(req.file.size),
+        author: req.body.author || 'Unknown',
+        domain: req.body.domain || 'Other',
+        year: req.body.year,
+        class: req.body.class,
+        description: req.body.description || '',
+        approved: false, // Requires approval
+        uploadedBy: req.user.userId,
+        downloadCount: 0
+      });
+
+      res.json({
+        success: true,
+        message: 'PDF uploaded successfully',
+        data: {
+          pdfId: pdfRecord._id,
+          fileId: uploadResult.fileId,
+          filename: uploadResult.filename
+        }
+      });
+    });
+
+  } catch (error) {
+    console.error('PDF upload error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to upload PDF'
+    });
+  }
+});
+
+// Helper function for page estimation
+function estimatePages(fileSize) {
+  const avgBytesPerPage = 50000;
+  const estimated = Math.ceil(fileSize / avgBytesPerPage);
+  return Math.max(1, Math.min(estimated, 200));
+}
+
+// HIGHLIGHT/ANNOTATION ROUTES
+
+// Get highlights for a PDF
+router.get('/pdfs/:pdfId/highlights', async (req, res) => {
+  try {
+    const { Highlight } = require('../models/Highlight');
+    const { pdfId } = req.params;
+    const userId = req.user?.userId; // Optional authentication
+    
+    const highlights = await Highlight.getHighlightsForPDF(pdfId, userId);
+    
+    res.json({
+      success: true,
+      data: highlights
+    });
+  } catch (error) {
+    console.error('Highlights fetch error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch highlights'
+    });
+  }
+});
+
+// Create new highlight
+router.post('/pdfs/:pdfId/highlights', authenticateToken, async (req, res) => {
+  try {
+    const { Highlight } = require('../models/Highlight');
+    const { pdfId } = req.params;
+    
+    const highlight = await Highlight.create({
+      pdfId,
+      userId: req.user.userId,
+      content: req.body.content,
+      position: req.body.position,
+      style: req.body.style,
+      comment: req.body.comment,
+      type: req.body.type || 'highlight',
+      tags: req.body.tags || []
+      // Removed isPublic - highlights are private to user
+    });
+    
+    await highlight.populate('userId', 'fullName email avatarUrl');
+    
+    res.status(201).json({
+      success: true,
+      data: highlight
+    });
+  } catch (error) {
+    console.error('Highlight creation error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to create highlight'
+    });
+  }
+});
+
+// Update highlight
+router.put('/highlights/:highlightId', authenticateToken, async (req, res) => {
+  try {
+    const { Highlight } = require('../models/Highlight');
+    const { highlightId } = req.params;
+    
+    const highlight = await Highlight.findOneAndUpdate(
+      { _id: highlightId, userId: req.user.userId },
+      {
+        ...req.body,
+        updatedAt: new Date()
+      },
+      { new: true }
+    ).populate('userId', 'fullName email avatarUrl');
+    
+    if (!highlight) {
+      return res.status(404).json({
+        success: false,
+        message: 'Highlight not found or unauthorized'
+      });
     }
     
     res.json({
       success: true,
-      topics,
-      total: topics.length
+      data: highlight
     });
   } catch (error) {
-    console.error('Topics fetch error:', error);
-    res.status(500).json({ 
-      success: false, 
-      message: 'Failed to fetch topics' 
+    console.error('Highlight update error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to update highlight'
     });
   }
 });
 
-// CONFERENCE ROOM ROUTES
-router.get('/rooms', async (req, res) => {
+// Delete highlight
+router.delete('/highlights/:highlightId', authenticateToken, async (req, res) => {
   try {
-    const { limit = 20 } = req.query;
-    const rooms = await dataService.getAllRooms(parseInt(limit));
+    const { Highlight } = require('../models/Highlight');
+    const { highlightId } = req.params;
+    
+    const highlight = await Highlight.findOneAndDelete({
+      _id: highlightId,
+      userId: req.user.userId
+    });
+    
+    if (!highlight) {
+      return res.status(404).json({
+        success: false,
+        message: 'Highlight not found or unauthorized'
+      });
+    }
     
     res.json({
       success: true,
-      rooms,
-      total: rooms.length
+      message: 'Highlight deleted successfully'
     });
   } catch (error) {
-    console.error('Rooms fetch error:', error);
-    res.status(500).json({ 
-      success: false, 
-      message: 'Failed to fetch rooms' 
+    console.error('Highlight deletion error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to delete highlight'
     });
   }
 });
 
-router.post('/rooms', authenticateToken, async (req, res) => {
+// Get user's highlights across all PDFs (for My Rack)
+router.get('/highlights/my-highlights', authenticateToken, async (req, res) => {
   try {
-    const { title, description, startAt, maxParticipants = 10 } = req.body;
+    const { Highlight } = require('../models/Highlight');
+    const { page = 1, limit = 20, tags } = req.query;
     
-    const newRoom = await dataService.createRoom({
-      title,
-      description,
-      startAt: new Date(startAt),
-      scheduledEnd: new Date(new Date(startAt).getTime() + 2 * 60 * 60 * 1000), // 2 hours later
-      maxParticipants,
-      studentId: req.user.userId,
-      hasPassword: false,
-      isPublic: true
-    });
+    let query = { userId: req.user.userId };
+    if (tags) {
+      query.tags = { $in: tags.split(',') };
+    }
     
-    res.status(201).json({
-      success: true,
-      message: 'Room created successfully',
-      room: newRoom
-    });
-  } catch (error) {
-    console.error('Room creation error:', error);
-    res.status(500).json({ 
-      success: false, 
-      message: 'Failed to create room' 
-    });
-  }
-});
-
-// AI ROUTES
-router.post('/ai/chat', async (req, res) => {
-  try {
-    const { message, conversationHistory } = req.body;
+    const highlights = await Highlight.find(query)
+      .populate('pdfId', 'topic domain fileName')
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * limit)
+      .limit(parseInt(limit));
     
-    const response = await aiService.generateResponse(message, conversationHistory);
+    const total = await Highlight.countDocuments(query);
     
     res.json({
       success: true,
-      response: response.message,
-      metadata: response.metadata
+      data: highlights,
+      pagination: {
+        currentPage: parseInt(page),
+        totalPages: Math.ceil(total / limit),
+        totalItems: total,
+        hasNextPage: parseInt(page) < Math.ceil(total / limit),
+        hasPrevPage: parseInt(page) > 1
+      }
     });
   } catch (error) {
-    console.error('AI chat error:', error);
-    res.status(500).json({ 
-      success: false, 
-      message: 'Failed to generate AI response' 
+    console.error('User highlights fetch error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch user highlights'
     });
   }
 });
 
-router.post('/ai/study-plan', async (req, res) => {
-  try {
-    const { subject, duration, level } = req.body;
-    
-    const response = await aiService.generateStudyPlan(subject, duration, level);
-    
-    res.json({
-      success: true,
-      studyPlan: response.studyPlan,
-      metadata: { subject, duration, level }
-    });
-  } catch (error) {
-    console.error('AI study plan error:', error);
-    res.status(500).json({ 
-      success: false, 
-      message: 'Failed to generate study plan' 
-    });
-  }
-});
+// Helper function to get subject descriptions
+function getSubjectDescription(domain) {
+  const descriptions = {
+    'DSA': 'Master data structures and algorithms with comprehensive study materials, examples, and practice problems.',
+    'AFLL': 'Learn Automata and Formal Language Theory, including finite automata, regular expressions, and context-free grammars.',
+    'Math': 'Essential mathematics for computer science including linear algebra, calculus, and discrete mathematics.',
+    'CS': 'Core computer science concepts and fundamentals.',
+    'ML': 'Machine learning algorithms, models, and applications.',
+    'DBMS': 'Database management systems, SQL, and data modeling.',
+    'OS': 'Operating systems concepts, processes, and memory management.',
+    'Networks': 'Computer networks, protocols, and distributed systems.',
+    'Security': 'Cybersecurity, cryptography, and security protocols.',
+    'AI': 'Artificial intelligence concepts and techniques.',
+    'Web Dev': 'Web development technologies and frameworks.',
+    'Mobile Dev': 'Mobile application development.'
+  };
+  
+  return descriptions[domain] || `Comprehensive study materials for ${domain}`;
+}
 
-router.post('/ai/quiz-questions', async (req, res) => {
-  try {
-    const { topic, difficulty = 'medium', questionCount = 5 } = req.body;
-    
-    const response = await aiService.generateQuizQuestions(topic, difficulty, questionCount);
-    
-    res.json({
-      success: true,
-      questions: response.questions,
-      metadata: { topic, difficulty, questionCount }
-    });
-  } catch (error) {
-    console.error('AI quiz generation error:', error);
-    res.status(500).json({ 
-      success: false, 
-      message: 'Failed to generate quiz questions' 
-    });
-  }
-});
-
-router.get('/ai/health', async (req, res) => {
-  try {
-    const healthCheck = await aiService.healthCheck();
-    
-    res.json({
-      success: true,
-      aiService: healthCheck
-    });
-  } catch (error) {
-    console.error('AI health check error:', error);
-    res.status(500).json({ 
-      success: false, 
-      message: 'AI service health check failed' 
-    });
-  }
-});
-
-// Middleware for authentication
+// Authentication middleware function
 function authenticateToken(req, res, next) {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
@@ -719,5 +1075,12 @@ function authenticateToken(req, res, next) {
     next();
   });
 }
+
+// Mount notes routes
+// Mount the notes router
+router.use('/notes', notesRouter);
+
+// Mount the meetings router
+router.use('/meetings', meetingsRouter);
 
 module.exports = router;

@@ -1,8 +1,10 @@
 import React from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import Layout from '../components/Layout'
+import ProtectedRoute from '../components/ProtectedRoute'
 import LandingPage from '../pages/LandingPage'
 import TestLanding from '../pages/TestLanding'
+import LoginPage from '../pages/LoginPage'
 import AuthPage from '../pages/AuthPage'
 import ProfileDashboard from '../pages/ProfileDashboard'
 import ConferenceLobby from '../pages/ConferenceLobby'
@@ -15,6 +17,8 @@ import SettingsPage from '../pages/SettingsPage'
 import MyRack from '../pages/MyRack'
 import StudyBuddy from '../pages/StudyBuddy'
 import StudyMaterialsPES from '../pages/StudyMaterialsPES'
+import PDFViewer from '../pages/PDFViewer'
+import SubjectViewer from '../pages/SubjectViewer'
 import Library from '../pages/Library'
 import TutorialHub from '../pages/TutorialHub'
 import VideoPlayer from '../pages/VideoPlayer'
@@ -27,44 +31,47 @@ const AppRoutes: React.FC = () => {
   return (
     <Routes>
       {/* Public Routes - No Navigation */}
-  <Route path="/" element={<LandingPage />} />
-  <Route path="/landing" element={<TestLanding />} />
+      <Route path="/" element={<LandingPage />} />
+      <Route path="/landing" element={<TestLanding />} />
+      <Route path="/login" element={<LoginPage />} />
       <Route path="/auth" element={<AuthPage />} />
       <Route path="/forgot-password" element={<ForgotPasswordPage />} />
       
       {/* Protected Routes - With Navigation */}
-      <Route path="/dashboard" element={<Layout><ProfileDashboard /></Layout>} />
-      <Route path="/profile" element={<Layout><ProfileDashboard /></Layout>} />
+      <Route path="/dashboard" element={<ProtectedRoute><LandingPage /></ProtectedRoute>} />
+      <Route path="/profile" element={<ProtectedRoute><Layout><ProfileDashboard /></Layout></ProtectedRoute>} />
       
       {/* Conference Routes */}
-      <Route path="/conference" element={<Layout><ConferenceLobby /></Layout>} />
-      <Route path="/conference/:roomId" element={<Layout><ConferenceMeeting /></Layout>} />
+      <Route path="/conference" element={<ProtectedRoute><Layout><ConferenceLobby /></Layout></ProtectedRoute>} />
+      <Route path="/conference/:roomId" element={<ProtectedRoute><Layout><ConferenceMeeting /></Layout></ProtectedRoute>} />
       
       {/* Quiz Routes */}
-      <Route path="/quiz" element={<Layout><QuizSelection /></Layout>} />
-      <Route path="/quiz/:quizId" element={<Layout><QuizExam /></Layout>} />
-      <Route path="/quiz/:quizId/secure" element={<Layout><QuizExamSecure /></Layout>} />
-      <Route path="/quiz/:quizId/results" element={<Layout><QuizResults /></Layout>} />
+      <Route path="/quiz" element={<ProtectedRoute><Layout><QuizSelection /></Layout></ProtectedRoute>} />
+      <Route path="/quiz/:quizId" element={<ProtectedRoute><Layout><QuizExam /></Layout></ProtectedRoute>} />
+      <Route path="/quiz/:quizId/secure" element={<ProtectedRoute><Layout><QuizExamSecure /></Layout></ProtectedRoute>} />
+      <Route path="/quiz/:quizId/results" element={<ProtectedRoute><Layout><QuizResults /></Layout></ProtectedRoute>} />
       
       {/* Study Material Routes */}
-      <Route path="/my-rack" element={<Layout><MyRack /></Layout>} />
-      <Route path="/study-materials" element={<Layout><StudyMaterialsPES /></Layout>} />
-      <Route path="/library" element={<Layout><Library /></Layout>} />
-      <Route path="/tutorial-hub" element={<Layout><TutorialHub /></Layout>} />
-      <Route path="/tutorial-player/:tutorialId" element={<Layout><VideoPlayer /></Layout>} />
-      <Route path="/video/:id" element={<Layout><VideoPlayer /></Layout>} />
+      <Route path="/my-rack" element={<ProtectedRoute><Layout><MyRack /></Layout></ProtectedRoute>} />
+      <Route path="/study-materials" element={<ProtectedRoute><Layout><StudyMaterialsPES /></Layout></ProtectedRoute>} />
+      <Route path="/subject/:domain" element={<ProtectedRoute><Layout><SubjectViewer /></Layout></ProtectedRoute>} />
+      <Route path="/pdf/:pdfId" element={<ProtectedRoute><Layout><PDFViewer /></Layout></ProtectedRoute>} />
+      <Route path="/library" element={<ProtectedRoute><Layout><Library /></Layout></ProtectedRoute>} />
+      <Route path="/tutorial-hub" element={<ProtectedRoute><Layout><TutorialHub /></Layout></ProtectedRoute>} />
+      <Route path="/tutorial-player/:tutorialId" element={<ProtectedRoute><Layout><VideoPlayer /></Layout></ProtectedRoute>} />
+      <Route path="/video/:id" element={<ProtectedRoute><Layout><VideoPlayer /></Layout></ProtectedRoute>} />
       
       {/* AI Assistant */}
-      <Route path="/study-buddy" element={<Layout><StudyBuddy /></Layout>} />
+      <Route path="/study-buddy" element={<ProtectedRoute><Layout><StudyBuddy /></Layout></ProtectedRoute>} />
       
       {/* Workspace */}
-      <Route path="/workspace" element={<Layout><Workspace /></Layout>} />
+      <Route path="/workspace" element={<ProtectedRoute><Layout><Workspace /></Layout></ProtectedRoute>} />
       
       {/* Settings */}
-      <Route path="/settings" element={<Layout><SettingsPage /></Layout>} />
+      <Route path="/settings" element={<ProtectedRoute><Layout><SettingsPage /></Layout></ProtectedRoute>} />
       
       {/* Admin Routes */}
-      <Route path="/admin/*" element={<Layout><AdminConsole /></Layout>} />
+      <Route path="/admin/*" element={<ProtectedRoute><Layout><AdminConsole /></Layout></ProtectedRoute>} />
       
       {/* 404 Page */}
       <Route path="*" element={<Layout><NotFoundPage /></Layout>} />

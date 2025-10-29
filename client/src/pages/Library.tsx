@@ -322,10 +322,10 @@ const Library: React.FC = () => {
         }}
       />
 
-      {/* Header */}
-      <div className="app-header">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="py-6 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        {/* Page Header */}
+        <div className="mb-6">
+          <div className="flex items-center justify-between">
             <div>
               <h1 className="text-2xl font-bold text-gray-900">Digital Library</h1>
               <p className="mt-1 text-sm text-gray-600">Access our comprehensive collection of reference textbooks and academic resources</p>
@@ -338,9 +338,7 @@ const Library: React.FC = () => {
             </div>
           </div>
         </div>
-      </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {/* Filters and Search */}
         <div className="bg-white rounded-lg border border-gray-200 p-6 mb-6">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">

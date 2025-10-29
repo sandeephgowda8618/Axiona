@@ -1,11 +1,11 @@
 const { Router } = require('express');
-const { PDF, Comment } = require('../models');
-const { protect, optionalAuth } = require('../middleware/auth');
+const { PDF } = require('../models/PDF');
+const { Highlight } = require('../models/Highlight');
 
 const router = Router();
 
 // Get all PDFs with filtering and pagination
-router.get('/', optionalAuth, async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const { 
       page = 1, 
@@ -304,6 +304,190 @@ router.get('/popular/trending', optionalAuth, async (req, res) => {
     return res.json(pdfs);
   } catch (error) {
     return res.status(500).json({ error: 'Failed to fetch popular PDFs' });
+  }
+});
+
+// ==========================================
+// HIGHLIGHTS ENDPOINTS
+// ==========================================
+
+// Get highlights for a PDF and user
+router.get('/:pdfId/highlights', async (req, res) => {
+  try {
+    const { pdfId } = req.params;
+    const { userId } = req.query;
+
+    if (!userId) {
+      return res.status(400).json({ error: 'userId is required' });
+    }
+
+    const highlights = await Highlight.find({ 
+      pdfId, 
+      userId 
+    }).sort({ pageNumber: 1, createdAt: 1 });
+
+    res.json({
+      success: true,
+      data: highlights
+    });
+  } catch (error) {
+    console.error('Get highlights error:', error);
+    res.status(500).json({ error: 'Failed to fetch highlights' });
+  }
+});
+
+// Save a new highlight
+router.post('/:pdfId/highlights', async (req, res) => {
+  try {
+    const { pdfId } = req.params;
+    const {
+      userId,
+      pageNumber,
+      highlightId,
+      content,
+      color = '#FFFF00',
+      note,
+      tags = [],
+      isImportant = false
+    } = req.body;
+
+    // Validate required fields
+    if (!userId || !pageNumber || !highlightId || !content) {
+      return res.status(400).json({ 
+        error: 'userId, pageNumber, highlightId, and content are required' 
+      });
+    }
+
+    // Check if highlight already exists
+    const existingHighlight = await Highlight.findOne({ highlightId });
+    if (existingHighlight) {
+      return res.status(409).json({ 
+        error: 'Highlight with this ID already exists' 
+      });
+    }
+
+    const highlight = new Highlight({
+      pdfId,
+      userId,
+      pageNumber,
+      highlightId,
+      content,
+      color,
+      note,
+      tags,
+      isImportant
+    });
+
+    await highlight.save();
+
+    res.status(201).json({
+      success: true,
+      data: highlight
+    });
+  } catch (error) {
+    console.error('Save highlight error:', error);
+    res.status(500).json({ error: 'Failed to save highlight' });
+  }
+});
+
+// Update an existing highlight
+router.put('/:pdfId/highlights/:highlightId', async (req, res) => {
+  try {
+    const { highlightId } = req.params;
+    const updateData = req.body;
+
+    const highlight = await Highlight.findOneAndUpdate(
+      { highlightId },
+      { ...updateData, updatedAt: new Date() },
+      { new: true }
+    );
+
+    if (!highlight) {
+      return res.status(404).json({ error: 'Highlight not found' });
+    }
+
+    res.json({
+      success: true,
+      data: highlight
+    });
+  } catch (error) {
+    console.error('Update highlight error:', error);
+    res.status(500).json({ error: 'Failed to update highlight' });
+  }
+});
+
+// Delete a highlight
+router.delete('/:pdfId/highlights/:highlightId', async (req, res) => {
+  try {
+    const { highlightId } = req.params;
+
+    const highlight = await Highlight.findOneAndDelete({ highlightId });
+
+    if (!highlight) {
+      return res.status(404).json({ error: 'Highlight not found' });
+    }
+
+    res.json({
+      success: true,
+      message: 'Highlight deleted successfully'
+    });
+  } catch (error) {
+    console.error('Delete highlight error:', error);
+    res.status(500).json({ error: 'Failed to delete highlight' });
+  }
+});
+
+// Get all highlights for a user across all PDFs
+router.get('/user/:userId/highlights', async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { page = 1, limit = 50 } = req.query;
+
+    const skip = (Number(page) - 1) * Number(limit);
+
+    const highlights = await Highlight.find({ userId })
+      .populate('pdfId', 'topic fileName domain')
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(Number(limit));
+
+    const total = await Highlight.countDocuments({ userId });
+
+    res.json({
+      success: true,
+      data: highlights,
+      pagination: {
+        page: Number(page),
+        limit: Number(limit),
+        total,
+        pages: Math.ceil(total / Number(limit))
+      }
+    });
+  } catch (error) {
+    console.error('Get user highlights error:', error);
+    res.status(500).json({ error: 'Failed to fetch user highlights' });
+  }
+});
+
+// Get highlights by tags
+router.get('/user/:userId/highlights/tags/:tag', async (req, res) => {
+  try {
+    const { userId, tag } = req.params;
+
+    const highlights = await Highlight.find({ 
+      userId, 
+      tags: { $in: [tag] } 
+    })
+    .populate('pdfId', 'topic fileName')
+    .sort({ createdAt: -1 });
+
+    res.json({
+      success: true,
+      data: highlights
+    });
+  } catch (error) {
+    console.error('Get highlights by tag error:', error);
+    res.status(500).json({ error: 'Failed to fetch highlights by tag' });
   }
 });
 

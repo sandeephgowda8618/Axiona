@@ -1,12 +1,7 @@
 import React, { useState } from 'react'
 import '../styles/settings.css'
 import { Monitor, Smartphone, Laptop, Download, Trash2, Shield, Bell, Globe, User, ChevronDown } from 'lucide-react'
-
-interface UserProfile {
-  name: string
-  email: string
-  avatar?: string
-}
+import { useAuth } from '../contexts/AuthContext'
 
 interface SettingsState {
   // Account settings
@@ -39,6 +34,8 @@ interface ActiveSession {
 }
 
 const SettingsPage: React.FC = () => {
+  const { user } = useAuth()
+  
   const [settings, setSettings] = useState<SettingsState>({
     currentPassword: '',
     newPassword: '',
@@ -53,10 +50,12 @@ const SettingsPage: React.FC = () => {
     twoFactorEnabled: false
   })
 
-  const [userProfile] = useState<UserProfile>({
-    name: 'John Doe',
-    email: 'john.doe@example.com'
-  })
+  // Use real user data from AuthContext
+  const userProfile = {
+    name: user?.fullName || 'User',
+    email: user?.email || 'user@example.com',
+    avatar: user?.avatar
+  }
 
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
   const [isLoading, setIsLoading] = useState(false)

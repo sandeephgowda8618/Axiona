@@ -3,6 +3,10 @@ const { Schema } = mongoose;
 
 // User schema definition
 const UserSchema = new Schema({
+  _id: {
+    type: String, // Use Firebase UID as primary key
+    required: true
+  },
   fullName: {
     type: String,
     required: true,
@@ -17,9 +21,14 @@ const UserSchema = new Schema({
     trim: true,
     match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, 'Please provide a valid email']
   },
-  passwordHash: {
+  firebaseUID: {
     type: String,
     required: true,
+    unique: true // Firebase UID should be unique
+  },
+  passwordHash: {
+    type: String,
+    required: false, // Not required for Firebase auth
     minlength: 6
   },
   avatarUrl: {
@@ -96,18 +105,33 @@ const UserSchema = new Schema({
     type: Date,
     default: Date.now
   }
+}, {
+  _id: false, // Disable automatic ObjectId generation
+  timestamps: true // Add automatic createdAt and updatedAt
 });
 
 // Indexes
-UserSchema.index({ email: 1 }, { unique: true });
 UserSchema.index({ currentRoadmapId: 1 });
+// Email already has unique: true in schema definition
 
 // Hide sensitive fields when converting to JSON
 UserSchema.methods.toJSON = function() {
-  const userObject = this.toObject();
-  delete userObject.passwordHash;
-  delete userObject.security.tfaSecret;
-  return userObject;
+  try {
+    const userObject = this.toObject();
+    delete userObject.passwordHash;
+    if (userObject.security) {
+      delete userObject.security.tfaSecret;
+    }
+    return userObject;
+  } catch (error) {
+    console.error('Error in toJSON:', error);
+    // Return a minimal object if there's an error
+    return {
+      _id: this._id,
+      fullName: this.fullName,
+      email: this.email
+    };
+  }
 };
 
 // Export the model

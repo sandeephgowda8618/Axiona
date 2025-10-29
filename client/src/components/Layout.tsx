@@ -1,5 +1,5 @@
 import React from 'react'
-import Navigation from './Navigation'
+import LandingNavigation from './LandingNavigation'
 
 interface LayoutProps {
   children: React.ReactNode
@@ -9,13 +9,13 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ 
   children, 
-  className = "min-h-screen dashboard-bg", 
-  showNavigation = false 
+  className = "min-h-screen", 
+  showNavigation = true 
 }) => {
   return (
     <div className={className}>
-      {showNavigation && <Navigation />}
-      <main className={showNavigation ? 'pt-16' : ''}>
+      {showNavigation && <LandingNavigation />}
+      <main className={showNavigation ? 'pt-4' : ''}>
         {children}
       </main>
     </div>

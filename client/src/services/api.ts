@@ -52,13 +52,145 @@ export interface AuthRequest {
   fullName?: string // For registration
 }
 
+// PDF/Study Materials interfaces
+export interface PDFMaterial {
+  _id: string
+  topic: string
+  fileName: string
+  gridFSFileId: string
+  fileUrl: string
+  fileSize: number
+  pages: number
+  author?: string
+  domain: string
+  year?: number
+  class?: string
+  description?: string
+  publishedAt: string
+  downloadCount: number
+  approved: boolean
+  uploadedBy: string
+  createdAt: string
+  formattedFileSize?: string
+}
+
+export interface SubjectSummary {
+  _id: string
+  domain: string
+  pdfCount: number
+  totalDownloads: number
+  avgPages: number
+  lastUpdated: string
+}
+
+export interface HighlightPosition {
+  pageNumber: number
+  boundingRect: {
+    x1: number
+    y1: number
+    x2: number
+    y2: number
+    width: number
+    height: number
+  }
+  rects?: Array<{
+    x1: number
+    y1: number
+    x2: number
+    y2: number
+    width: number
+    height: number
+  }>
+  viewportDimensions?: {
+    width: number
+    height: number
+  }
+}
+
+export interface Highlight {
+  _id: string
+  pdfId: string
+  userId: string
+  content: {
+    text: string
+    image?: string
+  }
+  position: HighlightPosition
+  style: {
+    color: string
+    opacity: number
+  }
+  note?: string
+  tags: string[]
+  isPublic: boolean
+  createdAt: string
+  updatedAt: string
+}
+
+export interface Note {
+  _id: string
+  title: string
+  content: string
+  pdfId: string
+  userId: string
+  pdfTitle: string
+  pageNumber?: number
+  tags: string[]
+  lastViewedAt: string
+  createdAt: string
+  updatedAt: string
+  pdfId_populated?: PDFMaterial
+  userId_populated?: UserProfile
+}
+
+export interface CreateNoteRequest {
+  title: string
+  content: string
+  pdfId: string
+  userId: string
+  pageNumber?: number
+  tags?: string[]
+}
+
+export interface UpdateNoteRequest {
+  title?: string
+  content?: string
+  tags?: string[]
+}
+
+export interface PaginatedResponse<T> {
+  success: boolean
+  data: T[]
+  pagination: {
+    currentPage: number
+    totalPages: number
+    totalItems: number
+    hasNextPage: boolean
+    hasPrevPage: boolean
+  }
+  message?: string
+}
+
+export interface Subject {
+  domain: string
+  title: string
+  pdfCount: number
+  totalPages: number
+  totalDownloads: number
+  averagePages: number
+  topicCount: number
+  thumbnailUrl: string
+  lastUpdated: string
+  description: string
+}
+
 // API Service Class
 class ApiService {
   private baseURL: string
   private token: string | null
 
   constructor() {
-    this.baseURL = 'http://localhost:3000/api' // TODO: Use environment variable
+    this.baseURL = 'http://localhost:5050/api' // Updated to match your server port
     this.token = localStorage.getItem('auth_token')
   }
 
@@ -238,6 +370,312 @@ class ApiService {
     localStorage.setItem('user_data', JSON.stringify(data.user))
     
     return data
+  }
+
+  // PDF/Study Materials APIs
+  async getSubjects(): Promise<Subject[]> {
+    try {
+      const response = await fetch(`${this.baseURL}/pdfs/subjects`, {
+        headers: this.getHeaders()
+      })
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch subjects')
+      }
+      
+      const result = await response.json()
+      return result.data
+    } catch (error) {
+      // Return mock data if backend is not available
+      console.warn('Backend not available, using mock data for subjects')
+      return this.getMockSubjects()
+    }
+  }
+
+  private getMockSubjects(): Subject[] {
+    return [
+      {
+        domain: 'computer-science',
+        title: 'Computer Science',
+        pdfCount: 45,
+        totalPages: 1250,
+        totalDownloads: 2350,
+        averagePages: 28,
+        topicCount: 12,
+        thumbnailUrl: '/api/placeholder/300/200',
+        lastUpdated: '2024-01-15',
+        description: 'Comprehensive collection of computer science materials including algorithms, data structures, and programming concepts.'
+      },
+      {
+        domain: 'mathematics',
+        title: 'Mathematics',
+        pdfCount: 38,
+        totalPages: 980,
+        totalDownloads: 1840,
+        averagePages: 26,
+        topicCount: 10,
+        thumbnailUrl: '/api/placeholder/300/200',
+        lastUpdated: '2024-01-12',
+        description: 'Mathematical foundations covering calculus, linear algebra, discrete mathematics, and statistical analysis.'
+      },
+      {
+        domain: 'physics',
+        title: 'Physics',
+        pdfCount: 32,
+        totalPages: 750,
+        totalDownloads: 1290,
+        averagePages: 23,
+        topicCount: 8,
+        thumbnailUrl: '/api/placeholder/300/200',
+        lastUpdated: '2024-01-10',
+        description: 'Physics concepts from classical mechanics to quantum physics and thermodynamics.'
+      },
+      {
+        domain: 'chemistry',
+        title: 'Chemistry',
+        pdfCount: 28,
+        totalPages: 650,
+        totalDownloads: 1120,
+        averagePages: 23,
+        topicCount: 7,
+        thumbnailUrl: '/api/placeholder/300/200',
+        lastUpdated: '2024-01-08',
+        description: 'Organic, inorganic, and physical chemistry materials with lab procedures and theory.'
+      },
+      {
+        domain: 'electronics',
+        title: 'Electronics Engineering',
+        pdfCount: 35,
+        totalPages: 920,
+        totalDownloads: 1670,
+        averagePages: 26,
+        topicCount: 9,
+        thumbnailUrl: '/api/placeholder/300/200',
+        lastUpdated: '2024-01-14',
+        description: 'Circuit analysis, digital electronics, microprocessors, and communication systems.'
+      },
+      {
+        domain: 'mechanical',
+        title: 'Mechanical Engineering',
+        pdfCount: 30,
+        totalPages: 800,
+        totalDownloads: 1450,
+        averagePages: 27,
+        topicCount: 8,
+        thumbnailUrl: '/api/placeholder/300/200',
+        lastUpdated: '2024-01-11',
+        description: 'Thermodynamics, fluid mechanics, manufacturing processes, and machine design.'
+      }
+    ]
+  }
+
+  async getPDFsBySubject(domain: string, page: number = 1, limit: number = 20): Promise<PaginatedResponse<PDFMaterial>> {
+    const response = await fetch(`${this.baseURL}/pdfs/subject/${domain}?page=${page}&limit=${limit}`, {
+      headers: this.getHeaders()
+    })
+    
+    if (!response.ok) {
+      throw new Error('Failed to fetch PDFs for subject')
+    }
+    
+    return response.json()
+  }
+
+  async getPDFDetails(id: string): Promise<PDFMaterial> {
+    const response = await fetch(`${this.baseURL}/pdfs/${id}`, {
+      headers: this.getHeaders()
+    })
+    
+    if (!response.ok) {
+      throw new Error('Failed to fetch PDF details')
+    }
+    
+    const result = await response.json()
+    return result.data
+  }
+
+  getPDFUrl(fileId: string): string {
+    return `${this.baseURL}/pdfs/file/${fileId}`
+  }
+
+  async trackPDFDownload(id: string): Promise<void> {
+    const response = await fetch(`${this.baseURL}/pdfs/${id}/download`, {
+      method: 'POST',
+      headers: this.getHeaders()
+    })
+    
+    if (!response.ok) {
+      throw new Error('Failed to track download')
+    }
+  }
+
+  async searchPDFs(query: string, domain?: string, page: number = 1, limit: number = 20): Promise<PaginatedResponse<PDFMaterial>> {
+    const params = new URLSearchParams({
+      q: query,
+      page: page.toString(),
+      limit: limit.toString()
+    })
+    
+    if (domain) {
+      params.append('domain', domain)
+    }
+    
+    const response = await fetch(`${this.baseURL}/pdfs/search?${params}`, {
+      headers: this.getHeaders()
+    })
+    
+    if (!response.ok) {
+      throw new Error('Failed to search PDFs')
+    }
+    
+    return response.json()
+  }
+
+  // PDF Highlights/Annotations APIs
+  async getHighlights(pdfId: string): Promise<Highlight[]> {
+    const response = await fetch(`${this.baseURL}/highlights/pdf/${pdfId}`, {
+      method: 'GET',
+      headers: this.getHeaders()
+    })
+    
+    if (!response.ok) {
+      throw new Error('Failed to fetch highlights')
+    }
+    
+    const result = await response.json()
+    return result.data
+  }
+
+  async createHighlight(highlightData: Omit<Highlight, '_id' | 'createdAt' | 'updatedAt'>): Promise<Highlight> {
+    const response = await fetch(`${this.baseURL}/highlights`, {
+      method: 'POST',
+      headers: this.getHeaders(),
+      body: JSON.stringify(highlightData)
+    })
+    
+    if (!response.ok) {
+      throw new Error('Failed to create highlight')
+    }
+    
+    const result = await response.json()
+    return result.data
+  }
+
+  async updateHighlight(id: string, updates: Partial<Highlight>): Promise<Highlight> {
+    const response = await fetch(`${this.baseURL}/highlights/${id}`, {
+      method: 'PUT',
+      headers: this.getHeaders(),
+      body: JSON.stringify(updates)
+    })
+    
+    if (!response.ok) {
+      throw new Error('Failed to update highlight')
+    }
+    
+    const result = await response.json()
+    return result.data
+  }
+
+  async deleteHighlight(id: string): Promise<void> {
+    const response = await fetch(`${this.baseURL}/highlights/${id}`, {
+      method: 'DELETE',
+      headers: this.getHeaders()
+    })
+    
+    if (!response.ok) {
+      throw new Error('Failed to delete highlight')
+    }
+  }
+
+  async getUserHighlights(): Promise<Highlight[]> {
+    const response = await fetch(`${this.baseURL}/highlights/my-rack`, {
+      method: 'GET',
+      headers: this.getHeaders()
+    })
+    
+    if (!response.ok) {
+      throw new Error('Failed to fetch user highlights')
+    }
+    
+    const result = await response.json()
+    return result.data
+  }
+
+  // ==================== NOTES APIs ====================
+  
+  async createNote(noteData: CreateNoteRequest): Promise<Note> {
+    console.log('🌐 API: Creating note with data:', noteData);
+    console.log('🔗 API: Using URL:', `${this.baseURL}/notes`);
+    console.log('🔑 API: Using headers:', this.getHeaders());
+    
+    const response = await fetch(`${this.baseURL}/notes`, {
+      method: 'POST',
+      headers: this.getHeaders(),
+      body: JSON.stringify(noteData)
+    })
+    
+    console.log('📡 API: Response status:', response.status);
+    console.log('📡 API: Response ok:', response.ok);
+    
+    if (!response.ok) {
+      const errorData = await response.text();
+      console.error('❌ API: Error response:', errorData);
+      try {
+        const errorJson = JSON.parse(errorData);
+        throw new Error(errorJson.message || 'Failed to create note')
+      } catch (parseError) {
+        throw new Error(`Failed to create note: ${errorData}`)
+      }
+    }
+    
+    const data = await response.json()
+    console.log('✅ API: Success response:', data);
+    return data.data
+  }
+
+  async getUserNotes(userId: string): Promise<Note[]> {
+    console.log('🔍 API: Fetching notes for user:', userId);
+    const response = await fetch(`${this.baseURL}/notes/user/${userId}`, {
+      method: 'GET',
+      headers: this.getHeaders()
+    })
+    
+    console.log('📡 API: Response status:', response.status, response.statusText);
+    
+    if (!response.ok) {
+      throw new Error('Failed to fetch user notes')
+    }
+    
+    const data = await response.json()
+    console.log('📋 API: Received data:', data);
+    console.log('📋 API: Notes count:', data.data?.length || 0);
+    return data.data
+  }
+
+  async updateNote(noteId: string, updateData: UpdateNoteRequest): Promise<Note> {
+    const response = await fetch(`${this.baseURL}/notes/${noteId}`, {
+      method: 'PUT',
+      headers: this.getHeaders(),
+      body: JSON.stringify(updateData)
+    })
+    
+    if (!response.ok) {
+      throw new Error('Failed to update note')
+    }
+    
+    const data = await response.json()
+    return data.data
+  }
+
+  async deleteNote(noteId: string): Promise<void> {
+    const response = await fetch(`${this.baseURL}/notes/${noteId}`, {
+      method: 'DELETE',
+      headers: this.getHeaders()
+    })
+    
+    if (!response.ok) {
+      throw new Error('Failed to delete note')
+    }
   }
 }
 

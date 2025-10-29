@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useWorkspace } from '../contexts/WorkspaceContext'
+import { useAuth } from '../contexts/AuthContext'
 import '../styles/landing.css'
 
 const LandingPage: React.FC = () => {
   const { openWorkspace } = useWorkspace()
+  const { user, isAuthenticated, logout } = useAuth()
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isScrolled, setIsScrolled] = useState(false)
 
@@ -12,25 +14,33 @@ const LandingPage: React.FC = () => {
     openWorkspace('notes')
   }
 
+  const handleLogout = async () => {
+    try {
+      await logout()
+    } catch (error) {
+      console.error('Logout failed:', error)
+    }
+  }
+
   // Hero carousel data
   const heroSlides = [
     {
-      title: "Master Your Studies with AI",
-      subtitle: "Transform your learning with intelligent study tools, real-time collaboration, and personalized progress tracking.",
+      title: isAuthenticated ? `Welcome back, ${user?.fullName || 'User'}!` : "Master Your Studies with AI",
+      subtitle: isAuthenticated ? "Continue your learning journey with personalized study tools and track your progress." : "Transform your learning with intelligent study tools, real-time collaboration, and personalized progress tracking.",
       primaryButton: "Start Learning",
-      secondaryButton: "Watch Demo",
+      secondaryButton: isAuthenticated ? "View Progress" : "Watch Demo",
       image: "/api/placeholder/540/360"
     },
     {
-      title: "Collaborate in Real-Time",
-      subtitle: "Join study rooms, share screens, and learn together with peers through our integrated conference system.",
+      title: isAuthenticated ? "Join Your Study Groups" : "Collaborate in Real-Time",
+      subtitle: isAuthenticated ? "Connect with your study groups and continue collaborative learning sessions." : "Join study rooms, share screens, and learn together with peers through our integrated conference system.",
       primaryButton: "Join Conference",
       secondaryButton: "Learn More",
       image: "/api/placeholder/540/360"
     },
     {
-      title: "Track Your Progress",
-      subtitle: "Monitor learning streaks, complete roadmaps, and export your progress with comprehensive analytics.",
+      title: isAuthenticated ? "Your Learning Analytics" : "Track Your Progress",
+      subtitle: isAuthenticated ? "Review your learning achievements and see detailed progress analytics." : "Monitor learning streaks, complete roadmaps, and export your progress with comprehensive analytics.",
       primaryButton: "View Analytics",
       secondaryButton: "See Features",
       image: "/api/placeholder/540/360"
@@ -108,8 +118,8 @@ const LandingPage: React.FC = () => {
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
             <Link to="/" className="logo">
-              <div className="logo-icon">S</div>
-              <span className="logo-text">StudySpace</span>
+              <div className="logo-icon">A</div>
+              <span className="logo-text">Axiona</span>
             </Link>
 
             {/* Navigation Links */}
@@ -126,16 +136,44 @@ const LandingPage: React.FC = () => {
               <Link to="/library" className="nav-link">
                 Library
               </Link>
-              <Link to="/dashboard" className="nav-link">
-                Profile
+              <Link to="/my-rack" className="nav-link">
+                My Rack
               </Link>
+              {isAuthenticated && (
+                <Link to="/dashboard" className="nav-link">
+                  Profile
+                </Link>
+              )}
             </nav>
 
-            {/* Sign Up Button */}
-            <div className="hidden md:block">
-              <Link to="/auth" className="btn-signup">
-                Sign Up
-              </Link>
+            {/* Auth Section */}
+            <div className="hidden md:flex items-center space-x-4">
+              {isAuthenticated ? (
+                <div className="flex items-center space-x-3">
+                  <div className="flex items-center space-x-2">
+                    {user?.avatar && (
+                      <img
+                        src={user.avatar}
+                        alt="Profile"
+                        className="w-8 h-8 rounded-full"
+                      />
+                    )}
+                    <span className="text-white text-sm">
+                      {user?.fullName || 'User'}
+                    </span>
+                  </div>
+                  <button
+                    onClick={handleLogout}
+                    className="text-gray-300 hover:text-white text-sm"
+                  >
+                    Logout
+                  </button>
+                </div>
+              ) : (
+                <Link to="/login" className="btn-signup">
+                  Sign Up
+                </Link>
+              )}
             </div>
 
             {/* Mobile menu button */}
@@ -164,9 +202,15 @@ const LandingPage: React.FC = () => {
                     <h1>{slide.title}</h1>
                     <p className="subtitle">{slide.subtitle}</p>
                     <div className="hero-buttons">
-                      <Link to="/auth" className="btn btn-primary">
-                        {slide.primaryButton}
-                      </Link>
+                      {isAuthenticated ? (
+                        <Link to="/dashboard" className="btn btn-primary">
+                          Go to Dashboard
+                        </Link>
+                      ) : (
+                        <Link to="/login" className="btn btn-primary">
+                          {slide.primaryButton}
+                        </Link>
+                      )}
                       <button className="btn btn-outline-white">
                         {slide.secondaryButton}
                       </button>
@@ -212,6 +256,47 @@ const LandingPage: React.FC = () => {
           </div>
         </div>
       </section>
+
+      {/* User Stats Section - Only for logged-in users */}
+      {isAuthenticated && (
+        <section className="bg-gray-50 py-12">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-8">
+              <h2 className="text-2xl font-bold text-gray-800 mb-2">Your Learning Overview</h2>
+              <p className="text-gray-600">Track your progress and achievements</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+              <div className="bg-white rounded-lg p-6 text-center shadow-sm">
+                <div className="text-3xl font-bold text-blue-600 mb-2">12</div>
+                <div className="text-sm text-gray-600">Courses Completed</div>
+              </div>
+              <div className="bg-white rounded-lg p-6 text-center shadow-sm">
+                <div className="text-3xl font-bold text-orange-500 mb-2">45</div>
+                <div className="text-sm text-gray-600">Streak Days</div>
+              </div>
+              <div className="bg-white rounded-lg p-6 text-center shadow-sm">
+                <div className="text-3xl font-bold text-purple-600 mb-2">234</div>
+                <div className="text-sm text-gray-600">Total Notes</div>
+              </div>
+              <div className="bg-white rounded-lg p-6 text-center shadow-sm">
+                <div className="text-3xl font-bold text-green-600 mb-2">8.5h</div>
+                <div className="text-sm text-gray-600">Weekly Activity</div>
+              </div>
+            </div>
+            <div className="text-center mt-8">
+              <Link 
+                to="/my-rack" 
+                className="inline-flex items-center bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                View My Rack
+                <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Features Section - Clean white background with alternating layout */}
       <section className="features-section">

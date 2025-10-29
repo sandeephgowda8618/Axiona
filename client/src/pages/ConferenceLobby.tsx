@@ -34,41 +34,6 @@ const ConferenceLobby: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <h1 className="text-xl font-bold text-gray-900">Study-AI</h1>
-              </div>
-              <nav className="hidden md:ml-10 flex space-x-8">
-                <a href="/tutorial-hub" className="text-gray-500 hover:text-gray-900 px-3 py-2 text-sm font-medium">
-                  Tutorial Hub
-                </a>
-                <a href="/study-pes" className="text-gray-500 hover:text-gray-900 px-3 py-2 text-sm font-medium">
-                  StudyPES
-                </a>
-                <a href="/conference" className="text-gray-900 border-b-2 border-blue-500 px-3 py-2 text-sm font-medium">
-                  Conference
-                </a>
-                <a href="/my-rack" className="text-gray-500 hover:text-gray-900 px-3 py-2 text-sm font-medium">
-                  My Rack
-                </a>
-                <a href="/profile" className="text-gray-500 hover:text-gray-900 px-3 py-2 text-sm font-medium">
-                  Profile
-                </a>
-              </nav>
-            </div>
-            <div>
-              <button className="bg-gray-900 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-800 transition-colors">
-                Sign Up
-              </button>
-            </div>
-          </div>
-        </div>
-      </header>
-
       {/* Main Content */}
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Title Section */}

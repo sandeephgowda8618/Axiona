@@ -1,198 +1,382 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   BookOpen,
   FileText,
-  Video,
-  Download,
-  Star,
-  Clock,
-  Tag,
   Trash,
   ChevronLeft,
   ChevronRight,
+  StickyNote,
+  Edit,
+  Eye,
+  Calendar,
+  Download
 } from 'lucide-react'
+import { apiService, Note } from '../services/api'
+import { useAuth, mockUser } from '../contexts/AuthContext'
+import { useNotes } from '../hooks/useNotes'
+import { useNotesContext } from '../contexts/NotesContext'
+import EditNoteModal from '../components/EditNoteModal'
+import NotesDebugPanel from '../components/NotesDebugPanel'
 
 const MyRack: React.FC = () => {
-  const initialSavedContent = [
-    { id: 1, title: 'Quantum Mechanics Fundamentals', type: 'pdf', size: '1.8 MB', dateAdded: '2024-12-08', tags: ['Physics'], rating: 4.6 },
-    { id: 2, title: 'Machine Learning Algorithms Overview', type: 'notes', wordCount: 980, dateAdded: '2024-12-07', tags: ['Computer Science'], rating: 4.7 },
-    { id: 3, title: 'Organic Chemistry Reactions', type: 'pdf', size: '3.1 MB', dateAdded: '2024-12-06', tags: ['Chemistry'], rating: 4.3 },
-    { id: 4, title: 'World War II Timeline', type: 'notes', wordCount: 1500, dateAdded: '2024-12-05', tags: ['History'], rating: 4.4 },
-    { id: 5, title: 'Calculus Integration Techniques', type: 'pdf', size: '2.0 MB', dateAdded: '2024-12-04', tags: ['Mathematics'], rating: 4.5 },
-    { id: 6, title: 'Cell Biology Structures', type: 'notes', wordCount: 760, dateAdded: '2024-12-03', tags: ['Biology'], rating: 4.2 },
-    { id: 7, title: 'Linear Algebra Cheat Sheet', type: 'pdf', size: '1.2 MB', dateAdded: '2024-12-02', tags: ['Mathematics'], rating: 4.1 },
-    { id: 8, title: 'Introduction to Thermodynamics', type: 'video', duration: '32:10', dateAdded: '2024-12-01', tags: ['Physics'], rating: 4.6 },
-    { id: 9, title: 'Organic Synthesis Notes', type: 'pdf', size: '2.7 MB', dateAdded: '2024-11-30', tags: ['Chemistry'], rating: 4.0 },
-    { id: 10, title: 'Programming Patterns', type: 'notes', wordCount: 860, dateAdded: '2024-11-29', tags: ['Computer Science'], rating: 4.8 },
-    { id: 11, title: 'Genetics Overview', type: 'pdf', size: '2.9 MB', dateAdded: '2024-11-28', tags: ['Biology'], rating: 4.3 },
-    { id: 12, title: 'Discrete Math Problems', type: 'notes', wordCount: 1120, dateAdded: '2024-11-27', tags: ['Mathematics'], rating: 4.2 },
-  ]
+  const { user, isAuthenticated } = useAuth();
+  // Use real Firebase user now that backend supports Firebase UIDs
+  const currentUser = isAuthenticated ? user : mockUser;
+  const { lastRefreshTrigger } = useNotesContext();
+  
+  // Use the notes hook
+  const { 
+    notes: userNotes, 
+    loading: notesLoading, 
+    error: notesError, 
+    deleteNote, 
+    updateNote,
+    refreshNotes 
+  } = useNotes(currentUser?.id);
+  
+  const [activeTab, setActiveTab] = useState<'files' | 'notes'>('files');
+  
+  // Edit note modal state
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [noteToEdit, setNoteToEdit] = useState<Note | null>(null);
+  
+  // Notes pagination and search
+  const [notesPage, setNotesPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState('');
+  const notesPerPage = 6;
 
-  const [items, setItems] = useState(initialSavedContent)
-  const [selectedIds, setSelectedIds] = useState<number[]>([])
-  const [currentPage, setCurrentPage] = useState(1)
-  const itemsPerPage = 6
-
-  const getIconForType = (type: string) => {
-    switch (type) {
-      case 'pdf':
-        return <FileText className="w-5 h-5 text-red-500" />
-      case 'video':
-        return <Video className="w-5 h-5 text-blue-500" />
-      case 'notes':
-        return <BookOpen className="w-5 h-5 text-green-500" />
-      default:
-        return <FileText className="w-5 h-5 text-gray-500" />
+  // Refresh notes when tab changes to notes
+  useEffect(() => {
+    if (activeTab === 'notes' && currentUser) {
+      refreshNotes();
     }
-  }
+  }, [currentUser, activeTab, refreshNotes]);
 
-  const totalItems = items.length
-  const totalPages = Math.ceil(totalItems / itemsPerPage)
-  const startIndex = (currentPage - 1) * itemsPerPage
-  const paginatedItems = items.slice(startIndex, startIndex + itemsPerPage)
+  // Listen for refresh triggers from other components
+  useEffect(() => {
+    if (lastRefreshTrigger > 0 && currentUser) {
+      console.log('🔄 MyRack: Refreshing notes due to external trigger at', new Date(lastRefreshTrigger).toISOString());
+      console.log('🔄 MyRack: Current user:', currentUser.email, 'Active tab:', activeTab);
+      refreshNotes();
+    }
+  }, [lastRefreshTrigger, currentUser, refreshNotes]);
 
-  const toggleSelect = (id: number) => {
-    setSelectedIds((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]))
-  }
+  // Helper functions for note actions
+  const handleEditNote = (note: Note) => {
+    setNoteToEdit(note);
+    setEditModalOpen(true);
+  };
 
-  const handleDeleteSelected = () => {
-    if (selectedIds.length === 0) return
-    setItems((prev) => prev.filter((it) => !selectedIds.includes(it.id)))
-    setSelectedIds([])
-    // keep current page valid
-    setCurrentPage((p) => Math.min(p, Math.max(1, Math.ceil((totalItems - selectedIds.length) / itemsPerPage))))
-  }
+  const handleSaveNote = async (noteId: string, updatedData: { title: string; content: string; tags: string[]; isPublic: boolean }) => {
+    try {
+      await updateNote(noteId, updatedData);
+    } catch (error) {
+      console.error('Error updating note:', error);
+    }
+  };
 
-  const handleExportTxt = () => {
-    const toExport = selectedIds.length > 0 ? items.filter((it) => selectedIds.includes(it.id)) : items
-    const text = toExport
-      .map((it) => `${it.title} — ${it.tags.join(', ')} — Added ${it.dateAdded}`)
-      .join('\n\n')
-    const blob = new Blob([text], { type: 'text/plain;charset=utf-8' })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = 'my_rack_export.txt'
-    a.click()
-    URL.revokeObjectURL(url)
-  }
+  const handleDeleteNote = async (noteId: string) => {
+    if (!confirm('Are you sure you want to delete this note?')) {
+      return;
+    }
 
-  const goToPage = (page: number) => {
-    setCurrentPage(Math.max(1, Math.min(totalPages, page)))
-  }
+    try {
+      await deleteNote(noteId);
+    } catch (error) {
+      console.error('Error deleting note:', error);
+    }
+  };
+
+  const handleViewNotePDF = (note: Note) => {
+    if (note.pdfId) {
+      // Navigate to the PDF viewer with the linked PDF
+      window.location.href = `/subject-viewer?pdf=${note.pdfId}`;
+    }
+  };
+
+  // Filter and paginate notes
+  const filteredNotes = userNotes.filter(note => 
+    note.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    note.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (note.tags && note.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase())))
+  );
+
+  const totalNotesPages = Math.ceil(filteredNotes.length / notesPerPage);
+  const startNotesIndex = (notesPage - 1) * notesPerPage;
+  const paginatedNotes = filteredNotes.slice(startNotesIndex, startNotesIndex + notesPerPage);
+
+  const goToNotesPage = (page: number) => {
+    if (page >= 1 && page <= totalNotesPages) {
+      setNotesPage(page);
+    }
+  };
 
   return (
-    <div className="max-w-7xl mx-auto p-6">
-      <div className="mb-6 flex items-start justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">My Rack — Study-AI Mini</h1>
-          <p className="text-gray-600 dark:text-gray-300">Study Notes Collection<br /><span className="text-sm text-gray-500">Manage and organize your saved study materials</span></p>
-        </div>
-
-        <div className="flex items-center space-x-3">
-          <button onClick={handleExportTxt} className="flex items-center px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md">
-            <Download className="w-4 h-4 mr-2" />
-            Export TXT
-          </button>
-          <button onClick={handleDeleteSelected} className="flex items-center px-3 py-2 bg-red-50 hover:bg-red-100 text-red-600 rounded-md">
-            <Trash className="w-4 h-4 mr-2" />
-            Delete Selected
-          </button>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {paginatedItems.map((item) => (
-          <div key={item.id} className="relative bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-shadow p-6">
-            <input
-              type="checkbox"
-              checked={selectedIds.includes(item.id)}
-              onChange={() => toggleSelect(item.id)}
-              className="absolute top-4 left-4 w-4 h-4"
-            />
-            <div className="flex items-start justify-between mb-4">
-              <div className="flex items-center space-x-2">
-                {getIconForType(item.type)}
-                <span className="text-sm font-medium text-gray-500 dark:text-gray-400 capitalize">
-                  {item.type}
-                </span>
-              </div>
-              <div className="flex items-center space-x-1">
-                <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                <span className="text-sm text-gray-600 dark:text-gray-300">{item.rating}</span>
-              </div>
-            </div>
-
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 line-clamp-2">
-              {item.title}
-            </h3>
-
-            <div className="space-y-2 mb-4">
-              {item.type === 'pdf' && (
-                <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-300">
-                  <Download className="w-4 h-4" />
-                  <span>{item.size}</span>
-                </div>
-              )}
-              {item.type === 'video' && (
-                <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-300">
-                  <Clock className="w-4 h-4" />
-                  <span>{item.duration}</span>
-                </div>
-              )}
-              {item.type === 'notes' && (
-                <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-300">
-                  <FileText className="w-4 h-4" />
-                  <span>{item.wordCount} words</span>
-                </div>
-              )}
-              <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-300">
-                <Clock className="w-4 h-4" />
-                <span>Added {item.dateAdded}</span>
-              </div>
-            </div>
-
-            <div className="flex flex-wrap gap-2 mb-4">
-              {item.tags.map((tag, index) => (
-                <span
-                  key={index}
-                  className="inline-flex items-center px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs font-medium rounded-full"
-                >
-                  <Tag className="w-3 h-3 mr-1" />
-                  {tag}
-                </span>
-              ))}
-            </div>
-
-            <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
-              Open {item.type === 'pdf' ? 'PDF' : item.type === 'video' ? 'Video' : 'Notes'}
-            </button>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-4 md:p-8">
+      {/* Header */}
+      <div className="max-w-7xl mx-auto">
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">My Study Rack</h1>
+            <p className="text-gray-600 dark:text-gray-300">Access your saved PDFs, notes, and study materials</p>
           </div>
-        ))}
-      </div>
+        </div>
 
-      {/* Footer / pagination */}
-      <div className="mt-6 flex items-center justify-between">
-        <div className="text-sm text-gray-600">Showing {startIndex + 1}-{Math.min(startIndex + itemsPerPage, totalItems)} of {totalItems} notes • Last updated 2 hours ago</div>
-        <div className="flex items-center space-x-2">
-          <button onClick={() => goToPage(currentPage - 1)} disabled={currentPage === 1} className="p-2 rounded-md hover:bg-gray-100">
-            <ChevronLeft className="w-5 h-5" />
-          </button>
-          {Array.from({ length: totalPages }).map((_, idx) => {
-            const page = idx + 1
-            return (
-              <button key={page} onClick={() => goToPage(page)} className={`px-3 py-1 rounded-md ${page === currentPage ? 'bg-blue-600 text-white' : 'hover:bg-gray-100'}`}>
-                {page}
-              </button>
-            )
-          })}
-          <button onClick={() => goToPage(currentPage + 1)} disabled={currentPage === totalPages} className="p-2 rounded-md hover:bg-gray-100">
-            <ChevronRight className="w-5 h-5" />
-          </button>
+        {/* Tab Navigation */}
+        <div className="mb-6 border-b border-gray-200 dark:border-gray-700">
+          <nav className="-mb-px flex space-x-8">
+            <button
+              onClick={() => setActiveTab('files')}
+              className={`py-2 px-1 border-b-2 font-medium text-sm ${
+                activeTab === 'files'
+                  ? 'border-blue-500 text-blue-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              }`}
+            >
+              Saved Files
+            </button>
+            <button
+              onClick={() => setActiveTab('notes')}
+              className={`py-2 px-1 border-b-2 font-medium text-sm ${
+                activeTab === 'notes'
+                  ? 'border-blue-500 text-blue-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              }`}
+            >
+              My Notes
+            </button>
+          </nav>
+        </div>
+
+        {/* Content based on active tab */}
+        {activeTab === 'files' ? (
+          // Files Tab Content - Coming Soon
+          <div className="text-center py-12">
+            <BookOpen className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+            <h3 className="text-lg font-medium text-gray-600 mb-2">Saved Files Feature Coming Soon</h3>
+            <p className="text-gray-500">We're working on adding the ability to save and bookmark your favorite study materials.</p>
+            <p className="text-gray-500 mt-2">For now, you can take notes on PDFs which will be saved in the "My Notes" tab.</p>
+          </div>
+        ) : (
+          // Notes Tab Content
+          <div className="space-y-4">
+            {/* Search Bar for Notes */}
+            <div className="mb-6">
+              <input
+                type="text"
+                placeholder="Search notes by title, content, or tags..."
+                value={searchTerm}
+                onChange={(e) => {
+                  setSearchTerm(e.target.value);
+                  setNotesPage(1); // Reset to first page when searching
+                }}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              />
+            </div>
+
+            {notesLoading ? (
+              <div className="flex items-center justify-center py-12">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                <span className="ml-3">Loading notes...</span>
+              </div>
+            ) : notesError ? (
+              <div className="text-center py-12">
+                <p className="text-red-600 mb-4">{notesError}</p>
+                <button
+                  onClick={() => setActiveTab('notes')}
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg"
+                >
+                  Retry
+                </button>
+              </div>
+            ) : userNotes.length === 0 ? (
+              <div className="text-center py-12">
+                <StickyNote className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                <h3 className="text-lg font-medium text-gray-600 mb-2">No notes yet</h3>
+                <p className="text-gray-500">Start taking notes while studying to see them here.</p>
+              </div>
+            ) : filteredNotes.length === 0 ? (
+              <div className="text-center py-12">
+                <StickyNote className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                <h3 className="text-lg font-medium text-gray-600 mb-2">No notes found</h3>
+                <p className="text-gray-500">Try adjusting your search terms.</p>
+              </div>
+            ) : (
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {paginatedNotes.map((note) => (
+                  <div key={note._id} className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-6">
+                    <div className="flex items-start justify-between mb-3">
+                      <h3 className="text-lg font-semibold text-gray-800 truncate">{note.title}</h3>
+                      <div className="flex items-center gap-2 ml-4">
+                        {note.isPublic ? (
+                          <div title="Public note">
+                            <Eye className="w-4 h-4 text-green-600" />
+                          </div>
+                        ) : (
+                          <div title="Private note">
+                            <Eye className="w-4 h-4 text-gray-400" />
+                          </div>
+                        )}
+                        <button className="text-blue-600 hover:text-blue-800">
+                          <Edit className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+                    
+                    <p className="text-gray-600 text-sm mb-4 line-clamp-3">{note.content}</p>
+                    
+                    <div className="flex items-center gap-4 text-xs text-gray-500 mb-4">
+                      <div className="flex items-center gap-1">
+                        <Calendar className="w-3 h-3" />
+                        <span>{new Date(note.createdAt).toLocaleDateString()}</span>
+                      </div>
+                      {note.pdfId && (
+                        <div className="flex items-center gap-1">
+                          <FileText className="w-3 h-3" />
+                          <span>Linked to PDF</span>
+                        </div>
+                      )}
+                      {note.pageNumber && (
+                        <div className="flex items-center gap-1">
+                          <BookOpen className="w-3 h-3" />
+                          <span>Page {note.pageNumber}</span>
+                        </div>
+                      )}
+                    </div>
+
+                    {note.tags && note.tags.length > 0 && (
+                      <div className="flex flex-wrap gap-1 mb-4">
+                        {note.tags.slice(0, 3).map((tag, index) => (
+                          <span key={index} className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
+                            {tag}
+                          </span>
+                        ))}
+                        {note.tags.length > 3 && (
+                          <span className="text-gray-400 text-xs">+{note.tags.length - 3}</span>
+                        )}
+                      </div>
+                    )}
+
+                    <div className="flex items-center justify-between">
+                      <div className="text-xs text-gray-500">
+                        <span className="font-medium">PDF:</span> {note.pdfTitle}
+                      </div>
+                      <div className="flex items-center gap-2">
+                        {note.pdfId && (
+                          <button
+                            onClick={() => handleViewNotePDF(note)}
+                            className="text-green-600 hover:text-green-800 transition-colors"
+                            title="View linked PDF"
+                          >
+                            <BookOpen className="w-4 h-4" />
+                          </button>
+                        )}
+                        <button
+                          onClick={() => handleEditNote(note)}
+                          className="text-blue-600 hover:text-blue-800 transition-colors"
+                          title="Edit note"
+                        >
+                          <Edit className="w-4 h-4" />
+                        </button>
+                        <button
+                          onClick={() => handleDeleteNote(note._id)}
+                          className="text-red-600 hover:text-red-800 transition-colors"
+                          title="Delete note"
+                        >
+                          <Trash className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+                </div>
+
+                {/* Notes Pagination */}
+                {totalNotesPages > 1 && (
+                  <div className="mt-6 flex items-center justify-between">
+                    <div className="text-sm text-gray-600">
+                      Showing {startNotesIndex + 1}-{Math.min(startNotesIndex + notesPerPage, filteredNotes.length)} of {filteredNotes.length} notes
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <button 
+                        onClick={() => goToNotesPage(notesPage - 1)} 
+                        disabled={notesPage === 1} 
+                        className="p-2 rounded-md hover:bg-gray-100 disabled:opacity-50"
+                      >
+                        <ChevronLeft className="w-5 h-5" />
+                      </button>
+                      {Array.from({ length: totalNotesPages }).map((_, idx) => {
+                        const page = idx + 1
+                        return (
+                          <button 
+                            key={page} 
+                            onClick={() => goToNotesPage(page)} 
+                            className={`px-3 py-1 rounded-md ${page === notesPage ? 'bg-blue-600 text-white' : 'hover:bg-gray-100'}`}
+                          >
+                            {page}
+                          </button>
+                        )
+                      })}
+                      <button 
+                        onClick={() => goToNotesPage(notesPage + 1)} 
+                        disabled={notesPage === totalNotesPages} 
+                        className="p-2 rounded-md hover:bg-gray-100 disabled:opacity-50"
+                      >
+                        <ChevronRight className="w-5 h-5" />
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        )}
+
+        {/* Summary Footer */}
+        <div className="mt-8 bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+            <div>
+              <div className="text-2xl font-bold text-blue-600">{userNotes.length}</div>
+              <div className="text-sm text-gray-600 dark:text-gray-300">Total Notes</div>
+            </div>
+            <div>
+              <div className="text-2xl font-bold text-green-600">
+                {userNotes.filter(note => note.isPublic).length}
+              </div>
+              <div className="text-sm text-gray-600 dark:text-gray-300">Public Notes</div>
+            </div>
+            <div>
+              <div className="text-2xl font-bold text-purple-600">
+                {userNotes.filter(note => note.tags && note.tags.length > 0).length}
+              </div>
+              <div className="text-sm text-gray-600 dark:text-gray-300">Tagged Notes</div>
+            </div>
+            <div>
+              <div className="text-2xl font-bold text-orange-600">
+                {userNotes.filter(note => note.pdfId).length}
+              </div>
+              <div className="text-sm text-gray-600 dark:text-gray-300">PDF-linked Notes</div>
+            </div>
+          </div>
         </div>
       </div>
+
+      {/* Edit Note Modal */}
+      <EditNoteModal
+        isOpen={editModalOpen}
+        note={noteToEdit}
+        onClose={() => {
+          setEditModalOpen(false);
+          setNoteToEdit(null);
+        }}
+        onSave={handleSaveNote}
+      />
+
+      {/* Debug Panel - Remove in production */}
+      <NotesDebugPanel />
     </div>
-  )
+  );
 }
 
 export default MyRack

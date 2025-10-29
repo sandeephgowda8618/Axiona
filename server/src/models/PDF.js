@@ -14,12 +14,18 @@ const PDFSchema = new Schema({
     required: true,
     trim: true
   },
+  // GridFS file reference
+  gridFSFileId: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: 'fs.files' // GridFS files collection
+  },
   fileUrl: {
     type: String,
     required: true,
     validate: {
       validator: function(v) {
-        return /^https?:\/\/.+\.pdf$/i.test(v);
+        return /^(https?:\/\/.+\.pdf$|\/docs\/.+\.pdf$|\/api\/pdfs\/file\/.+)$/i.test(v);
       },
       message: 'Invalid PDF URL format'
     }
@@ -42,7 +48,7 @@ const PDFSchema = new Schema({
   domain: {
     type: String,
     trim: true,
-    enum: ['CS', 'ML', 'DBMS', 'OS', 'DSA', 'Networks', 'Security', 'AI', 'Web Dev', 'Mobile Dev', 'Other']
+    enum: ['CS', 'ML', 'DBMS', 'OS', 'DSA', 'Networks', 'Security', 'AI', 'Web Dev', 'Mobile Dev', 'AFLL', 'Math', 'Other']
   },
   year: {
     type: Number,
@@ -75,7 +81,7 @@ const PDFSchema = new Schema({
     default: false
   },
   uploadedBy: {
-    type: Schema.Types.ObjectId,
+    type: String, // Firebase UID
     ref: 'User',
     required: true
   },

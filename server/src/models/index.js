@@ -3,6 +3,7 @@ const { User } = require('./User');
 const { Video } = require('./Video');
 const { PDF } = require('./PDF');
 const { Comment } = require('./Comment');
+const { Highlight } = require('./Highlight');
 
 // Supporting/Event collections
 const { WatchHistory } = require('./WatchHistory');
@@ -31,6 +32,7 @@ module.exports = {
   Video,
   PDF,
   Comment,
+  Highlight,
   WatchHistory,
   SavedVideo,
   LikedVideo,
@@ -48,5 +50,6 @@ module.exports = {
   TopTutorial,
   PerformanceInsight,
   Export,
-  StudyMaterial
+  StudyMaterial,
+  Highlight
 };

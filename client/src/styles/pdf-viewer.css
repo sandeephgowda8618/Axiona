@@ -1,0 +1,237 @@
+/* COMPLETELY ELIMINATE ALL PDF.JS/REACT-PDF-VIEWER UI ELEMENTS */
+.pdf-viewer-container {
+  /* Override all toolbar heights */
+  --rpv-toolbar-height: 0px !important;
+}
+
+/* NUCLEAR OPTION: Hide ANY element that could be a toolbar */
+.pdf-viewer-container *:not(.rpv-core__inner-pages):not(.rpv-core__page-layer):not(.rpv-core__text-layer):not(.rpv-core__annotation-layer):not(.rpv-core__canvas-layer):not(canvas):not(.rpv-core__page):not(.custom-pdf-toolbar) {
+  /* If it's not essential PDF content or our custom toolbar, hide it */
+}
+
+/* Hide default react-pdf-viewer core toolbar specifically */
+.pdf-viewer-container .rpv-core__inner-container > div:first-child,
+.pdf-viewer-container .rpv-core__inner-container > div:first-of-type {
+  display: none !important;
+  height: 0 !important;
+  max-height: 0 !important;
+  min-height: 0 !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  position: absolute !important;
+  z-index: -9999 !important;
+  overflow: hidden !important;
+}
+
+/* Target specific toolbar classes */
+.pdf-viewer-container .rpv-core__toolbar,
+.pdf-viewer-container .rpv-toolbar,
+.pdf-viewer-container .rpv-default-layout__toolbar,
+.pdf-viewer-container .rpv-default-layout__main-toolbar,
+.pdf-viewer-container [data-testid="default-layout__toolbar"],
+.pdf-viewer-container [data-testid="toolbar"],
+.pdf-viewer-container [data-testid="core__toolbar"],
+.pdf-viewer-container [role="toolbar"],
+.pdf-viewer-container div[role="toolbar"],
+.pdf-viewer-container .toolbar,
+.pdf-viewer-container #toolbar,
+.pdf-viewer-container .pdfViewer-toolbar {
+  display: none !important;
+  height: 0 !important;
+  max-height: 0 !important;
+  min-height: 0 !important;
+  width: 0 !important;
+  max-width: 0 !important;
+  min-width: 0 !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  position: absolute !important;
+  z-index: -9999 !important;
+  overflow: hidden !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Hide ALL possible sidebar variations */
+.pdf-viewer-container .rpv-core__sidebar,
+.pdf-viewer-container .rpv-default-layout__sidebar,
+.pdf-viewer-container [data-testid="default-layout__sidebar"],
+.pdf-viewer-container [data-testid="sidebar"],
+.pdf-viewer-container .sidebar,
+.pdf-viewer-container #sidebar {
+  display: none !important;
+  width: 0 !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  position: absolute !important;
+  z-index: -9999 !important;
+}
+
+/* Hide all buttons and controls */
+.pdf-viewer-container button.rpv-core__button,
+.pdf-viewer-container .rpv-core__popover,
+.pdf-viewer-container .rpv-core__tooltip,
+.pdf-viewer-container .rpv-core__button,
+.pdf-viewer-container button[title],
+.pdf-viewer-container button[aria-label],
+.pdf-viewer-container .rpv-page-navigation__current-page-input,
+.pdf-viewer-container .rpv-page-navigation__current-page-label,
+.pdf-viewer-container .rpv-zoom__level {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
+/* Make sure the viewer takes full space */
+.pdf-viewer-container .rpv-core__inner-container {
+  width: 100% !important;
+  height: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.pdf-viewer-container .rpv-core__inner-pages {
+  margin: 0 !important;
+  padding: 20px !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Style for page container */
+.pdf-viewer-container .rpv-core__page-layer {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+/* Remove any remaining controls at the document level */
+.pdf-viewer-container .rpv-core__doc-container > *:not(.rpv-core__inner-container) {
+  display: none !important;
+}
+
+/* Specifically target any remaining toolbar-like elements */
+.pdf-viewer-container > div > div:first-child:not([class*="inner"]):not([class*="page"]) {
+  display: none !important;
+}
+
+/* Override any inline styles that might show toolbars */
+.pdf-viewer-container [style*="toolbar"] {
+  display: none !important;
+}
+
+/* Remove default layout margins */
+.pdf-viewer-container .rpv-default-layout__container > .rpv-default-layout__main {
+  margin-top: 0 !important;
+}
+
+/* Style zoom slider */
+.slider::-webkit-slider-thumb {
+  appearance: none;
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  background: #3b82f6;
+  cursor: pointer;
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.slider::-moz-range-thumb {
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  background: #3b82f6;
+  cursor: pointer;
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Fullscreen styles */
+.pdf-viewer-fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  background: white;
+}
+
+/* Custom scrollbar for PDF pages */
+.pdf-viewer-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.pdf-viewer-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.pdf-viewer-container::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+.pdf-viewer-container::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Highlight overlay styles */
+.rpv-highlight__area {
+  opacity: 0.4;
+  transition: opacity 0.2s ease;
+}
+
+.rpv-highlight__area:hover {
+  opacity: 0.6;
+}
+
+/* Annotation toolbar animations */
+.annotation-toolbar-enter {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.annotation-toolbar-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 200ms, transform 200ms;
+}
+
+.annotation-toolbar-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.annotation-toolbar-exit-active {
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 200ms, transform 200ms;
+}
+
+/* Search highlight styles */
+.rpv-search__highlight {
+  background: #ffeb3b !important;
+  border-radius: 2px;
+}
+
+.rpv-search__highlight--current {
+  background: #ff9800 !important;
+}
+
+/* Floating Notes Modal Styles */
+.notes-modal-overlay {
+  pointer-events: auto !important;
+  z-index: 99999 !important;
+}
+
+/* Ensure PDF viewer doesn't interfere */
+.pdf-viewer-container {
+  position: relative;
+  z-index: 1;
+}
+
+/* Prevent text selection while dragging */
+.select-none {
+  user-select: none;
+}

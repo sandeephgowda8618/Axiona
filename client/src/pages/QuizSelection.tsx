@@ -149,34 +149,6 @@ const QuizSelection: React.FC = () => {
 
   return (
     <div className="min-h-screen dashboard-bg">
-      {/* Header */}
-      <header className="app-header">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <Link to="/" className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-indigo-600 rounded flex items-center justify-center">
-                <span className="text-white font-bold">S</span>
-              </div>
-              <span className="text-xl font-bold text-gray-900">Study-AI Mini</span>
-            </Link>
-            
-            <nav className="hidden md:flex items-center space-x-6">
-              <Link to="/tutorial-hub" className="text-gray-600 hover:text-gray-900">Tutorial Hub</Link>
-              <Link to="/study-pes" className="text-gray-600 hover:text-gray-900">StudyPES</Link>
-              <Link to="/conference" className="text-gray-600 hover:text-gray-900">Conference</Link>
-              <Link to="/library" className="text-gray-600 hover:text-gray-900">Library</Link>
-              <Link to="/profile" className="text-gray-600 hover:text-gray-900">Profile</Link>
-            </nav>
-
-            <div className="flex items-center space-x-4">
-              <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-                <span className="text-gray-600">👤</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
-
       {/* Loading State */}
       {isLoading && (
         <div className="flex items-center justify-center min-h-screen">
