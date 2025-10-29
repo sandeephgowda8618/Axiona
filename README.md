@@ -4,12 +4,26 @@ A modern, AI-powered study platform built with React 18 + Vite + Tailwind CSS, f
 
 ## 📋 **Table of Contents**
 - [Project Overview](#project-overview)
+- [Documentation](#documentation)
 - [Page Components Analysis](#page-components-analysis)
 - [UI/UX Design System](#uiux-design-system)
 - [Feature Requirements](#feature-requirements)
 - [Tech Stack](#tech-stack)
 - [Project Structure](#project-structure)
 - [Getting Started](#getting-started)
+
+## 📚 **Documentation**
+
+For comprehensive documentation, please refer to the [`documentation/`](./documentation/) folder:
+
+- **[📖 Documentation Index](./documentation/INDEX.md)** - Complete guide to all documentation
+- **[🏗️ Architecture](./documentation/architecture/)** - System design and tech stack
+- **[⚙️ Backend](./documentation/backend/)** - Server-side implementation guides
+- **[🎨 Frontend](./documentation/frontend/)** - Client-side development docs
+- **[✨ Features](./documentation/features/)** - Specific feature implementations
+- **[📊 Implementation Summary](./documentation/IMPLEMENTATION_SUMMARY.md)** - Current project status
+
+For quick setup, see [Getting Started](#getting-started) below.
 
 ## 🎯 **Project Overview**
 
@@ -576,3 +590,20 @@ MIT License - see LICENSE file for details.
 ---
 
 **Built with ❤️ using MERN + Python + WebRTC**
+
+## 📚 **Documentation**
+
+All comprehensive documentation has been organized in the `/documentation` folder:
+
+- **[Documentation Index](documentation/README.md)** - Complete guide to all documentation
+- **Architecture & Tech Stack** - System design and technology decisions
+- **Backend Implementation** - Complete backend setup and API documentation
+- **Frontend Components** - UI components and page implementation guides
+- **Features & Integrations** - Specific feature documentation (PDF system, video conferencing, etc.)
+
+### Quick Links:
+- 🚀 **[Backend Recovery Guide](documentation/backend/BACKEND_RECOVERY_GUIDE.md)** - Rebuild the backend from scratch
+- 🎨 **[Component Library](documentation/frontend/COMPONENT_LIBRARY.md)** - Frontend component documentation
+- 🔐 **[Authentication System](documentation/backend/AUTH_SYSTEM_GUIDE.md)** - Firebase auth setup
+- 📹 **[Video Conference Architecture](documentation/architecture/VIDEO_CONFERENCE_ARCHITECTURE.md)** - WebRTC implementation
+- 📄 **[PDF Highlight System](documentation/features/PDF_HIGHLIGHT_SYSTEM.md)** - PDF viewing and annotation

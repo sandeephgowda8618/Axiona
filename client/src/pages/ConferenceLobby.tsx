@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Plus, ArrowRight, Users, Lock, Lightbulb, Save, FileText } from 'lucide-react';
+import { meetingsAPI } from '../services/meetingsAPI';
+import { auth } from '../config/firebase';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 const ConferenceLobby: React.FC = () => {
   const navigate = useNavigate();
