@@ -48,6 +48,9 @@ import { PDFMaterial, Highlight } from '../services/api';
 import { useAuth } from '../contexts/AuthContext';
 import { useNotes } from '../hooks/useNotes';
 
+// Configure PDF.js worker with local files instead of CDN
+const pdfWorkerUrl = '/pdf.worker.min.js';
+
 interface HighlightArea {
   id: string;
   pageIndex: number;
@@ -915,7 +918,7 @@ ${noteContent}
 
         {/* PDF Viewer */}
         <div className="flex-1 bg-gray-100 relative">
-          <Worker workerUrl={`https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js`}>
+          <Worker workerUrl={pdfWorkerUrl}>
             <div style={{ height: '100%' }} className="pdf-viewer-container">
               <Viewer
                 fileUrl={`http://localhost:5050/api/pdfs/file/${pdf.gridFSFileId}`}

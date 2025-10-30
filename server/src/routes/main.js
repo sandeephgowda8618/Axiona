@@ -872,6 +872,46 @@ function estimatePages(fileSize) {
 
 // HIGHLIGHT/ANNOTATION ROUTES
 
+// Get highlights for a PDF - Frontend expects this path
+router.get('/highlights/pdf/:pdfId', async (req, res) => {
+  try {
+    const { Highlight } = require('../models/Highlight');
+    const { pdfId } = req.params;
+    const { userId } = req.query;
+    
+    console.log('🔍 Highlights route hit with pdfId:', pdfId, 'userId:', userId);
+
+    // If no userId provided, return empty highlights (not an error)
+    if (!userId) {
+      return res.json({
+        success: true,
+        data: [],
+        message: 'No user ID provided, returning empty highlights'
+      });
+    }
+
+    const highlights = await Highlight.find({ 
+      pdfId, 
+      userId 
+    }).sort({ pageNumber: 1, createdAt: 1 });
+
+    console.log('📝 Found highlights:', highlights.length);
+    
+    res.json({
+      success: true,
+      data: highlights || [],
+      count: highlights ? highlights.length : 0
+    });
+  } catch (error) {
+    console.error('Get highlights error:', error);
+    res.status(500).json({ 
+      success: false,
+      error: 'Database error occurred while fetching highlights',
+      data: []
+    });
+  }
+});
+
 // Get highlights for a PDF
 router.get('/pdfs/:pdfId/highlights', async (req, res) => {
   try {

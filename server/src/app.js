@@ -36,6 +36,8 @@ app.use(cors({
   origin: [
     'http://localhost:5173',
     'http://localhost:5174',
+    'http://192.168.137.133:5173',
+    'http://192.168.137.133:5174',
     'http://10.238.47.49:5173',
     'http://10.238.47.49:5174',
     process.env.CLIENT_URL

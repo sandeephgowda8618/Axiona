@@ -59,7 +59,7 @@ db.once('open', async () => {
         class: "Third Year CSE",
         description: "Introduction to Sets theory, set operations, and mathematical foundations for automata theory.",
         author: "AFLL Course Material",
-        downloadCount: 245
+        downloadCount: 325
       },
       {
         topic: "Functions & Relations - AFLL",
