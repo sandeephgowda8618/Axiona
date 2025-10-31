@@ -7,6 +7,11 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Large PDF files (should be stored in LFS or external storage)
+docs/library/*.pdf
+docs/library/
+**/library/*.pdf
+
 # Environment variables
 .env
 .env.local

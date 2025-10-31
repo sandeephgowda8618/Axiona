@@ -8,6 +8,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const notesRouter = require('./notes'); // Add notes router
 const meetingsRouter = require('./meetings'); // Add meetings router
+const booksRouter = require('./books'); // Add books router
 
 const router = Router();
 
@@ -1122,5 +1123,8 @@ router.use('/notes', notesRouter);
 
 // Mount the meetings router
 router.use('/meetings', meetingsRouter);
+
+// Mount the books router
+router.use('/books', booksRouter);
 
 module.exports = router;
