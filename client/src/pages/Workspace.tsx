@@ -26,10 +26,7 @@ import {
   RotateCcw,
   User,
   Bot,
-  PlayCircle,
-  Folder,
-  Youtube,
-  Clock
+ 
 } from 'lucide-react'
 import { Worker } from '@react-pdf-viewer/core';
 import { Viewer } from '@react-pdf-viewer/core';

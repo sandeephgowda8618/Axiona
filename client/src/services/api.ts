@@ -136,6 +136,7 @@ export interface Note {
   pdfTitle: string
   pageNumber?: number
   tags: string[]
+  isPublic?: boolean
   lastViewedAt: string
   createdAt: string
   updatedAt: string
@@ -150,12 +151,14 @@ export interface CreateNoteRequest {
   userId: string
   pageNumber?: number
   tags?: string[]
+  isPublic?: boolean
 }
 
 export interface UpdateNoteRequest {
   title?: string
   content?: string
   tags?: string[]
+  isPublic?: boolean
 }
 
 export interface PaginatedResponse<T> {

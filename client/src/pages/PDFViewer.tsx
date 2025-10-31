@@ -48,8 +48,8 @@ import { PDFMaterial, Highlight } from '../services/api';
 import { useAuth } from '../contexts/AuthContext';
 import { useNotes } from '../hooks/useNotes';
 
-// Configure PDF.js worker with local files instead of CDN
-const pdfWorkerUrl = '/pdf.worker.min.js';
+// Configure PDF.js worker with CDN to avoid version mismatch issues
+const pdfWorkerUrl = 'https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js';
 
 interface HighlightArea {
   id: string;

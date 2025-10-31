@@ -34,7 +34,7 @@ const NotesModal: React.FC<NotesModalProps> = ({
         setTitle(existingNote.title);
         setContent(existingNote.content);
         setTags(existingNote.tags || []);
-        setIsPublic(existingNote.isPublic);
+        setIsPublic(existingNote.isPublic || false);
       } else {
         // Set default title for new notes
         setTitle(`Notes: ${pdfTitle}`);

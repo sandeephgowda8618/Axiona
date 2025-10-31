@@ -3,7 +3,6 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import Layout from '../components/Layout'
 import ProtectedRoute from '../components/ProtectedRoute'
 import LandingPage from '../pages/LandingPage'
-import TestLanding from '../pages/TestLanding'
 import LoginPage from '../pages/LoginPage'
 import AuthPage from '../pages/AuthPage'
 import ProfileDashboard from '../pages/ProfileDashboard'
@@ -20,6 +19,7 @@ import StudyMaterialsPES from '../pages/StudyMaterialsPES'
 import PDFViewer from '../pages/PDFViewer'
 import SubjectViewer from '../pages/SubjectViewer'
 import Library from '../pages/Library'
+import BookReader from '../pages/BookReader'
 import TutorialHub from '../pages/TutorialHub'
 import VideoPlayer from '../pages/VideoPlayer'
 import Workspace from '../pages/Workspace'
@@ -32,7 +32,6 @@ const AppRoutes: React.FC = () => {
     <Routes>
       {/* Public Routes - No Navigation */}
       <Route path="/" element={<LandingPage />} />
-      <Route path="/landing" element={<TestLanding />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/auth" element={<AuthPage />} />
       <Route path="/forgot-password" element={<ForgotPasswordPage />} />
@@ -57,6 +56,7 @@ const AppRoutes: React.FC = () => {
       <Route path="/subject/:domain" element={<ProtectedRoute><Layout><SubjectViewer /></Layout></ProtectedRoute>} />
       <Route path="/pdf/:pdfId" element={<ProtectedRoute><Layout><PDFViewer /></Layout></ProtectedRoute>} />
       <Route path="/library" element={<ProtectedRoute><Layout><Library /></Layout></ProtectedRoute>} />
+      <Route path="/library/reader/:bookId" element={<ProtectedRoute><BookReader /></ProtectedRoute>} />
       <Route path="/tutorial-hub" element={<ProtectedRoute><Layout><TutorialHub /></Layout></ProtectedRoute>} />
       <Route path="/tutorial-player/:tutorialId" element={<ProtectedRoute><Layout><VideoPlayer /></Layout></ProtectedRoute>} />
       <Route path="/video/:id" element={<ProtectedRoute><Layout><VideoPlayer /></Layout></ProtectedRoute>} />

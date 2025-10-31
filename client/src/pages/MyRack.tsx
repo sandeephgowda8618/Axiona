@@ -11,12 +11,11 @@ import {
   Calendar,
   Download
 } from 'lucide-react'
-import { apiService, Note } from '../services/api'
+import { Note } from '../services/api'
 import { useAuth, mockUser } from '../contexts/AuthContext'
 import { useNotes } from '../hooks/useNotes'
 import { useNotesContext } from '../contexts/NotesContext'
 import EditNoteModal from '../components/EditNoteModal'
-import NotesDebugPanel from '../components/NotesDebugPanel'
 
 const MyRack: React.FC = () => {
   const { user, isAuthenticated } = useAuth();
@@ -55,8 +54,6 @@ const MyRack: React.FC = () => {
   // Listen for refresh triggers from other components
   useEffect(() => {
     if (lastRefreshTrigger > 0 && currentUser) {
-      console.log('🔄 MyRack: Refreshing notes due to external trigger at', new Date(lastRefreshTrigger).toISOString());
-      console.log('🔄 MyRack: Current user:', currentUser.email, 'Active tab:', activeTab);
       refreshNotes();
     }
   }, [lastRefreshTrigger, currentUser, refreshNotes]);
@@ -372,9 +369,6 @@ const MyRack: React.FC = () => {
         }}
         onSave={handleSaveNote}
       />
-
-      {/* Debug Panel - Remove in production */}
-      <NotesDebugPanel />
     </div>
   );
 }
