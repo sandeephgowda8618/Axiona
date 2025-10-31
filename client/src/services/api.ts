@@ -532,8 +532,13 @@ class ApiService {
   }
 
   // PDF Highlights/Annotations APIs
-  async getHighlights(pdfId: string): Promise<Highlight[]> {
-    const response = await fetch(`${this.baseURL}/highlights/pdf/${pdfId}`, {
+  async getHighlights(pdfId: string, userId?: string): Promise<Highlight[]> {
+    const url = new URL(`${this.baseURL}/highlights/pdf/${pdfId}`)
+    if (userId) {
+      url.searchParams.append('userId', userId)
+    }
+    
+    const response = await fetch(url.toString(), {
       method: 'GET',
       headers: this.getHeaders()
     })

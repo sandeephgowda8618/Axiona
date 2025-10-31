@@ -7,7 +7,6 @@ import {
   ChevronRight,
   FileText
 } from 'lucide-react';
-import FloatingWorkspaceButton from '../components/FloatingWorkspaceButton';
 import { apiService, Subject } from '../services/api';
 
 const StudyMaterialsPES: React.FC = () => {
@@ -140,8 +139,6 @@ const StudyMaterialsPES: React.FC = () => {
           ))}
         </div>
       </div>
-
-      <FloatingWorkspaceButton />
     </div>
   );
 };

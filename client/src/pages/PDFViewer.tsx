@@ -229,7 +229,8 @@ const PDFViewer: React.FC = () => {
         setTotalPages(pdfData.pages || 0);
         
         // Load existing highlights
-        const highlightsData = await apiService.getHighlights(pdfId);
+        const userId = user?.id || 'guest';
+        const highlightsData = await apiService.getHighlights(pdfId, userId);
         setHighlights(highlightsData.map(transformHighlight));
         
       } catch (err) {

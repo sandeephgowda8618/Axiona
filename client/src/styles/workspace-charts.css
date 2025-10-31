@@ -39,3 +39,231 @@
 .workspace-ai-chart > * {
   min-height: 0;
 }
+
+/* Workspace-specific PDF Viewer Styles - Only apply within workspace */
+.workspace-pdf-container .rpv-core__viewer-container {
+  height: 100% !important;
+  width: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  background: #f8f9fa !important;
+}
+
+.workspace-pdf-container .rpv-core__inner-pages {
+  flex: 1 !important;
+  overflow: auto !important;
+  background: #f8f9fa !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.workspace-pdf-container .rpv-core__page-layer {
+  margin: 0 auto !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+  background: white !important;
+  cursor: pointer !important;
+  border-radius: 0 !important;
+  overflow: hidden !important;
+}
+
+/* Remove default spacing that creates gaps */
+.workspace-pdf-container .rpv-core__page {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Enable scrolling for PDF content in workspace only */
+.workspace-pdf-container .rpv-core__inner-pages::-webkit-scrollbar {
+  width: 8px;
+}
+
+.workspace-pdf-container .rpv-core__inner-pages::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.workspace-pdf-container .rpv-core__inner-pages::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+.workspace-pdf-container .rpv-core__inner-pages::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Default layout plugin styles for workspace */
+.workspace-pdf-container .rpv-default-layout__main {
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  background: #f8f9fa !important;
+}
+
+.workspace-pdf-container .rpv-default-layout__body {
+  flex: 1 !important;
+  overflow: hidden !important;
+  display: flex !important;
+  background: #f8f9fa !important;
+}
+
+.workspace-pdf-container .rpv-default-layout__main-container {
+  flex: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  background: #f8f9fa !important;
+}
+
+/* Enhanced toolbar styling for workspace */
+.workspace-pdf-container .rpv-toolbar {
+  flex-shrink: 0 !important;
+  background: white !important;
+  border-bottom: 1px solid #e5e7eb !important;
+  padding: 8px 16px !important;
+  z-index: 10 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Ensure navigation buttons work in workspace */
+.workspace-pdf-container .rpv-toolbar button {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  border-radius: 4px !important;
+  transition: background-color 0.2s ease !important;
+}
+
+.workspace-pdf-container .rpv-toolbar button:hover {
+  background-color: #f3f4f6 !important;
+}
+
+.workspace-pdf-container .rpv-toolbar input {
+  pointer-events: auto !important;
+  cursor: text !important;
+  border-radius: 4px !important;
+  border: 1px solid #d1d5db !important;
+  padding: 4px 8px !important;
+}
+
+/* Page navigation styles for workspace */
+.workspace-pdf-container .rpv-core__page {
+  margin-bottom: 0 !important;
+  pointer-events: auto !important;
+}
+
+/* Zoom controls for workspace */
+.workspace-pdf-container .rpv-zoom__popover {
+  z-index: 1000 !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+  border-radius: 8px !important;
+}
+
+/* Search functionality for workspace */
+.workspace-pdf-container .rpv-search__popover {
+  z-index: 1000 !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+  border-radius: 8px !important;
+}
+
+/* Sidebar (thumbnails, bookmarks, etc.) for workspace */
+.workspace-pdf-container .rpv-default-layout__sidebar {
+  background: white !important;
+  border-right: 1px solid #e5e7eb !important;
+  box-shadow: 1px 0 3px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Ensure all interactive elements work in workspace */
+.workspace-pdf-container .rpv-core__viewer * {
+  pointer-events: auto !important;
+}
+
+/* Remove any unwanted margins/padding */
+.workspace-pdf-container .rpv-core__doc {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Remove gaps from the main viewer */
+.workspace-pdf-container .rpv-core__viewer {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Remove margins from pages container */
+.workspace-pdf-container .rpv-core__pages-container {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Ensure no gaps in default layout */
+.workspace-pdf-container .rpv-default-layout__body {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.workspace-pdf-container .rpv-default-layout__main-container {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Improve page border and spacing */
+.workspace-pdf-container .rpv-core__page-layer canvas {
+  display: block !important;
+  border-radius: 4px !important;
+}
+
+/* Clean up any text layer overlays */
+.workspace-pdf-container .rpv-core__text-layer {
+  border-radius: 4px !important;
+}
+
+/* Remove the gap between toolbar and PDF content */
+.workspace-pdf-container .rpv-default-layout__toolbar {
+  margin-bottom: 0 !important;
+  border-bottom: 1px solid #e5e7eb !important;
+}
+
+/* Ensure no gap in the viewer container */
+.workspace-pdf-container .rpv-core__viewer-container > div:first-child {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* Remove any spacing from the pages wrapper */
+.workspace-pdf-container .rpv-core__pages {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* Target the specific container that might have top spacing */
+.workspace-pdf-container .rpv-default-layout__main > div:first-child {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+.workspace-pdf-container .rpv-default-layout__body > div:first-child {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* Force remove any top spacing from all PDF viewer elements */
+.workspace-pdf-container * {
+  margin-top: 0 !important;
+}
+
+.workspace-pdf-container *:first-child {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* Specifically target the PDF content area */
+.workspace-pdf-container .rpv-core__inner-container {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+.workspace-pdf-container [data-testid="core__inner-pages"] {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}

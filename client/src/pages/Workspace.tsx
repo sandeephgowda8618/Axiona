@@ -25,8 +25,25 @@ import {
   Settings,
   RotateCcw,
   User,
-  Bot
+  Bot,
+  PlayCircle,
+  Folder,
+  Youtube,
+  Clock
 } from 'lucide-react'
+import { Worker } from '@react-pdf-viewer/core';
+import { Viewer } from '@react-pdf-viewer/core';
+import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
+import { highlightPlugin } from '@react-pdf-viewer/highlight';
+import { bookmarkPlugin } from '@react-pdf-viewer/bookmark';
+import { searchPlugin } from '@react-pdf-viewer/search';
+import { zoomPlugin } from '@react-pdf-viewer/zoom';
+import { pageNavigationPlugin } from '@react-pdf-viewer/page-navigation';
+import '@react-pdf-viewer/core/lib/styles/index.css';
+import '@react-pdf-viewer/default-layout/lib/styles/index.css';
+import '@react-pdf-viewer/highlight/lib/styles/index.css';
+import '@react-pdf-viewer/bookmark/lib/styles/index.css';
+import '@react-pdf-viewer/search/lib/styles/index.css';
 
 interface WorkspaceContext {
   type: 'video' | 'pdf' | 'material' | 'book'
@@ -72,37 +89,106 @@ const Workspace: React.FC = () => {
   const [totalPages, setTotalPages] = useState(1)
   const [zoomLevel, setZoomLevel] = useState(100)
 
-  useEffect(() => {
-    // Load context from localStorage if available
-    const savedContext = localStorage.getItem('workspaceContext')
-    if (savedContext) {
-      try {
-        const parsedContext = JSON.parse(savedContext)
-        setContext(parsedContext)
-        if (parsedContext.notes) {
-          setNotes(parsedContext.notes)
-        }
-        if (parsedContext.timestamp) {
-          setCurrentTime(parsedContext.timestamp)
-        }
-        if (parsedContext.currentPage) {
-          setCurrentPage(parsedContext.currentPage)
-        }
-      } catch (error) {
-        console.error('Error parsing workspace context:', error)
-      }
-    }
+  // Initialize PDF viewer plugins exactly like SubjectViewer
+  const bookmarkPluginInstance = bookmarkPlugin();
+  const searchPluginInstance = searchPlugin();
+  const zoomPluginInstance = zoomPlugin();
+  
+  // Page navigation plugin with page change tracking
+  const pageNavigationPluginInstance = pageNavigationPlugin({
+    enableShortcuts: true,
+  });
+  
+  // Highlight plugin
+  const highlightPluginInstance = highlightPlugin();
 
-    // Mock initial chat message
-    setChatMessages([
-      {
-        id: '1',
-        type: 'assistant',
-        content: 'Hi! I\'m here to help you with your studies. Feel free to ask me anything about the content you\'re viewing.',
-        timestamp: new Date(),
-        context: 'welcome'
+  // Default layout plugin
+  const defaultLayoutPluginInstance = defaultLayoutPlugin();
+
+  useEffect(() => {
+    // Check for transferred content from floating button
+    const activeContent = localStorage.getItem('workspaceActiveContent');
+    if (activeContent) {
+      try {
+        const parsedContent = JSON.parse(activeContent);
+        console.log('🚀 Workspace received content:', parsedContent);
+        
+        setContext({
+          type: parsedContent.type,
+          content: {
+            id: parsedContent.id,
+            title: parsedContent.title,
+            url: parsedContent.url,
+            pdfData: parsedContent.pdfData,
+            videoData: parsedContent.videoData
+          },
+          currentPage: parsedContent.currentPage || 1,
+          timestamp: parsedContent.currentTime || 0,
+          progress: parsedContent.progress || 0,
+          notes: [],
+          openedAt: parsedContent.transferredAt
+        });
+        
+        if (parsedContent.currentPage) {
+          setCurrentPage(parsedContent.currentPage);
+        }
+        if (parsedContent.currentTime) {
+          setCurrentTime(parsedContent.currentTime);
+        }
+        
+        // Set total pages for PDFs
+        if (parsedContent.type === 'pdf' && parsedContent.pdfData?.pages) {
+          setTotalPages(parsedContent.pdfData.pages);
+        }
+        
+        // Add welcome message with context
+        setChatMessages([
+          {
+            id: '1',
+            type: 'assistant',
+            content: `Hi! I can see you've opened "${parsedContent.title}" from your study materials. I'm here to help you understand this ${parsedContent.type} content. Feel free to ask me any questions!`,
+            timestamp: new Date(),
+            context: parsedContent.title
+          }
+        ]);
+        
+        // Clear the transferred content after loading
+        localStorage.removeItem('workspaceActiveContent');
+      } catch (error) {
+        console.error('Error parsing transferred content:', error);
       }
-    ])
+    } else {
+      // Fall back to old system for backward compatibility
+      const savedContext = localStorage.getItem('workspaceContext');
+      if (savedContext) {
+        try {
+          const parsedContext = JSON.parse(savedContext);
+          setContext(parsedContext);
+          if (parsedContext.notes) {
+            setNotes(parsedContext.notes);
+          }
+          if (parsedContext.timestamp) {
+            setCurrentTime(parsedContext.timestamp);
+          }
+          if (parsedContext.currentPage) {
+            setCurrentPage(parsedContext.currentPage);
+          }
+        } catch (error) {
+          console.error('Error parsing workspace context:', error);
+        }
+      }
+      
+      // Default welcome message
+      setChatMessages([
+        {
+          id: '1',
+          type: 'assistant',
+          content: 'Hi! I\'m here to help you with your studies. Open some content using the workspace button to get started, or feel free to ask me anything!',
+          timestamp: new Date(),
+          context: 'welcome'
+        }
+      ]);
+    }
   }, [])
 
   const handleAddNote = () => {
@@ -182,51 +268,47 @@ const Workspace: React.FC = () => {
       case 'video':
         return (
           <div className="flex-1 bg-black relative">
-            {/* Mock Video Player */}
-            <div className="w-full h-full bg-gray-900 flex items-center justify-center">
-              <div className="text-white text-center">
-                <div className="w-32 h-32 bg-gray-700 rounded-full flex items-center justify-center mb-4 mx-auto">
-                  {isPlaying ? (
-                    <Pause className="h-16 w-16" />
-                  ) : (
+            {/* Real Video Player */}
+            {context.content?.url || context.content?.videoData?.videoUrl ? (
+              <div className="w-full h-full">
+                {context.content.videoData?.youtubeId ? (
+                  // YouTube Video
+                  <iframe
+                    width="100%"
+                    height="100%"
+                    src={`https://www.youtube.com/embed/${context.content.videoData.youtubeId}?start=${Math.floor(currentTime)}&autoplay=0`}
+                    title={context.content.title}
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className="w-full h-full"
+                  />
+                ) : (
+                  // Regular Video
+                  <video
+                    className="w-full h-full object-contain"
+                    controls
+                    src={context.content.url || context.content.videoData?.videoUrl}
+                    onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}
+                    onPlay={() => setIsPlaying(true)}
+                    onPause={() => setIsPlaying(false)}
+                  >
+                    Your browser does not support the video tag.
+                  </video>
+                )}
+              </div>
+            ) : (
+              // Fallback when no video URL
+              <div className="w-full h-full bg-gray-900 flex items-center justify-center">
+                <div className="text-white text-center">
+                  <div className="w-32 h-32 bg-gray-700 rounded-full flex items-center justify-center mb-4 mx-auto">
                     <Play className="h-16 w-16 ml-2" />
-                  )}
-                </div>
-                <p className="text-lg">{context.content?.title}</p>
-                <p className="text-sm opacity-75">Workspace Video Player</p>
-              </div>
-            </div>
-
-            {/* Video Controls */}
-            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
-              <div className="flex items-center space-x-4 text-white">
-                <button
-                  onClick={() => setIsPlaying(!isPlaying)}
-                  className="p-2 hover:bg-white hover:bg-opacity-20 rounded"
-                >
-                  {isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
-                </button>
-                
-                <div className="flex-1 flex items-center space-x-2">
-                  <span className="text-sm">{formatTime(currentTime)}</span>
-                  <div className="flex-1 bg-gray-600 h-1 rounded">
-                    <div 
-                      className="bg-red-600 h-1 rounded"
-                      style={{ width: `${(currentTime / (context.content?.duration || 1000)) * 100}%` }}
-                    />
                   </div>
-                  <span className="text-sm">{context.content?.duration || '0:00'}</span>
+                  <p className="text-lg">{context.content?.title}</p>
+                  <p className="text-sm opacity-75">Video content not available</p>
                 </div>
-
-                <button className="p-2 hover:bg-white hover:bg-opacity-20 rounded">
-                  <Volume2 className="h-5 w-5" />
-                </button>
-
-                <button className="p-2 hover:bg-white hover:bg-opacity-20 rounded">
-                  <Maximize className="h-5 w-5" />
-                </button>
               </div>
-            </div>
+            )}
           </div>
         )
 
@@ -234,60 +316,83 @@ const Workspace: React.FC = () => {
       case 'material':
       case 'book':
         return (
-          <div className="flex-1 bg-white relative">
-            {/* PDF/Document Viewer */}
-            <div className="h-full flex flex-col">
-              {/* Document Controls */}
-              <div className="bg-gray-100 border-b px-4 py-2 flex items-center justify-between">
-                <div className="flex items-center space-x-4">
-                  <h3 className="font-medium text-gray-900">{context.content?.title}</h3>
-                  <div className="flex items-center space-x-2 text-sm text-gray-600">
-                    <span>Page {currentPage} of {totalPages}</span>
+          <div className="flex-1 bg-white relative overflow-hidden">
+            {/* Real PDF Viewer */}
+            {context.content?.url || context.content?.pdfData?.fileUrl ? (
+              <div className="h-full w-full flex flex-col overflow-hidden">
+                {/* Document Header */}
+                <div className="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between flex-shrink-0 shadow-sm">
+                  <div className="flex items-center space-x-4">
+                    <div className="flex items-center space-x-2">
+                      <FileText className="h-5 w-5 text-gray-500" />
+                      <h3 className="font-semibold text-gray-900">{context.content?.title}</h3>
+                    </div>
+                    <div className="flex items-center space-x-3 text-sm text-gray-600 bg-gray-50 px-3 py-1 rounded-full">
+                      <span>Page {currentPage}</span>
+                      {totalPages > 0 && (
+                        <>
+                          <span>of</span>
+                          <span>{totalPages}</span>
+                        </>
+                      )}
+                    </div>
                   </div>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <button
-                    onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
-                    disabled={currentPage <= 1}
-                    className="p-1 hover:bg-gray-200 rounded disabled:opacity-50"
-                  >
-                    <ChevronLeft className="h-4 w-4" />
-                  </button>
-                  <button
-                    onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
-                    disabled={currentPage >= totalPages}
-                    className="p-1 hover:bg-gray-200 rounded disabled:opacity-50"
-                  >
-                    <ChevronRight className="h-4 w-4" />
-                  </button>
-                  <div className="border-l pl-2 ml-2">
-                    <button
-                      onClick={() => setZoomLevel(Math.max(50, zoomLevel - 25))}
-                      className="p-1 hover:bg-gray-200 rounded"
-                    >
-                      <ZoomOut className="h-4 w-4" />
-                    </button>
-                    <span className="mx-2 text-sm">{zoomLevel}%</span>
-                    <button
-                      onClick={() => setZoomLevel(Math.min(200, zoomLevel + 25))}
-                      className="p-1 hover:bg-gray-200 rounded"
-                    >
-                      <ZoomIn className="h-4 w-4" />
-                    </button>
-                  </div>
+
+                {/* PDF Viewer Container with proper constraints */}
+                <div className="flex-1 overflow-auto">
+                  {(() => {
+                    let pdfUrl = context.content.url || context.content.pdfData?.fileUrl;
+                    
+                    // Ensure PDF URL is absolute
+                    if (pdfUrl && !pdfUrl.startsWith('http')) {
+                      pdfUrl = `http://localhost:5050${pdfUrl}`;
+                    }
+                    
+                    console.log('🔍 Raw PDF URL:', context.content.url || context.content.pdfData?.fileUrl);
+                    console.log('🔍 Final PDF URL for viewer:', pdfUrl);
+                    console.log('🔍 Context content:', context.content);
+                    
+                    return (
+                      <div className="flex-1 bg-gray-100 relative overflow-hidden">
+                        <Worker workerUrl={`https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js`}>
+                          <div style={{ height: '100%', width: '100%' }} className="relative">
+                            <Viewer
+                              fileUrl={pdfUrl}
+                              plugins={[
+                                defaultLayoutPluginInstance,
+                                highlightPluginInstance,
+                                bookmarkPluginInstance,
+                                searchPluginInstance,
+                                zoomPluginInstance,
+                                pageNavigationPluginInstance,
+                              ]}
+                              theme="light"
+                              defaultScale={1.2}
+                              onDocumentLoad={(e) => {
+                                console.log('PDF loaded with', e.doc.numPages, 'pages');
+                              }}
+                              onPageChange={(e) => setCurrentPage(e.currentPage + 1)}
+                              renderLoader={(percentages: number) => (
+                                <div className="flex items-center justify-center h-full bg-gray-50">
+                                  <div className="text-center">
+                                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-2"></div>
+                                    <p className="text-sm text-gray-600">Loading PDF... {Math.round(percentages)}%</p>
+                                  </div>
+                                </div>
+                              )}
+                            />
+                          </div>
+                        </Worker>
+                      </div>
+                    );
+                  })()}
                 </div>
               </div>
-
-              {/* Document Content */}
+            ) : (
+              // Fallback when no PDF URL
               <div className="flex-1 overflow-auto bg-gray-50 p-8">
-                <div 
-                  className="bg-white shadow-lg mx-auto"
-                  style={{ 
-                    width: `${zoomLevel}%`,
-                    maxWidth: '800px',
-                    minHeight: '1000px'
-                  }}
-                >
+                <div className="bg-white shadow-lg mx-auto max-w-4xl min-h-screen">
                   <div className="p-8">
                     <div className="text-center mb-8">
                       <FileText className="h-16 w-16 text-gray-400 mx-auto mb-4" />
@@ -295,24 +400,13 @@ const Workspace: React.FC = () => {
                         {context.content?.title}
                       </h2>
                       <p className="text-gray-600">
-                        {context.content?.description || 'Document content would be displayed here'}
-                      </p>
-                    </div>
-                    <div className="prose max-w-none">
-                      <p className="text-gray-700 leading-relaxed">
-                        This is a mock document viewer. In a real implementation, this would display 
-                        the actual PDF or document content. The content would be interactive, allowing 
-                        users to highlight text, add annotations, and take notes directly on the document.
-                      </p>
-                      <p className="text-gray-700 leading-relaxed mt-4">
-                        The workspace provides a unified environment for studying different types of content 
-                        with integrated note-taking and AI assistance.
+                        PDF content not available. Please try opening the document again.
                       </p>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
+            )}
           </div>
         )
 
@@ -322,9 +416,9 @@ const Workspace: React.FC = () => {
   }
 
   return (
-    <div className="h-screen bg-gray-50 flex flex-col">
+    <div className="h-screen bg-gray-50 flex flex-col overflow-hidden">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
+      <div className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between flex-shrink-0">
         <div className="flex items-center space-x-4">
           <button
             onClick={() => navigate(-1)}
@@ -359,14 +453,14 @@ const Workspace: React.FC = () => {
         </div>
       </div>
 
-      <div className="flex-1 flex">
+      <div className="flex-1 flex overflow-hidden min-h-0">
         {/* Main Content Area */}
-        <div className="flex-1 flex">
+        <div className="flex-1 flex overflow-hidden">
           {renderContent()}
         </div>
 
         {/* Right Sidebar - Notes & Chat */}
-        <div className="w-96 bg-white border-l border-gray-200 flex flex-col">
+        <div className="w-96 bg-white border-l border-gray-200 flex flex-col flex-shrink-0">
           {/* Tab Navigation */}
           <div className="border-b border-gray-200">
             <div className="flex">

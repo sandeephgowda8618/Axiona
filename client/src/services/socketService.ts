@@ -52,6 +52,7 @@ export interface ChatMessage {
 class SocketService {
   private socket: Socket | null = null;
   private eventHandlers: Map<string, Function[]> = new Map();
+  private queuedHandlers: Array<{event: string, handler: Function}> = [];
 
   /**
    * Connect to Socket.IO server with Firebase authentication
@@ -80,6 +81,12 @@ class SocketService {
       // Set up connection handlers
       this.socket.on('connect', () => {
         console.log('✅ Connected to video conference server');
+        
+        // Process queued handlers
+        this.queuedHandlers.forEach(({ event, handler }) => {
+          this.socket!.on(event, handler as any);
+        });
+        this.queuedHandlers = []; // Clear the queue
       });
 
       this.socket.on('disconnect', (reason) => {
@@ -242,7 +249,13 @@ class SocketService {
    */
   on<K extends keyof SocketServiceEvents>(event: K, handler: SocketServiceEvents[K]): void {
     if (!this.socket) {
-      throw new Error('Socket not connected');
+      console.warn('Socket not connected yet, queuing event handler for:', event);
+      // Queue the handler to be registered when socket connects
+      if (!this.queuedHandlers) {
+        this.queuedHandlers = [];
+      }
+      this.queuedHandlers.push({ event, handler });
+      return;
     }
 
     this.socket.on(event, handler as any);

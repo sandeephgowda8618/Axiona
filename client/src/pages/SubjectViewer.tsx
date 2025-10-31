@@ -41,6 +41,7 @@ import '@react-pdf-viewer/search/lib/styles/index.css';
 import { apiService, PDFMaterial, Highlight } from '../services/api';
 import { useAuth, mockUser } from '../contexts/AuthContext';
 import { useNotesContext } from '../contexts/NotesContext';
+import FloatingWorkspaceButton from '../components/FloatingWorkspaceButton';
 
 interface SubjectViewerProps {
   domain: string;
@@ -250,7 +251,8 @@ const SubjectViewer: React.FC = () => {
       
       try {
         console.log('🔄 Loading highlights for PDF:', selectedPdf._id);
-        const highlightsData = await apiService.getHighlights(selectedPdf._id);
+        const userId = user?.id || 'guest';
+        const highlightsData = await apiService.getHighlights(selectedPdf._id, userId);
         
         if (isMounted) {
           const transformedHighlights = highlightsData.map(transformHighlight);
@@ -973,6 +975,22 @@ const SubjectViewer: React.FC = () => {
           </svg>
           <span className="font-medium">Note saved successfully!</span>
         </div>
+      )}
+
+      {/* Floating Workspace Button */}
+      {selectedPdf && (
+        <FloatingWorkspaceButton
+          content={{
+            id: selectedPdf._id,
+            title: selectedPdf.topic,
+            type: 'pdf',
+            url: selectedPdf.fileUrl,
+            pdfData: selectedPdf,
+            currentPage: currentPage,
+            progress: selectedPdf.pages ? (currentPage / selectedPdf.pages) * 100 : 0
+          }}
+          isVisible={true}
+        />
       )}
     </div>
   );

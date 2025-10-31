@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ThumbsUp, Heart, Download, Share2, Eye, Clock, User } from 'lucide-react';
 import { videosAPI } from '../api/studyAI';
+import FloatingWorkspaceButton from '../components/FloatingWorkspaceButton';
 
 interface Video {
   _id: string;
@@ -32,6 +33,7 @@ const VideoPlayer: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [isLiked, setIsLiked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
 
   useEffect(() => {
     if (id) {
@@ -372,6 +374,22 @@ const VideoPlayer: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Floating Workspace Button */}
+      {video && (
+        <FloatingWorkspaceButton
+          content={{
+            id: video._id,
+            title: video.title,
+            type: 'video',
+            url: video.videoUrl,
+            videoData: video,
+            currentTime: currentTime,
+            progress: video.durationSec > 0 ? (currentTime / video.durationSec) * 100 : 0
+          }}
+          isVisible={true}
+        />
+      )}
     </div>
   );
 };
