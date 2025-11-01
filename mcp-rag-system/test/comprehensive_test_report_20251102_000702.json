@@ -1,0 +1,2668 @@
+{
+  "test_summary": {
+    "total_tests": 17,
+    "passed_tests": 0,
+    "failed_tests": 17,
+    "success_rate": 0.0,
+    "average_relevance_score": -0.353,
+    "timestamp": "2025-11-02T00:07:02.996754"
+  },
+  "failed_tests": [
+    {
+      "test_number": 1,
+      "description": "Python programming fundamentals",
+      "query": "Python programming tutorial basics syntax variables functions",
+      "expected_keywords": [
+        "python",
+        "programming",
+        "tutorial"
+      ],
+      "passed": false,
+      "result": {
+        "query": "Python programming tutorial basics syntax variables functions",
+        "success": true,
+        "keyword_match": true,
+        "expected_keywords": [
+          "python",
+          "programming",
+          "tutorial"
+        ],
+        "results_count": 5,
+        "relevance_score": -0.075905179977417,
+        "results": [
+          {
+            "file_name": "Unknown",
+            "title": "A Byte of Python",
+            "subject": "Computer Science",
+            "author": "Swaroop C H",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.015112280845642,
+            "content_preview": "Title: A Byte of Python | Author: Swaroop C H | Subject: Computer Science | Description: 1.1 1.2 1.3 1.4 1.5 1.6 1.7 1.8 1.9 1.10 1.11 1.12 1.13 1.14 1.15 1.16 1.17 1.18 1.19 1.20 1.21 1.22 1.23 1.24 ..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "Python Power!: The Comprehensive Guide",
+            "subject": "Computer Science",
+            "author": "Matt Telles",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.0232822895050049,
+            "content_preview": "Title: Python Power!: The Comprehensive Guide | Author: Matt Telles | Subject: Computer Science | Description: This comprehensive guide offers a thorough introduction to Python programming, covering c..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "Head First Python",
+            "subject": "Computer Science",
+            "author": "Paul Barry",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.0799477100372314,
+            "content_preview": "Title: Head First Python | Author: Paul Barry | Subject: Computer Science | Description: Head First Python is an engaging and visually rich guide designed to teach Python programming fundamentals to a..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "The Python Standard Library by Example",
+            "subject": "Computer Science",
+            "author": "Doug Hellmann",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.1207977533340454,
+            "content_preview": "Title: The Python Standard Library by Example | Author: Doug Hellmann | Subject: Computer Science | Description: ptg | Tags: Python Standard Library, Module usage, File I/O and data persistence, Netwo..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "The Quick Python Book",
+            "subject": "Computer Science",
+            "author": "Vernon L. Ceder",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.1403858661651611,
+            "content_preview": "Title: The Quick Python Book | Author: Vernon L. Ceder | Subject: Computer Science | Description: SECOND EDITION MANNINGVernon L. CederSECOND EDITION Covers Python 3 First edition by Daryl K. Harms Ke..."
+          }
+        ]
+      }
+    },
+    {
+      "test_number": 2,
+      "description": "Machine learning and AI concepts",
+      "query": "machine learning algorithms neural networks deep learning artificial intelligence",
+      "expected_keywords": [
+        "machine learning",
+        "neural",
+        "algorithm",
+        "AI"
+      ],
+      "passed": false,
+      "result": {
+        "query": "machine learning algorithms neural networks deep learning artificial intelligence",
+        "success": true,
+        "keyword_match": true,
+        "expected_keywords": [
+          "machine learning",
+          "neural",
+          "algorithm",
+          "AI"
+        ],
+        "results_count": 5,
+        "relevance_score": -0.5944223403930664,
+        "results": [
+          {
+            "file_name": "Unknown",
+            "title": "Data Science from Scratch",
+            "subject": "Data Science",
+            "author": "Joel Grus",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.5384061336517334,
+            "content_preview": "Title: Data Science from Scratch | Author: Joel Grus | Subject: Data Science | Description: DATA/DATA SCIENCEData Science from Scratch ISBN: 978-1-491-90142-7US $39.99 CAN $45.99“ Joel takes you on a ..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(74)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.5516743659973145,
+            "content_preview": "Title: comp(74) | Author: Unknown Author | Subject: Computer Science | Description: This document explores various topics within the broad domain of computer science. It likely discusses fundamental c..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(38)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.571279764175415,
+            "content_preview": "Title: comp(38) | Author: Unknown Author | Subject: Computer Science | Description: This document likely covers a range of topics within computer science, potentially exploring foundational concepts s..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(95)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.6468323469161987,
+            "content_preview": "Title: comp(95) | Author: Unknown Author | Subject: Computer Science | Description: This document, likely originating from 1995, appears to cover fundamental concepts within computer science. It may e..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(3)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.6639190912246704,
+            "content_preview": "Title: comp(3) | Author: Unknown Author | Subject: Computer Science | Description: This document explores foundational topics within computer science, delving into core concepts such as algorithms, da..."
+          }
+        ]
+      }
+    },
+    {
+      "test_number": 3,
+      "description": "Data structures and algorithms",
+      "query": "data structures algorithms arrays linked lists trees sorting searching",
+      "expected_keywords": [
+        "data structure",
+        "algorithm",
+        "array",
+        "tree",
+        "sort"
+      ],
+      "passed": false,
+      "result": {
+        "query": "data structures algorithms arrays linked lists trees sorting searching",
+        "success": true,
+        "keyword_match": false,
+        "expected_keywords": [
+          "data structure",
+          "algorithm",
+          "array",
+          "tree",
+          "sort"
+        ],
+        "results_count": 5,
+        "relevance_score": -0.1594398021697998,
+        "results": [
+          {
+            "file_name": "Unknown",
+            "title": "comp(83)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.1364998817443848,
+            "content_preview": "Title: comp(83) | Author: Unknown Author | Subject: Computer Science | Description: This document likely explores foundational topics in computer science, potentially covering core areas such as algor..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "Graph Databases",
+            "subject": "Computer Science",
+            "author": "Ian Robinson, Jim Webber, and Emil Eifrem",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.140649676322937,
+            "content_preview": "Title: Graph Databases | Author: Ian Robinson, Jim Webber, and Emil Eifrem | Subject: Computer Science | Description: This book introduces the fundamental concepts of graph databases, covering their a..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(74)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.1682618856430054,
+            "content_preview": "Title: comp(74) | Author: Unknown Author | Subject: Computer Science | Description: This document explores various topics within the broad domain of computer science. It likely discusses fundamental c..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(19)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.1704912185668945,
+            "content_preview": "Title: comp(19) | Author: Unknown Author | Subject: Computer Science | Description: This document, likely focused on Computer Science given its filename, appears to cover foundational topics such as a..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(38)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.1812963485717773,
+            "content_preview": "Title: comp(38) | Author: Unknown Author | Subject: Computer Science | Description: This document likely covers a range of topics within computer science, potentially exploring foundational concepts s..."
+          }
+        ]
+      }
+    },
+    {
+      "test_number": 4,
+      "description": "Operating systems fundamentals",
+      "query": "operating systems process management memory scheduling concurrency",
+      "expected_keywords": [
+        "operating system",
+        "process",
+        "memory",
+        "schedule"
+      ],
+      "passed": false,
+      "result": {
+        "query": "operating systems process management memory scheduling concurrency",
+        "success": true,
+        "keyword_match": true,
+        "expected_keywords": [
+          "operating system",
+          "process",
+          "memory",
+          "schedule"
+        ],
+        "results_count": 5,
+        "relevance_score": 0.03180685043334961,
+        "results": [
+          {
+            "file_name": "Unknown",
+            "title": "Operating System Concepts, 8th Edition",
+            "subject": "Computer Science",
+            "author": "Abraham Silberschatz, Peter B. Gagne, Greg Gagne",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 0.8005954027175903,
+            "content_preview": "Title: Operating System Concepts, 8th Edition | Author: Abraham Silberschatz, Peter B. Gagne, Greg Gagne | Subject: Computer Science | Description: This widely-used textbook provides a comprehensive i..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "C++ Concurrency in Action",
+            "subject": "Computer Science",
+            "author": "Anthony Williams",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 0.9315774440765381,
+            "content_preview": "Title: C++ Concurrency in Action | Author: Anthony Williams | Subject: Computer Science | Description: MANNINGAnthony WilliamsPractical MultithreadingIN ACTION | Tags: C++ Concurrency, Multithreading,..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "Windows Internals, Sixth Edition, Part 2 eBook",
+            "subject": "Computer Science",
+            "author": "Mark Russinovich, David A. Solomon, Alex Ionescu",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 0.9776455163955688,
+            "content_preview": "Title: Windows Internals, Sixth Edition, Part 2 eBook | Author: Mark Russinovich, David A. Solomon, Alex Ionescu | Subject: Computer Science | Description: NOTE Part 2 available Fall 2012 See Table of..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "M01_STAL6329_06_SE_C01.QXD",
+            "subject": "Computer Science",
+            "author": "teamb",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.0582574605941772,
+            "content_preview": "Title: M01_STAL6329_06_SE_C01.QXD | Author: teamb | Subject: Computer Science | Description: PARTONE Part One provides a background and context for the remainder of this book. This part presents the f..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(64)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.0728899240493774,
+            "content_preview": "Title: comp(64) | Author: Unknown Author | Subject: Computer Science | Description: This document appears to cover advanced topics in computer science, focusing on the principles and design of compute..."
+          }
+        ]
+      }
+    },
+    {
+      "test_number": 5,
+      "description": "Database management concepts",
+      "query": "database management SQL relational DBMS normalization transactions",
+      "expected_keywords": [
+        "database",
+        "SQL",
+        "relational",
+        "DBMS"
+      ],
+      "passed": false,
+      "result": {
+        "query": "database management SQL relational DBMS normalization transactions",
+        "success": true,
+        "keyword_match": true,
+        "expected_keywords": [
+          "database",
+          "SQL",
+          "relational",
+          "DBMS"
+        ],
+        "results_count": 5,
+        "relevance_score": -0.2514147162437439,
+        "results": [
+          {
+            "file_name": "Unknown",
+            "title": "Principles of Distributed Database Systems, Third Edition",
+            "subject": "Computer Science",
+            "author": "M. Tamer Özsu, Patrick Valduriez",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 0.9250653386116028,
+            "content_preview": "Title: Principles of Distributed Database Systems, Third Edition | Author: M. Tamer Özsu, Patrick Valduriez | Subject: Computer Science | Description: This book covers the fundamental principles and d..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(100)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.30922532081604,
+            "content_preview": "Title: comp(100) | Author: Unknown Author | Subject: Computer Science | Description: This document covers foundational aspects within the field of Computer Science, likely introducing key principles r..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(92)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.3217682838439941,
+            "content_preview": "Title: comp(92) | Author: Unknown Author | Subject: Computer Science | Description: This technical document, identified as 'comp(92).pdf', is presumed to cover topics within computer science. Without ..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(91)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.344723105430603,
+            "content_preview": "Title: comp(91) | Author: Unknown Author | Subject: Computer Science | Description: This document, likely originating around 1991, appears to delve into foundational aspects of theoretical computer sc..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "Graph Databases",
+            "subject": "Computer Science",
+            "author": "Ian Robinson, Jim Webber, and Emil Eifrem",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.3562915325164795,
+            "content_preview": "Title: Graph Databases | Author: Ian Robinson, Jim Webber, and Emil Eifrem | Subject: Computer Science | Description: This book introduces the fundamental concepts of graph databases, covering their a..."
+          }
+        ]
+      }
+    },
+    {
+      "test_number": 6,
+      "description": "Software engineering and design patterns",
+      "query": "software engineering design patterns object oriented programming UML",
+      "expected_keywords": [
+        "software",
+        "engineering",
+        "design",
+        "pattern",
+        "OOP"
+      ],
+      "passed": false,
+      "result": {
+        "query": "software engineering design patterns object oriented programming UML",
+        "success": true,
+        "keyword_match": true,
+        "expected_keywords": [
+          "software",
+          "engineering",
+          "design",
+          "pattern",
+          "OOP"
+        ],
+        "results_count": 5,
+        "relevance_score": -0.15960975885391235,
+        "results": [
+          {
+            "file_name": "Unknown",
+            "title": "comp(79)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 0.9341375231742859,
+            "content_preview": "Title: comp(79) | Author: Unknown Author | Subject: Computer Science | Description: What is a UML Class Diagram? Class diagrams are the backbone of almost every object-oriented method including UML. T..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(45)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.1862387657165527,
+            "content_preview": "Title: comp(45) | Author: Unknown Author | Subject: Computer Science | Description: Table of Contents Modern C++ Design: Generic Programming and Design Patterns Applied By Andrei Alexandrescu Publishe..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "Software Engineering: A Practitioner's Approach",
+            "subject": "Computer Science",
+            "author": "Roger S Pressman",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.2058278322219849,
+            "content_preview": "Title: Software Engineering: A Practitioner's Approach | Author: Roger S Pressman | Subject: Computer Science | Description: Praise for earlier editions of Software Engineering: A Practitioner’s Appro..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "Software Engineering, 9th Edition",
+            "subject": "Computer Science",
+            "author": "Ian Sommerville",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.217341423034668,
+            "content_preview": "Title: Software Engineering, 9th Edition | Author: Ian Sommerville | Subject: Computer Science | Description: This book offers a comprehensive exploration of software engineering principles and practi..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "Java",
+            "subject": "Computer Science",
+            "author": "Herbert Schildt",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.2545032501220703,
+            "content_preview": "Title: Java | Author: Herbert Schildt | Subject: Computer Science | Description: This document serves as an introduction to the Java programming language, covering its fundamental syntax, core object-..."
+          }
+        ]
+      }
+    },
+    {
+      "test_number": 7,
+      "description": "Computer networking protocols",
+      "query": "computer networks TCP IP protocols networking communication internet",
+      "expected_keywords": [
+        "network",
+        "TCP",
+        "IP",
+        "protocol",
+        "communication"
+      ],
+      "passed": false,
+      "result": {
+        "query": "computer networks TCP IP protocols networking communication internet",
+        "success": true,
+        "keyword_match": true,
+        "expected_keywords": [
+          "network",
+          "TCP",
+          "IP",
+          "protocol",
+          "communication"
+        ],
+        "results_count": 5,
+        "relevance_score": -0.24985185861587525,
+        "results": [
+          {
+            "file_name": "Unknown",
+            "title": "Linux Network Administrator's Guide, 2nd Edition",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 0.9270676970481873,
+            "content_preview": "Title: Linux Network Administrator's Guide, 2nd Edition | Author: Unknown Author | Subject: Computer Science | Description: Linux Network Administrator'sGuide, 2nd Edition By Olaf Kirch & Terry Dawson..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(38)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.2623487710952759,
+            "content_preview": "Title: comp(38) | Author: Unknown Author | Subject: Computer Science | Description: This document likely covers a range of topics within computer science, potentially exploring foundational concepts s..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(1)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.3286547660827637,
+            "content_preview": "Title: comp(1) | Author: Unknown Author | Subject: Computer Science | Description: This document likely provides technical specifications and usage instructions for a command-line utility named 'comp'..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "Microsoft Word - IPv6 Essentials.doc",
+            "subject": "Computer Science",
+            "author": "Administrator@CRM",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.352020263671875,
+            "content_preview": "Title: Microsoft Word - IPv6 Essentials.doc | Author: Administrator@CRM | Subject: Computer Science | Description: 1 ISBN: 0-596-00125-8 | Tags: IPv6 Addressing, IPv6 Header Format, ICMPv6, IPv6 Neigh..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(51)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.3791677951812744,
+            "content_preview": "Title: comp(51) | Author: Unknown Author | Subject: Computer Science | Description: This document likely explores a broad spectrum of topics within computer science, potentially covering foundational ..."
+          }
+        ]
+      }
+    },
+    {
+      "test_number": 8,
+      "description": "Web development technologies",
+      "query": "web development HTML CSS JavaScript frontend backend frameworks",
+      "expected_keywords": [
+        "web",
+        "HTML",
+        "CSS",
+        "JavaScript",
+        "frontend"
+      ],
+      "passed": false,
+      "result": {
+        "query": "web development HTML CSS JavaScript frontend backend frameworks",
+        "success": true,
+        "keyword_match": true,
+        "expected_keywords": [
+          "web",
+          "HTML",
+          "CSS",
+          "JavaScript",
+          "frontend"
+        ],
+        "results_count": 5,
+        "relevance_score": -0.5342361450195312,
+        "results": [
+          {
+            "file_name": "Unknown",
+            "title": "O'Reilly - JavaScript Application Cookbook",
+            "subject": "Computer Science",
+            "author": "Jerry Bradenbaugh",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.314204454421997,
+            "content_preview": "Title: O'Reilly - JavaScript Application Cookbook | Author: Jerry Bradenbaugh | Subject: Computer Science | Description: JavaScript Application Cookbook By Jerry Bradenbaugh Publishe r: O'Reilly Pub D..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": ",ch01.29067",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.44957435131073,
+            "content_preview": "Title: ,ch01.29067 | Author: Unknown Author | Subject: Computer Science | Description: Ò³Âë£¬1/1 file://C:\\Do...\\pRVaIpO0Ve9jaesOyS+xAf5HDBRgSa1zZI91qmguu7D9l840Qb+.jp 2003-1-18 | Tags: Programming pr..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(85)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.5959922075271606,
+            "content_preview": "Title: comp(85) | Author: Unknown Author | Subject: Computer Science | Description: $ 19.99 US £ 12.99 UK € 16.99 EU Prices do not include local sales tax or V AT where applicablePackt Publishing Birm..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(15)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.6459906101226807,
+            "content_preview": "Title: comp(15) | Author: Unknown Author | Subject: Computer Science | Description: Domain-Driven Design Quickly | Tags: Domain-Driven Design (DDD), Strategic Design (DDD), Tactical Design (DDD), Doma..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "About Face 3: The Essentials of Interaction Design, Third Edition",
+            "subject": "Computer Science",
+            "author": "Alan Cooper, Robert Reimann, David Cronin",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.665419101715088,
+            "content_preview": "Title: About Face 3: The Essentials of Interaction Design, Third Edition | Author: Alan Cooper, Robert Reimann, David Cronin | Subject: Computer Science | Description: This book provides a comprehensi..."
+          }
+        ]
+      }
+    },
+    {
+      "test_number": 9,
+      "description": "Cybersecurity and cryptography",
+      "query": "cybersecurity encryption cryptography security protocols authentication",
+      "expected_keywords": [
+        "security",
+        "encryption",
+        "crypto",
+        "protocol"
+      ],
+      "passed": false,
+      "result": {
+        "query": "cybersecurity encryption cryptography security protocols authentication",
+        "success": true,
+        "keyword_match": false,
+        "expected_keywords": [
+          "security",
+          "encryption",
+          "crypto",
+          "protocol"
+        ],
+        "results_count": 5,
+        "relevance_score": -0.48605391979217527,
+        "results": [
+          {
+            "file_name": "Unknown",
+            "title": "SSH, The Secure Shell: The Definitive Guide",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.3418564796447754,
+            "content_preview": "Title: SSH, The Secure Shell: The Definitive Guide | Author: Unknown Author | Subject: Computer Science | Description: • Reviews • Reader Reviews • ErrataSSH, The Secure Shell: The Definitive Guide By..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(14)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.5111196041107178,
+            "content_preview": "Title: comp(14) | Author: Unknown Author | Subject: Computer Science | Description: This technical document delves into core aspects of computer science, covering essential theoretical concepts and pr..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(83)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.5128766298294067,
+            "content_preview": "Title: comp(83) | Author: Unknown Author | Subject: Computer Science | Description: This document likely explores foundational topics in computer science, potentially covering core areas such as algor..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(74)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.5256850719451904,
+            "content_preview": "Title: comp(74) | Author: Unknown Author | Subject: Computer Science | Description: This document explores various topics within the broad domain of computer science. It likely discusses fundamental c..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "Microsoft Word - IPv6 Essentials.doc",
+            "subject": "Computer Science",
+            "author": "Administrator@CRM",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.5387318134307861,
+            "content_preview": "Title: Microsoft Word - IPv6 Essentials.doc | Author: Administrator@CRM | Subject: Computer Science | Description: 1 ISBN: 0-596-00125-8 | Tags: IPv6 Addressing, IPv6 Header Format, ICMPv6, IPv6 Neigh..."
+          }
+        ]
+      }
+    },
+    {
+      "test_number": 10,
+      "description": "Artificial intelligence systems",
+      "query": "artificial intelligence expert systems knowledge representation reasoning",
+      "expected_keywords": [
+        "artificial intelligence",
+        "expert",
+        "knowledge",
+        "AI"
+      ],
+      "passed": false,
+      "result": {
+        "query": "artificial intelligence expert systems knowledge representation reasoning",
+        "success": true,
+        "keyword_match": true,
+        "expected_keywords": [
+          "artificial intelligence",
+          "expert",
+          "knowledge",
+          "AI"
+        ],
+        "results_count": 5,
+        "relevance_score": -0.393271279335022,
+        "results": [
+          {
+            "file_name": "Unknown",
+            "title": "Expert C Programming",
+            "subject": "Computer Science",
+            "author": "Peter van der Linden",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.3120959997177124,
+            "content_preview": "Title: Expert C Programming | Author: Peter van der Linden | Subject: Computer Science | Description: Expert C Programming delves into the intricate and often misunderstood aspects of the C language, ..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(7)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.3788084983825684,
+            "content_preview": "Title: comp(7) | Author: Unknown Author | Subject: Computer Science | Description: This technical document appears to delve into core computational principles and methodologies. It likely covers funda..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(19)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.4014767408370972,
+            "content_preview": "Title: comp(19) | Author: Unknown Author | Subject: Computer Science | Description: This document, likely focused on Computer Science given its filename, appears to cover foundational topics such as a..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "A Byte of Python",
+            "subject": "Computer Science",
+            "author": "Swaroop C H",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.4181376695632935,
+            "content_preview": "Title: A Byte of Python | Author: Swaroop C H | Subject: Computer Science | Description: 1.1 1.2 1.3 1.4 1.5 1.6 1.7 1.8 1.9 1.10 1.11 1.12 1.13 1.14 1.15 1.16 1.17 1.18 1.19 1.20 1.21 1.22 1.23 1.24 ..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(92)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.4558374881744385,
+            "content_preview": "Title: comp(92) | Author: Unknown Author | Subject: Computer Science | Description: This technical document, identified as 'comp(92).pdf', is presumed to cover topics within computer science. Without ..."
+          }
+        ]
+      }
+    },
+    {
+      "test_number": 11,
+      "description": "Mathematics and statistics",
+      "query": "mathematics statistics probability calculus linear algebra discrete math",
+      "expected_keywords": [
+        "math",
+        "statistics",
+        "probability",
+        "calculus",
+        "algebra"
+      ],
+      "passed": false,
+      "result": {
+        "query": "mathematics statistics probability calculus linear algebra discrete math",
+        "success": true,
+        "keyword_match": false,
+        "expected_keywords": [
+          "math",
+          "statistics",
+          "probability",
+          "calculus",
+          "algebra"
+        ],
+        "results_count": 5,
+        "relevance_score": -0.67387375831604,
+        "results": [
+          {
+            "file_name": "Unknown",
+            "title": "Introduction to Algorithms, Third Edition",
+            "subject": "Computer Science",
+            "author": "Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.3928251266479492,
+            "content_preview": "Title: Introduction to Algorithms, Third Edition | Author: Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein | Subject: Computer Science | Description: ALGORITHMSINTRODUCTION TO..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "CSE 142 Python Slides",
+            "subject": "Computer Science",
+            "author": "Marty Stepp",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.6965949535369873,
+            "content_preview": "Title: CSE 142 Python Slides | Author: Marty Stepp | Subject: Computer Science | Description: CSE 143 Lecture 5 More Stacks and Queues; Complexity (Big -Oh) reading : 13.1 - 13.3 slides adapted from M..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "A Byte of Python",
+            "subject": "Computer Science",
+            "author": "Swaroop C H",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.7420427799224854,
+            "content_preview": "Title: A Byte of Python | Author: Swaroop C H | Subject: Computer Science | Description: 1.1 1.2 1.3 1.4 1.5 1.6 1.7 1.8 1.9 1.10 1.11 1.12 1.13 1.14 1.15 1.16 1.17 1.18 1.19 1.20 1.21 1.22 1.23 1.24 ..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "Jumping into C++",
+            "subject": "Computer Science",
+            "author": "© Alex Allain (www.cprogramming.com)",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.761130690574646,
+            "content_preview": "Title: Jumping into C++ | Author: © Alex Allain (www.cprogramming.com) | Subject: Computer Science | Description: This document serves as an introductory guide to the C++ programming language, coverin..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(42)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.7767752408981323,
+            "content_preview": "Title: comp(42) | Author: Unknown Author | Subject: Computer Science | Description: Analysis of the document is not possible as the content preview was empty. Based solely on the filename 'comp(42).pd..."
+          }
+        ]
+      }
+    },
+    {
+      "test_number": 12,
+      "description": "Computer graphics and visualization",
+      "query": "computer graphics 3D rendering visualization OpenGL computer vision",
+      "expected_keywords": [
+        "graphics",
+        "3D",
+        "render",
+        "visual",
+        "OpenGL"
+      ],
+      "passed": false,
+      "result": {
+        "query": "computer graphics 3D rendering visualization OpenGL computer vision",
+        "success": true,
+        "keyword_match": true,
+        "expected_keywords": [
+          "graphics",
+          "3D",
+          "render",
+          "visual",
+          "OpenGL"
+        ],
+        "results_count": 5,
+        "relevance_score": -0.4472386121749878,
+        "results": [
+          {
+            "file_name": "Unknown",
+            "title": "Computer Graphics, C Version (2nd Ed.)",
+            "subject": "Computer Science",
+            "author": "Donald Hearn, M. Pauline Baker",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 0.8238186836242676,
+            "content_preview": "Title: Computer Graphics, C Version (2nd Ed.) | Author: Donald Hearn, M. Pauline Baker | Subject: Computer Science | Description: This textbook provides a comprehensive introduction to the principles ..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "About Face 3: The Essentials of Interaction Design, Third Edition",
+            "subject": "Computer Science",
+            "author": "Alan Cooper, Robert Reimann, David Cronin",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.5870107412338257,
+            "content_preview": "Title: About Face 3: The Essentials of Interaction Design, Third Edition | Author: Alan Cooper, Robert Reimann, David Cronin | Subject: Computer Science | Description: This book provides a comprehensi..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(54)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.5964819192886353,
+            "content_preview": "Title: comp(54) | Author: Unknown Author | Subject: Computer Science | Description: Reference book from GitHub repository | Content: The Productive Programmer\nNeal Ford\nforeword by David Bock\nTomcat™\n..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(74)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.608168363571167,
+            "content_preview": "Title: comp(74) | Author: Unknown Author | Subject: Computer Science | Description: This document explores various topics within the broad domain of computer science. It likely discusses fundamental c..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "A Tour of C++",
+            "subject": "Computer Science",
+            "author": "Bjarne Stroustrup",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.6207133531570435,
+            "content_preview": "Title: A Tour of C++ | Author: Bjarne Stroustrup | Subject: Computer Science | Description: ptg11539604 | Tags: C++ Programming Language, Object-Oriented Programming, Standard Template Library (STL), ..."
+          }
+        ]
+      }
+    },
+    {
+      "test_number": 13,
+      "description": "Mobile application development",
+      "query": "mobile app development Android iOS Swift Java Kotlin React Native",
+      "expected_keywords": [
+        "mobile",
+        "app",
+        "Android",
+        "iOS",
+        "Swift"
+      ],
+      "passed": false,
+      "result": {
+        "query": "mobile app development Android iOS Swift Java Kotlin React Native",
+        "success": true,
+        "keyword_match": true,
+        "expected_keywords": [
+          "mobile",
+          "app",
+          "Android",
+          "iOS",
+          "Swift"
+        ],
+        "results_count": 5,
+        "relevance_score": -0.7392202615737915,
+        "results": [
+          {
+            "file_name": "Unknown",
+            "title": "comp(24)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.5814900398254395,
+            "content_preview": "Title: comp(24) | Author: Unknown Author | Subject: Computer Science | Description: JOCHEN SCHILLERJOCHEN SCHILLERSCHILLERSecond EditionSecond Edition Second EditionThe mobile communications market re..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "O'Reilly - JavaScript Application Cookbook",
+            "subject": "Computer Science",
+            "author": "Jerry Bradenbaugh",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.7199316024780273,
+            "content_preview": "Title: O'Reilly - JavaScript Application Cookbook | Author: Jerry Bradenbaugh | Subject: Computer Science | Description: JavaScript Application Cookbook By Jerry Bradenbaugh Publishe r: O'Reilly Pub D..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "Human-computer interaction",
+            "subject": "Computer Science",
+            "author": "Alan Dix",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.7457237243652344,
+            "content_preview": "Title: Human-computer interaction | Author: Alan Dix | Subject: Computer Science | Description: ALAN DIX, JANET FINLAY , GREGORY D. ABOWD, RUSSELL BEALE THIRD EDITION THIRD EDITIONHUMAN–COMPUTER INTER..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "Software Engineering: A Practitioner's Approach",
+            "subject": "Computer Science",
+            "author": "Roger S Pressman",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.8065285682678223,
+            "content_preview": "Title: Software Engineering: A Practitioner's Approach | Author: Roger S Pressman | Subject: Computer Science | Description: Praise for earlier editions of Software Engineering: A Practitioner’s Appro..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "About Face 3: The Essentials of Interaction Design, Third Edition",
+            "subject": "Computer Science",
+            "author": "Alan Cooper, Robert Reimann, David Cronin",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.842427372932434,
+            "content_preview": "Title: About Face 3: The Essentials of Interaction Design, Third Edition | Author: Alan Cooper, Robert Reimann, David Cronin | Subject: Computer Science | Description: This book provides a comprehensi..."
+          }
+        ]
+      }
+    },
+    {
+      "test_number": 14,
+      "description": "Cloud computing platforms",
+      "query": "cloud computing AWS Azure distributed systems scalability microservices",
+      "expected_keywords": [
+        "cloud",
+        "AWS",
+        "Azure",
+        "distributed",
+        "scale"
+      ],
+      "passed": false,
+      "result": {
+        "query": "cloud computing AWS Azure distributed systems scalability microservices",
+        "success": true,
+        "keyword_match": true,
+        "expected_keywords": [
+          "cloud",
+          "AWS",
+          "Azure",
+          "distributed",
+          "scale"
+        ],
+        "results_count": 5,
+        "relevance_score": -0.4203330993652344,
+        "results": [
+          {
+            "file_name": "Unknown",
+            "title": "comp(91)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.347736120223999,
+            "content_preview": "Title: comp(91) | Author: Unknown Author | Subject: Computer Science | Description: This document, likely originating around 1991, appears to delve into foundational aspects of theoretical computer sc..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "Principles of Distributed Database Systems, Third Edition",
+            "subject": "Computer Science",
+            "author": "M. Tamer Özsu, Patrick Valduriez",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.4061224460601807,
+            "content_preview": "Title: Principles of Distributed Database Systems, Third Edition | Author: M. Tamer Özsu, Patrick Valduriez | Subject: Computer Science | Description: This book covers the fundamental principles and d..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(87)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.4190473556518555,
+            "content_preview": "Title: comp(87) | Author: Unknown Author | Subject: Computer Science | Description: This document likely covers foundational aspects of computer science, potentially discussing core principles of syst..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "Windows Internals, Sixth Edition, Part 2 eBook",
+            "subject": "Computer Science",
+            "author": "Mark Russinovich, David A. Solomon, Alex Ionescu",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.424811840057373,
+            "content_preview": "Title: Windows Internals, Sixth Edition, Part 2 eBook | Author: Mark Russinovich, David A. Solomon, Alex Ionescu | Subject: Computer Science | Description: NOTE Part 2 available Fall 2012 See Table of..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(90)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.5039477348327637,
+            "content_preview": "Title: comp(90) | Author: Unknown Author | Subject: Computer Science | Description: This document, inferred from its filename 'comp(90).pdf', is presumed to be a Computer Science text from around 1990..."
+          }
+        ]
+      }
+    },
+    {
+      "test_number": 15,
+      "description": "Data science and analytics tools",
+      "query": "data science analytics big data pandas numpy matplotlib visualization",
+      "expected_keywords": [
+        "data science",
+        "analytics",
+        "pandas",
+        "numpy",
+        "visualization"
+      ],
+      "passed": false,
+      "result": {
+        "query": "data science analytics big data pandas numpy matplotlib visualization",
+        "success": true,
+        "keyword_match": true,
+        "expected_keywords": [
+          "data science",
+          "analytics",
+          "pandas",
+          "numpy",
+          "visualization"
+        ],
+        "results_count": 5,
+        "relevance_score": -0.5050090789794922,
+        "results": [
+          {
+            "file_name": "Unknown",
+            "title": "Data Science from Scratch",
+            "subject": "Data Science",
+            "author": "Joel Grus",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.4416959285736084,
+            "content_preview": "Title: Data Science from Scratch | Author: Joel Grus | Subject: Data Science | Description: DATA/DATA SCIENCEData Science from Scratch ISBN: 978-1-491-90142-7US $39.99 CAN $45.99“ Joel takes you on a ..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(46)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.472318172454834,
+            "content_preview": "Title: comp(46) | Author: Unknown Author | Subject: Computer Science | Description: This document appears to delve into core concepts of computer science, likely covering fundamental principles of com..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "Real World Instrumentation with Python",
+            "subject": "Engineering",
+            "author": "J. M. Hughes",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.4942224025726318,
+            "content_preview": "Title: Real World Instrumentation with Python | Author: J. M. Hughes | Subject: Engineering | Description: This book guides readers through practical, real-world instrumentation applications using Pyt..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "Computer Graphics, C Version (2nd Ed.)",
+            "subject": "Computer Science",
+            "author": "Donald Hearn, M. Pauline Baker",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.554809331893921,
+            "content_preview": "Title: Computer Graphics, C Version (2nd Ed.) | Author: Donald Hearn, M. Pauline Baker | Subject: Computer Science | Description: This textbook provides a comprehensive introduction to the principles ..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "The Python Standard Library by Example",
+            "subject": "Computer Science",
+            "author": "Doug Hellmann",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.5619995594024658,
+            "content_preview": "Title: The Python Standard Library by Example | Author: Doug Hellmann | Subject: Computer Science | Description: ptg | Tags: Python Standard Library, Module usage, File I/O and data persistence, Netwo..."
+          }
+        ]
+      }
+    },
+    {
+      "test_number": 16,
+      "description": "Algorithm complexity analysis",
+      "query": "algorithm complexity analysis big O notation computational complexity",
+      "expected_keywords": [
+        "algorithm",
+        "complexity",
+        "big O",
+        "computational"
+      ],
+      "passed": false,
+      "result": {
+        "query": "algorithm complexity analysis big O notation computational complexity",
+        "success": true,
+        "keyword_match": true,
+        "expected_keywords": [
+          "algorithm",
+          "complexity",
+          "big O",
+          "computational"
+        ],
+        "results_count": 5,
+        "relevance_score": -0.19003536701202392,
+        "results": [
+          {
+            "file_name": "Unknown",
+            "title": "CSE 142 Python Slides",
+            "subject": "Computer Science",
+            "author": "Marty Stepp",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 0.9612092971801758,
+            "content_preview": "Title: CSE 142 Python Slides | Author: Marty Stepp | Subject: Computer Science | Description: CSE 143 Lecture 5 More Stacks and Queues; Complexity (Big -Oh) reading : 13.1 - 13.3 slides adapted from M..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(38)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.1849359273910522,
+            "content_preview": "Title: comp(38) | Author: Unknown Author | Subject: Computer Science | Description: This document likely covers a range of topics within computer science, potentially exploring foundational concepts s..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(83)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.2571678161621094,
+            "content_preview": "Title: comp(83) | Author: Unknown Author | Subject: Computer Science | Description: This document likely explores foundational topics in computer science, potentially covering core areas such as algor..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(19)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.2598388195037842,
+            "content_preview": "Title: comp(19) | Author: Unknown Author | Subject: Computer Science | Description: This document, likely focused on Computer Science given its filename, appears to cover foundational topics such as a..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "Introduction to Algorithms, Third Edition",
+            "subject": "Computer Science",
+            "author": "Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.287024974822998,
+            "content_preview": "Title: Introduction to Algorithms, Third Edition | Author: Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein | Subject: Computer Science | Description: ALGORITHMSINTRODUCTION TO..."
+          }
+        ]
+      }
+    },
+    {
+      "test_number": 17,
+      "description": "Compiler design and construction",
+      "query": "compiler design parsing lexical analysis syntax analysis code generation",
+      "expected_keywords": [
+        "compiler",
+        "parsing",
+        "lexical",
+        "syntax"
+      ],
+      "passed": false,
+      "result": {
+        "query": "compiler design parsing lexical analysis syntax analysis code generation",
+        "success": true,
+        "keyword_match": true,
+        "expected_keywords": [
+          "compiler",
+          "parsing",
+          "lexical",
+          "syntax"
+        ],
+        "results_count": 5,
+        "relevance_score": -0.1547893762588501,
+        "results": [
+          {
+            "file_name": "Unknown",
+            "title": "comp(99)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 0.9545469284057617,
+            "content_preview": "Title: comp(99) | Author: Unknown Author | Subject: Computer Science | Description: This document likely explores various aspects of compiler construction, detailing the phases involved in transformin..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(53)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.1884123086929321,
+            "content_preview": "Title: comp(53) | Author: Unknown Author | Subject: Computer Science | Description: Accelerated C++ Practical Programming by Example by Andrew Koenig and Barbara E. Moo Addison-Wesley, 2000 ISBN 0-201..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "Expert C Programming",
+            "subject": "Computer Science",
+            "author": "Peter van der Linden",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.189744234085083,
+            "content_preview": "Title: Expert C Programming | Author: Peter van der Linden | Subject: Computer Science | Description: Expert C Programming delves into the intricate and often misunderstood aspects of the C language, ..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(40)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.2179410457611084,
+            "content_preview": "Title: comp(40) | Author: Unknown Author | Subject: Computer Science | Description: Regular ExpressionsPowerful Techniques for Perl and Other Tools Jeffrey E. F. FriedlMastering | Tags: Regular Expres..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(12)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.2233023643493652,
+            "content_preview": "Title: comp(12) | Author: Unknown Author | Subject: Computer Science | Description: p Compilers Second Edition Principles, Techniques, <§ Tools Second Edition | Tags: Lexical Analysis, Syntax Analysis..."
+          }
+        ]
+      }
+    }
+  ],
+  "test_results": [
+    {
+      "test_number": 1,
+      "description": "Python programming fundamentals",
+      "query": "Python programming tutorial basics syntax variables functions",
+      "expected_keywords": [
+        "python",
+        "programming",
+        "tutorial"
+      ],
+      "passed": false,
+      "result": {
+        "query": "Python programming tutorial basics syntax variables functions",
+        "success": true,
+        "keyword_match": true,
+        "expected_keywords": [
+          "python",
+          "programming",
+          "tutorial"
+        ],
+        "results_count": 5,
+        "relevance_score": -0.075905179977417,
+        "results": [
+          {
+            "file_name": "Unknown",
+            "title": "A Byte of Python",
+            "subject": "Computer Science",
+            "author": "Swaroop C H",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.015112280845642,
+            "content_preview": "Title: A Byte of Python | Author: Swaroop C H | Subject: Computer Science | Description: 1.1 1.2 1.3 1.4 1.5 1.6 1.7 1.8 1.9 1.10 1.11 1.12 1.13 1.14 1.15 1.16 1.17 1.18 1.19 1.20 1.21 1.22 1.23 1.24 ..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "Python Power!: The Comprehensive Guide",
+            "subject": "Computer Science",
+            "author": "Matt Telles",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.0232822895050049,
+            "content_preview": "Title: Python Power!: The Comprehensive Guide | Author: Matt Telles | Subject: Computer Science | Description: This comprehensive guide offers a thorough introduction to Python programming, covering c..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "Head First Python",
+            "subject": "Computer Science",
+            "author": "Paul Barry",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.0799477100372314,
+            "content_preview": "Title: Head First Python | Author: Paul Barry | Subject: Computer Science | Description: Head First Python is an engaging and visually rich guide designed to teach Python programming fundamentals to a..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "The Python Standard Library by Example",
+            "subject": "Computer Science",
+            "author": "Doug Hellmann",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.1207977533340454,
+            "content_preview": "Title: The Python Standard Library by Example | Author: Doug Hellmann | Subject: Computer Science | Description: ptg | Tags: Python Standard Library, Module usage, File I/O and data persistence, Netwo..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "The Quick Python Book",
+            "subject": "Computer Science",
+            "author": "Vernon L. Ceder",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.1403858661651611,
+            "content_preview": "Title: The Quick Python Book | Author: Vernon L. Ceder | Subject: Computer Science | Description: SECOND EDITION MANNINGVernon L. CederSECOND EDITION Covers Python 3 First edition by Daryl K. Harms Ke..."
+          }
+        ]
+      }
+    },
+    {
+      "test_number": 2,
+      "description": "Machine learning and AI concepts",
+      "query": "machine learning algorithms neural networks deep learning artificial intelligence",
+      "expected_keywords": [
+        "machine learning",
+        "neural",
+        "algorithm",
+        "AI"
+      ],
+      "passed": false,
+      "result": {
+        "query": "machine learning algorithms neural networks deep learning artificial intelligence",
+        "success": true,
+        "keyword_match": true,
+        "expected_keywords": [
+          "machine learning",
+          "neural",
+          "algorithm",
+          "AI"
+        ],
+        "results_count": 5,
+        "relevance_score": -0.5944223403930664,
+        "results": [
+          {
+            "file_name": "Unknown",
+            "title": "Data Science from Scratch",
+            "subject": "Data Science",
+            "author": "Joel Grus",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.5384061336517334,
+            "content_preview": "Title: Data Science from Scratch | Author: Joel Grus | Subject: Data Science | Description: DATA/DATA SCIENCEData Science from Scratch ISBN: 978-1-491-90142-7US $39.99 CAN $45.99“ Joel takes you on a ..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(74)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.5516743659973145,
+            "content_preview": "Title: comp(74) | Author: Unknown Author | Subject: Computer Science | Description: This document explores various topics within the broad domain of computer science. It likely discusses fundamental c..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(38)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.571279764175415,
+            "content_preview": "Title: comp(38) | Author: Unknown Author | Subject: Computer Science | Description: This document likely covers a range of topics within computer science, potentially exploring foundational concepts s..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(95)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.6468323469161987,
+            "content_preview": "Title: comp(95) | Author: Unknown Author | Subject: Computer Science | Description: This document, likely originating from 1995, appears to cover fundamental concepts within computer science. It may e..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(3)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.6639190912246704,
+            "content_preview": "Title: comp(3) | Author: Unknown Author | Subject: Computer Science | Description: This document explores foundational topics within computer science, delving into core concepts such as algorithms, da..."
+          }
+        ]
+      }
+    },
+    {
+      "test_number": 3,
+      "description": "Data structures and algorithms",
+      "query": "data structures algorithms arrays linked lists trees sorting searching",
+      "expected_keywords": [
+        "data structure",
+        "algorithm",
+        "array",
+        "tree",
+        "sort"
+      ],
+      "passed": false,
+      "result": {
+        "query": "data structures algorithms arrays linked lists trees sorting searching",
+        "success": true,
+        "keyword_match": false,
+        "expected_keywords": [
+          "data structure",
+          "algorithm",
+          "array",
+          "tree",
+          "sort"
+        ],
+        "results_count": 5,
+        "relevance_score": -0.1594398021697998,
+        "results": [
+          {
+            "file_name": "Unknown",
+            "title": "comp(83)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.1364998817443848,
+            "content_preview": "Title: comp(83) | Author: Unknown Author | Subject: Computer Science | Description: This document likely explores foundational topics in computer science, potentially covering core areas such as algor..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "Graph Databases",
+            "subject": "Computer Science",
+            "author": "Ian Robinson, Jim Webber, and Emil Eifrem",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.140649676322937,
+            "content_preview": "Title: Graph Databases | Author: Ian Robinson, Jim Webber, and Emil Eifrem | Subject: Computer Science | Description: This book introduces the fundamental concepts of graph databases, covering their a..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(74)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.1682618856430054,
+            "content_preview": "Title: comp(74) | Author: Unknown Author | Subject: Computer Science | Description: This document explores various topics within the broad domain of computer science. It likely discusses fundamental c..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(19)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.1704912185668945,
+            "content_preview": "Title: comp(19) | Author: Unknown Author | Subject: Computer Science | Description: This document, likely focused on Computer Science given its filename, appears to cover foundational topics such as a..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(38)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.1812963485717773,
+            "content_preview": "Title: comp(38) | Author: Unknown Author | Subject: Computer Science | Description: This document likely covers a range of topics within computer science, potentially exploring foundational concepts s..."
+          }
+        ]
+      }
+    },
+    {
+      "test_number": 4,
+      "description": "Operating systems fundamentals",
+      "query": "operating systems process management memory scheduling concurrency",
+      "expected_keywords": [
+        "operating system",
+        "process",
+        "memory",
+        "schedule"
+      ],
+      "passed": false,
+      "result": {
+        "query": "operating systems process management memory scheduling concurrency",
+        "success": true,
+        "keyword_match": true,
+        "expected_keywords": [
+          "operating system",
+          "process",
+          "memory",
+          "schedule"
+        ],
+        "results_count": 5,
+        "relevance_score": 0.03180685043334961,
+        "results": [
+          {
+            "file_name": "Unknown",
+            "title": "Operating System Concepts, 8th Edition",
+            "subject": "Computer Science",
+            "author": "Abraham Silberschatz, Peter B. Gagne, Greg Gagne",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 0.8005954027175903,
+            "content_preview": "Title: Operating System Concepts, 8th Edition | Author: Abraham Silberschatz, Peter B. Gagne, Greg Gagne | Subject: Computer Science | Description: This widely-used textbook provides a comprehensive i..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "C++ Concurrency in Action",
+            "subject": "Computer Science",
+            "author": "Anthony Williams",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 0.9315774440765381,
+            "content_preview": "Title: C++ Concurrency in Action | Author: Anthony Williams | Subject: Computer Science | Description: MANNINGAnthony WilliamsPractical MultithreadingIN ACTION | Tags: C++ Concurrency, Multithreading,..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "Windows Internals, Sixth Edition, Part 2 eBook",
+            "subject": "Computer Science",
+            "author": "Mark Russinovich, David A. Solomon, Alex Ionescu",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 0.9776455163955688,
+            "content_preview": "Title: Windows Internals, Sixth Edition, Part 2 eBook | Author: Mark Russinovich, David A. Solomon, Alex Ionescu | Subject: Computer Science | Description: NOTE Part 2 available Fall 2012 See Table of..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "M01_STAL6329_06_SE_C01.QXD",
+            "subject": "Computer Science",
+            "author": "teamb",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.0582574605941772,
+            "content_preview": "Title: M01_STAL6329_06_SE_C01.QXD | Author: teamb | Subject: Computer Science | Description: PARTONE Part One provides a background and context for the remainder of this book. This part presents the f..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(64)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.0728899240493774,
+            "content_preview": "Title: comp(64) | Author: Unknown Author | Subject: Computer Science | Description: This document appears to cover advanced topics in computer science, focusing on the principles and design of compute..."
+          }
+        ]
+      }
+    },
+    {
+      "test_number": 5,
+      "description": "Database management concepts",
+      "query": "database management SQL relational DBMS normalization transactions",
+      "expected_keywords": [
+        "database",
+        "SQL",
+        "relational",
+        "DBMS"
+      ],
+      "passed": false,
+      "result": {
+        "query": "database management SQL relational DBMS normalization transactions",
+        "success": true,
+        "keyword_match": true,
+        "expected_keywords": [
+          "database",
+          "SQL",
+          "relational",
+          "DBMS"
+        ],
+        "results_count": 5,
+        "relevance_score": -0.2514147162437439,
+        "results": [
+          {
+            "file_name": "Unknown",
+            "title": "Principles of Distributed Database Systems, Third Edition",
+            "subject": "Computer Science",
+            "author": "M. Tamer Özsu, Patrick Valduriez",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 0.9250653386116028,
+            "content_preview": "Title: Principles of Distributed Database Systems, Third Edition | Author: M. Tamer Özsu, Patrick Valduriez | Subject: Computer Science | Description: This book covers the fundamental principles and d..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(100)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.30922532081604,
+            "content_preview": "Title: comp(100) | Author: Unknown Author | Subject: Computer Science | Description: This document covers foundational aspects within the field of Computer Science, likely introducing key principles r..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(92)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.3217682838439941,
+            "content_preview": "Title: comp(92) | Author: Unknown Author | Subject: Computer Science | Description: This technical document, identified as 'comp(92).pdf', is presumed to cover topics within computer science. Without ..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(91)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.344723105430603,
+            "content_preview": "Title: comp(91) | Author: Unknown Author | Subject: Computer Science | Description: This document, likely originating around 1991, appears to delve into foundational aspects of theoretical computer sc..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "Graph Databases",
+            "subject": "Computer Science",
+            "author": "Ian Robinson, Jim Webber, and Emil Eifrem",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.3562915325164795,
+            "content_preview": "Title: Graph Databases | Author: Ian Robinson, Jim Webber, and Emil Eifrem | Subject: Computer Science | Description: This book introduces the fundamental concepts of graph databases, covering their a..."
+          }
+        ]
+      }
+    },
+    {
+      "test_number": 6,
+      "description": "Software engineering and design patterns",
+      "query": "software engineering design patterns object oriented programming UML",
+      "expected_keywords": [
+        "software",
+        "engineering",
+        "design",
+        "pattern",
+        "OOP"
+      ],
+      "passed": false,
+      "result": {
+        "query": "software engineering design patterns object oriented programming UML",
+        "success": true,
+        "keyword_match": true,
+        "expected_keywords": [
+          "software",
+          "engineering",
+          "design",
+          "pattern",
+          "OOP"
+        ],
+        "results_count": 5,
+        "relevance_score": -0.15960975885391235,
+        "results": [
+          {
+            "file_name": "Unknown",
+            "title": "comp(79)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 0.9341375231742859,
+            "content_preview": "Title: comp(79) | Author: Unknown Author | Subject: Computer Science | Description: What is a UML Class Diagram? Class diagrams are the backbone of almost every object-oriented method including UML. T..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(45)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.1862387657165527,
+            "content_preview": "Title: comp(45) | Author: Unknown Author | Subject: Computer Science | Description: Table of Contents Modern C++ Design: Generic Programming and Design Patterns Applied By Andrei Alexandrescu Publishe..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "Software Engineering: A Practitioner's Approach",
+            "subject": "Computer Science",
+            "author": "Roger S Pressman",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.2058278322219849,
+            "content_preview": "Title: Software Engineering: A Practitioner's Approach | Author: Roger S Pressman | Subject: Computer Science | Description: Praise for earlier editions of Software Engineering: A Practitioner’s Appro..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "Software Engineering, 9th Edition",
+            "subject": "Computer Science",
+            "author": "Ian Sommerville",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.217341423034668,
+            "content_preview": "Title: Software Engineering, 9th Edition | Author: Ian Sommerville | Subject: Computer Science | Description: This book offers a comprehensive exploration of software engineering principles and practi..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "Java",
+            "subject": "Computer Science",
+            "author": "Herbert Schildt",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.2545032501220703,
+            "content_preview": "Title: Java | Author: Herbert Schildt | Subject: Computer Science | Description: This document serves as an introduction to the Java programming language, covering its fundamental syntax, core object-..."
+          }
+        ]
+      }
+    },
+    {
+      "test_number": 7,
+      "description": "Computer networking protocols",
+      "query": "computer networks TCP IP protocols networking communication internet",
+      "expected_keywords": [
+        "network",
+        "TCP",
+        "IP",
+        "protocol",
+        "communication"
+      ],
+      "passed": false,
+      "result": {
+        "query": "computer networks TCP IP protocols networking communication internet",
+        "success": true,
+        "keyword_match": true,
+        "expected_keywords": [
+          "network",
+          "TCP",
+          "IP",
+          "protocol",
+          "communication"
+        ],
+        "results_count": 5,
+        "relevance_score": -0.24985185861587525,
+        "results": [
+          {
+            "file_name": "Unknown",
+            "title": "Linux Network Administrator's Guide, 2nd Edition",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 0.9270676970481873,
+            "content_preview": "Title: Linux Network Administrator's Guide, 2nd Edition | Author: Unknown Author | Subject: Computer Science | Description: Linux Network Administrator'sGuide, 2nd Edition By Olaf Kirch & Terry Dawson..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(38)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.2623487710952759,
+            "content_preview": "Title: comp(38) | Author: Unknown Author | Subject: Computer Science | Description: This document likely covers a range of topics within computer science, potentially exploring foundational concepts s..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(1)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.3286547660827637,
+            "content_preview": "Title: comp(1) | Author: Unknown Author | Subject: Computer Science | Description: This document likely provides technical specifications and usage instructions for a command-line utility named 'comp'..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "Microsoft Word - IPv6 Essentials.doc",
+            "subject": "Computer Science",
+            "author": "Administrator@CRM",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.352020263671875,
+            "content_preview": "Title: Microsoft Word - IPv6 Essentials.doc | Author: Administrator@CRM | Subject: Computer Science | Description: 1 ISBN: 0-596-00125-8 | Tags: IPv6 Addressing, IPv6 Header Format, ICMPv6, IPv6 Neigh..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(51)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.3791677951812744,
+            "content_preview": "Title: comp(51) | Author: Unknown Author | Subject: Computer Science | Description: This document likely explores a broad spectrum of topics within computer science, potentially covering foundational ..."
+          }
+        ]
+      }
+    },
+    {
+      "test_number": 8,
+      "description": "Web development technologies",
+      "query": "web development HTML CSS JavaScript frontend backend frameworks",
+      "expected_keywords": [
+        "web",
+        "HTML",
+        "CSS",
+        "JavaScript",
+        "frontend"
+      ],
+      "passed": false,
+      "result": {
+        "query": "web development HTML CSS JavaScript frontend backend frameworks",
+        "success": true,
+        "keyword_match": true,
+        "expected_keywords": [
+          "web",
+          "HTML",
+          "CSS",
+          "JavaScript",
+          "frontend"
+        ],
+        "results_count": 5,
+        "relevance_score": -0.5342361450195312,
+        "results": [
+          {
+            "file_name": "Unknown",
+            "title": "O'Reilly - JavaScript Application Cookbook",
+            "subject": "Computer Science",
+            "author": "Jerry Bradenbaugh",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.314204454421997,
+            "content_preview": "Title: O'Reilly - JavaScript Application Cookbook | Author: Jerry Bradenbaugh | Subject: Computer Science | Description: JavaScript Application Cookbook By Jerry Bradenbaugh Publishe r: O'Reilly Pub D..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": ",ch01.29067",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.44957435131073,
+            "content_preview": "Title: ,ch01.29067 | Author: Unknown Author | Subject: Computer Science | Description: Ò³Âë£¬1/1 file://C:\\Do...\\pRVaIpO0Ve9jaesOyS+xAf5HDBRgSa1zZI91qmguu7D9l840Qb+.jp 2003-1-18 | Tags: Programming pr..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(85)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.5959922075271606,
+            "content_preview": "Title: comp(85) | Author: Unknown Author | Subject: Computer Science | Description: $ 19.99 US £ 12.99 UK € 16.99 EU Prices do not include local sales tax or V AT where applicablePackt Publishing Birm..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(15)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.6459906101226807,
+            "content_preview": "Title: comp(15) | Author: Unknown Author | Subject: Computer Science | Description: Domain-Driven Design Quickly | Tags: Domain-Driven Design (DDD), Strategic Design (DDD), Tactical Design (DDD), Doma..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "About Face 3: The Essentials of Interaction Design, Third Edition",
+            "subject": "Computer Science",
+            "author": "Alan Cooper, Robert Reimann, David Cronin",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.665419101715088,
+            "content_preview": "Title: About Face 3: The Essentials of Interaction Design, Third Edition | Author: Alan Cooper, Robert Reimann, David Cronin | Subject: Computer Science | Description: This book provides a comprehensi..."
+          }
+        ]
+      }
+    },
+    {
+      "test_number": 9,
+      "description": "Cybersecurity and cryptography",
+      "query": "cybersecurity encryption cryptography security protocols authentication",
+      "expected_keywords": [
+        "security",
+        "encryption",
+        "crypto",
+        "protocol"
+      ],
+      "passed": false,
+      "result": {
+        "query": "cybersecurity encryption cryptography security protocols authentication",
+        "success": true,
+        "keyword_match": false,
+        "expected_keywords": [
+          "security",
+          "encryption",
+          "crypto",
+          "protocol"
+        ],
+        "results_count": 5,
+        "relevance_score": -0.48605391979217527,
+        "results": [
+          {
+            "file_name": "Unknown",
+            "title": "SSH, The Secure Shell: The Definitive Guide",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.3418564796447754,
+            "content_preview": "Title: SSH, The Secure Shell: The Definitive Guide | Author: Unknown Author | Subject: Computer Science | Description: • Reviews • Reader Reviews • ErrataSSH, The Secure Shell: The Definitive Guide By..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(14)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.5111196041107178,
+            "content_preview": "Title: comp(14) | Author: Unknown Author | Subject: Computer Science | Description: This technical document delves into core aspects of computer science, covering essential theoretical concepts and pr..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(83)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.5128766298294067,
+            "content_preview": "Title: comp(83) | Author: Unknown Author | Subject: Computer Science | Description: This document likely explores foundational topics in computer science, potentially covering core areas such as algor..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(74)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.5256850719451904,
+            "content_preview": "Title: comp(74) | Author: Unknown Author | Subject: Computer Science | Description: This document explores various topics within the broad domain of computer science. It likely discusses fundamental c..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "Microsoft Word - IPv6 Essentials.doc",
+            "subject": "Computer Science",
+            "author": "Administrator@CRM",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.5387318134307861,
+            "content_preview": "Title: Microsoft Word - IPv6 Essentials.doc | Author: Administrator@CRM | Subject: Computer Science | Description: 1 ISBN: 0-596-00125-8 | Tags: IPv6 Addressing, IPv6 Header Format, ICMPv6, IPv6 Neigh..."
+          }
+        ]
+      }
+    },
+    {
+      "test_number": 10,
+      "description": "Artificial intelligence systems",
+      "query": "artificial intelligence expert systems knowledge representation reasoning",
+      "expected_keywords": [
+        "artificial intelligence",
+        "expert",
+        "knowledge",
+        "AI"
+      ],
+      "passed": false,
+      "result": {
+        "query": "artificial intelligence expert systems knowledge representation reasoning",
+        "success": true,
+        "keyword_match": true,
+        "expected_keywords": [
+          "artificial intelligence",
+          "expert",
+          "knowledge",
+          "AI"
+        ],
+        "results_count": 5,
+        "relevance_score": -0.393271279335022,
+        "results": [
+          {
+            "file_name": "Unknown",
+            "title": "Expert C Programming",
+            "subject": "Computer Science",
+            "author": "Peter van der Linden",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.3120959997177124,
+            "content_preview": "Title: Expert C Programming | Author: Peter van der Linden | Subject: Computer Science | Description: Expert C Programming delves into the intricate and often misunderstood aspects of the C language, ..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(7)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.3788084983825684,
+            "content_preview": "Title: comp(7) | Author: Unknown Author | Subject: Computer Science | Description: This technical document appears to delve into core computational principles and methodologies. It likely covers funda..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(19)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.4014767408370972,
+            "content_preview": "Title: comp(19) | Author: Unknown Author | Subject: Computer Science | Description: This document, likely focused on Computer Science given its filename, appears to cover foundational topics such as a..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "A Byte of Python",
+            "subject": "Computer Science",
+            "author": "Swaroop C H",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.4181376695632935,
+            "content_preview": "Title: A Byte of Python | Author: Swaroop C H | Subject: Computer Science | Description: 1.1 1.2 1.3 1.4 1.5 1.6 1.7 1.8 1.9 1.10 1.11 1.12 1.13 1.14 1.15 1.16 1.17 1.18 1.19 1.20 1.21 1.22 1.23 1.24 ..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(92)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.4558374881744385,
+            "content_preview": "Title: comp(92) | Author: Unknown Author | Subject: Computer Science | Description: This technical document, identified as 'comp(92).pdf', is presumed to cover topics within computer science. Without ..."
+          }
+        ]
+      }
+    },
+    {
+      "test_number": 11,
+      "description": "Mathematics and statistics",
+      "query": "mathematics statistics probability calculus linear algebra discrete math",
+      "expected_keywords": [
+        "math",
+        "statistics",
+        "probability",
+        "calculus",
+        "algebra"
+      ],
+      "passed": false,
+      "result": {
+        "query": "mathematics statistics probability calculus linear algebra discrete math",
+        "success": true,
+        "keyword_match": false,
+        "expected_keywords": [
+          "math",
+          "statistics",
+          "probability",
+          "calculus",
+          "algebra"
+        ],
+        "results_count": 5,
+        "relevance_score": -0.67387375831604,
+        "results": [
+          {
+            "file_name": "Unknown",
+            "title": "Introduction to Algorithms, Third Edition",
+            "subject": "Computer Science",
+            "author": "Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.3928251266479492,
+            "content_preview": "Title: Introduction to Algorithms, Third Edition | Author: Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein | Subject: Computer Science | Description: ALGORITHMSINTRODUCTION TO..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "CSE 142 Python Slides",
+            "subject": "Computer Science",
+            "author": "Marty Stepp",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.6965949535369873,
+            "content_preview": "Title: CSE 142 Python Slides | Author: Marty Stepp | Subject: Computer Science | Description: CSE 143 Lecture 5 More Stacks and Queues; Complexity (Big -Oh) reading : 13.1 - 13.3 slides adapted from M..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "A Byte of Python",
+            "subject": "Computer Science",
+            "author": "Swaroop C H",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.7420427799224854,
+            "content_preview": "Title: A Byte of Python | Author: Swaroop C H | Subject: Computer Science | Description: 1.1 1.2 1.3 1.4 1.5 1.6 1.7 1.8 1.9 1.10 1.11 1.12 1.13 1.14 1.15 1.16 1.17 1.18 1.19 1.20 1.21 1.22 1.23 1.24 ..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "Jumping into C++",
+            "subject": "Computer Science",
+            "author": "© Alex Allain (www.cprogramming.com)",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.761130690574646,
+            "content_preview": "Title: Jumping into C++ | Author: © Alex Allain (www.cprogramming.com) | Subject: Computer Science | Description: This document serves as an introductory guide to the C++ programming language, coverin..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(42)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.7767752408981323,
+            "content_preview": "Title: comp(42) | Author: Unknown Author | Subject: Computer Science | Description: Analysis of the document is not possible as the content preview was empty. Based solely on the filename 'comp(42).pd..."
+          }
+        ]
+      }
+    },
+    {
+      "test_number": 12,
+      "description": "Computer graphics and visualization",
+      "query": "computer graphics 3D rendering visualization OpenGL computer vision",
+      "expected_keywords": [
+        "graphics",
+        "3D",
+        "render",
+        "visual",
+        "OpenGL"
+      ],
+      "passed": false,
+      "result": {
+        "query": "computer graphics 3D rendering visualization OpenGL computer vision",
+        "success": true,
+        "keyword_match": true,
+        "expected_keywords": [
+          "graphics",
+          "3D",
+          "render",
+          "visual",
+          "OpenGL"
+        ],
+        "results_count": 5,
+        "relevance_score": -0.4472386121749878,
+        "results": [
+          {
+            "file_name": "Unknown",
+            "title": "Computer Graphics, C Version (2nd Ed.)",
+            "subject": "Computer Science",
+            "author": "Donald Hearn, M. Pauline Baker",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 0.8238186836242676,
+            "content_preview": "Title: Computer Graphics, C Version (2nd Ed.) | Author: Donald Hearn, M. Pauline Baker | Subject: Computer Science | Description: This textbook provides a comprehensive introduction to the principles ..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "About Face 3: The Essentials of Interaction Design, Third Edition",
+            "subject": "Computer Science",
+            "author": "Alan Cooper, Robert Reimann, David Cronin",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.5870107412338257,
+            "content_preview": "Title: About Face 3: The Essentials of Interaction Design, Third Edition | Author: Alan Cooper, Robert Reimann, David Cronin | Subject: Computer Science | Description: This book provides a comprehensi..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(54)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.5964819192886353,
+            "content_preview": "Title: comp(54) | Author: Unknown Author | Subject: Computer Science | Description: Reference book from GitHub repository | Content: The Productive Programmer\nNeal Ford\nforeword by David Bock\nTomcat™\n..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(74)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.608168363571167,
+            "content_preview": "Title: comp(74) | Author: Unknown Author | Subject: Computer Science | Description: This document explores various topics within the broad domain of computer science. It likely discusses fundamental c..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "A Tour of C++",
+            "subject": "Computer Science",
+            "author": "Bjarne Stroustrup",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.6207133531570435,
+            "content_preview": "Title: A Tour of C++ | Author: Bjarne Stroustrup | Subject: Computer Science | Description: ptg11539604 | Tags: C++ Programming Language, Object-Oriented Programming, Standard Template Library (STL), ..."
+          }
+        ]
+      }
+    },
+    {
+      "test_number": 13,
+      "description": "Mobile application development",
+      "query": "mobile app development Android iOS Swift Java Kotlin React Native",
+      "expected_keywords": [
+        "mobile",
+        "app",
+        "Android",
+        "iOS",
+        "Swift"
+      ],
+      "passed": false,
+      "result": {
+        "query": "mobile app development Android iOS Swift Java Kotlin React Native",
+        "success": true,
+        "keyword_match": true,
+        "expected_keywords": [
+          "mobile",
+          "app",
+          "Android",
+          "iOS",
+          "Swift"
+        ],
+        "results_count": 5,
+        "relevance_score": -0.7392202615737915,
+        "results": [
+          {
+            "file_name": "Unknown",
+            "title": "comp(24)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.5814900398254395,
+            "content_preview": "Title: comp(24) | Author: Unknown Author | Subject: Computer Science | Description: JOCHEN SCHILLERJOCHEN SCHILLERSCHILLERSecond EditionSecond Edition Second EditionThe mobile communications market re..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "O'Reilly - JavaScript Application Cookbook",
+            "subject": "Computer Science",
+            "author": "Jerry Bradenbaugh",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.7199316024780273,
+            "content_preview": "Title: O'Reilly - JavaScript Application Cookbook | Author: Jerry Bradenbaugh | Subject: Computer Science | Description: JavaScript Application Cookbook By Jerry Bradenbaugh Publishe r: O'Reilly Pub D..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "Human-computer interaction",
+            "subject": "Computer Science",
+            "author": "Alan Dix",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.7457237243652344,
+            "content_preview": "Title: Human-computer interaction | Author: Alan Dix | Subject: Computer Science | Description: ALAN DIX, JANET FINLAY , GREGORY D. ABOWD, RUSSELL BEALE THIRD EDITION THIRD EDITIONHUMAN–COMPUTER INTER..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "Software Engineering: A Practitioner's Approach",
+            "subject": "Computer Science",
+            "author": "Roger S Pressman",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.8065285682678223,
+            "content_preview": "Title: Software Engineering: A Practitioner's Approach | Author: Roger S Pressman | Subject: Computer Science | Description: Praise for earlier editions of Software Engineering: A Practitioner’s Appro..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "About Face 3: The Essentials of Interaction Design, Third Edition",
+            "subject": "Computer Science",
+            "author": "Alan Cooper, Robert Reimann, David Cronin",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.842427372932434,
+            "content_preview": "Title: About Face 3: The Essentials of Interaction Design, Third Edition | Author: Alan Cooper, Robert Reimann, David Cronin | Subject: Computer Science | Description: This book provides a comprehensi..."
+          }
+        ]
+      }
+    },
+    {
+      "test_number": 14,
+      "description": "Cloud computing platforms",
+      "query": "cloud computing AWS Azure distributed systems scalability microservices",
+      "expected_keywords": [
+        "cloud",
+        "AWS",
+        "Azure",
+        "distributed",
+        "scale"
+      ],
+      "passed": false,
+      "result": {
+        "query": "cloud computing AWS Azure distributed systems scalability microservices",
+        "success": true,
+        "keyword_match": true,
+        "expected_keywords": [
+          "cloud",
+          "AWS",
+          "Azure",
+          "distributed",
+          "scale"
+        ],
+        "results_count": 5,
+        "relevance_score": -0.4203330993652344,
+        "results": [
+          {
+            "file_name": "Unknown",
+            "title": "comp(91)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.347736120223999,
+            "content_preview": "Title: comp(91) | Author: Unknown Author | Subject: Computer Science | Description: This document, likely originating around 1991, appears to delve into foundational aspects of theoretical computer sc..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "Principles of Distributed Database Systems, Third Edition",
+            "subject": "Computer Science",
+            "author": "M. Tamer Özsu, Patrick Valduriez",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.4061224460601807,
+            "content_preview": "Title: Principles of Distributed Database Systems, Third Edition | Author: M. Tamer Özsu, Patrick Valduriez | Subject: Computer Science | Description: This book covers the fundamental principles and d..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(87)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.4190473556518555,
+            "content_preview": "Title: comp(87) | Author: Unknown Author | Subject: Computer Science | Description: This document likely covers foundational aspects of computer science, potentially discussing core principles of syst..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "Windows Internals, Sixth Edition, Part 2 eBook",
+            "subject": "Computer Science",
+            "author": "Mark Russinovich, David A. Solomon, Alex Ionescu",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.424811840057373,
+            "content_preview": "Title: Windows Internals, Sixth Edition, Part 2 eBook | Author: Mark Russinovich, David A. Solomon, Alex Ionescu | Subject: Computer Science | Description: NOTE Part 2 available Fall 2012 See Table of..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(90)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.5039477348327637,
+            "content_preview": "Title: comp(90) | Author: Unknown Author | Subject: Computer Science | Description: This document, inferred from its filename 'comp(90).pdf', is presumed to be a Computer Science text from around 1990..."
+          }
+        ]
+      }
+    },
+    {
+      "test_number": 15,
+      "description": "Data science and analytics tools",
+      "query": "data science analytics big data pandas numpy matplotlib visualization",
+      "expected_keywords": [
+        "data science",
+        "analytics",
+        "pandas",
+        "numpy",
+        "visualization"
+      ],
+      "passed": false,
+      "result": {
+        "query": "data science analytics big data pandas numpy matplotlib visualization",
+        "success": true,
+        "keyword_match": true,
+        "expected_keywords": [
+          "data science",
+          "analytics",
+          "pandas",
+          "numpy",
+          "visualization"
+        ],
+        "results_count": 5,
+        "relevance_score": -0.5050090789794922,
+        "results": [
+          {
+            "file_name": "Unknown",
+            "title": "Data Science from Scratch",
+            "subject": "Data Science",
+            "author": "Joel Grus",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.4416959285736084,
+            "content_preview": "Title: Data Science from Scratch | Author: Joel Grus | Subject: Data Science | Description: DATA/DATA SCIENCEData Science from Scratch ISBN: 978-1-491-90142-7US $39.99 CAN $45.99“ Joel takes you on a ..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(46)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.472318172454834,
+            "content_preview": "Title: comp(46) | Author: Unknown Author | Subject: Computer Science | Description: This document appears to delve into core concepts of computer science, likely covering fundamental principles of com..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "Real World Instrumentation with Python",
+            "subject": "Engineering",
+            "author": "J. M. Hughes",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.4942224025726318,
+            "content_preview": "Title: Real World Instrumentation with Python | Author: J. M. Hughes | Subject: Engineering | Description: This book guides readers through practical, real-world instrumentation applications using Pyt..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "Computer Graphics, C Version (2nd Ed.)",
+            "subject": "Computer Science",
+            "author": "Donald Hearn, M. Pauline Baker",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.554809331893921,
+            "content_preview": "Title: Computer Graphics, C Version (2nd Ed.) | Author: Donald Hearn, M. Pauline Baker | Subject: Computer Science | Description: This textbook provides a comprehensive introduction to the principles ..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "The Python Standard Library by Example",
+            "subject": "Computer Science",
+            "author": "Doug Hellmann",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.5619995594024658,
+            "content_preview": "Title: The Python Standard Library by Example | Author: Doug Hellmann | Subject: Computer Science | Description: ptg | Tags: Python Standard Library, Module usage, File I/O and data persistence, Netwo..."
+          }
+        ]
+      }
+    },
+    {
+      "test_number": 16,
+      "description": "Algorithm complexity analysis",
+      "query": "algorithm complexity analysis big O notation computational complexity",
+      "expected_keywords": [
+        "algorithm",
+        "complexity",
+        "big O",
+        "computational"
+      ],
+      "passed": false,
+      "result": {
+        "query": "algorithm complexity analysis big O notation computational complexity",
+        "success": true,
+        "keyword_match": true,
+        "expected_keywords": [
+          "algorithm",
+          "complexity",
+          "big O",
+          "computational"
+        ],
+        "results_count": 5,
+        "relevance_score": -0.19003536701202392,
+        "results": [
+          {
+            "file_name": "Unknown",
+            "title": "CSE 142 Python Slides",
+            "subject": "Computer Science",
+            "author": "Marty Stepp",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 0.9612092971801758,
+            "content_preview": "Title: CSE 142 Python Slides | Author: Marty Stepp | Subject: Computer Science | Description: CSE 143 Lecture 5 More Stacks and Queues; Complexity (Big -Oh) reading : 13.1 - 13.3 slides adapted from M..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(38)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.1849359273910522,
+            "content_preview": "Title: comp(38) | Author: Unknown Author | Subject: Computer Science | Description: This document likely covers a range of topics within computer science, potentially exploring foundational concepts s..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(83)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.2571678161621094,
+            "content_preview": "Title: comp(83) | Author: Unknown Author | Subject: Computer Science | Description: This document likely explores foundational topics in computer science, potentially covering core areas such as algor..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(19)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.2598388195037842,
+            "content_preview": "Title: comp(19) | Author: Unknown Author | Subject: Computer Science | Description: This document, likely focused on Computer Science given its filename, appears to cover foundational topics such as a..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "Introduction to Algorithms, Third Edition",
+            "subject": "Computer Science",
+            "author": "Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.287024974822998,
+            "content_preview": "Title: Introduction to Algorithms, Third Edition | Author: Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein | Subject: Computer Science | Description: ALGORITHMSINTRODUCTION TO..."
+          }
+        ]
+      }
+    },
+    {
+      "test_number": 17,
+      "description": "Compiler design and construction",
+      "query": "compiler design parsing lexical analysis syntax analysis code generation",
+      "expected_keywords": [
+        "compiler",
+        "parsing",
+        "lexical",
+        "syntax"
+      ],
+      "passed": false,
+      "result": {
+        "query": "compiler design parsing lexical analysis syntax analysis code generation",
+        "success": true,
+        "keyword_match": true,
+        "expected_keywords": [
+          "compiler",
+          "parsing",
+          "lexical",
+          "syntax"
+        ],
+        "results_count": 5,
+        "relevance_score": -0.1547893762588501,
+        "results": [
+          {
+            "file_name": "Unknown",
+            "title": "comp(99)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 0.9545469284057617,
+            "content_preview": "Title: comp(99) | Author: Unknown Author | Subject: Computer Science | Description: This document likely explores various aspects of compiler construction, detailing the phases involved in transformin..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(53)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.1884123086929321,
+            "content_preview": "Title: comp(53) | Author: Unknown Author | Subject: Computer Science | Description: Accelerated C++ Practical Programming by Example by Andrew Koenig and Barbara E. Moo Addison-Wesley, 2000 ISBN 0-201..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "Expert C Programming",
+            "subject": "Computer Science",
+            "author": "Peter van der Linden",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.189744234085083,
+            "content_preview": "Title: Expert C Programming | Author: Peter van der Linden | Subject: Computer Science | Description: Expert C Programming delves into the intricate and often misunderstood aspects of the C language, ..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(40)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.2179410457611084,
+            "content_preview": "Title: comp(40) | Author: Unknown Author | Subject: Computer Science | Description: Regular ExpressionsPowerful Techniques for Perl and Other Tools Jeffrey E. F. FriedlMastering | Tags: Regular Expres..."
+          },
+          {
+            "file_name": "Unknown",
+            "title": "comp(12)",
+            "subject": "Computer Science",
+            "author": "Unknown Author",
+            "difficulty": "Unknown",
+            "rating": 0,
+            "distance": 1.2233023643493652,
+            "content_preview": "Title: comp(12) | Author: Unknown Author | Subject: Computer Science | Description: p Compilers Second Edition Principles, Techniques, <§ Tools Second Edition | Tags: Lexical Analysis, Syntax Analysis..."
+          }
+        ]
+      }
+    }
+  ],
+  "recommendations": [
+    "❌ Consider improving document indexing or expanding the knowledge base",
+    "📊 Consider improving relevance scoring or document chunking"
+  ]
+}
