@@ -68,6 +68,33 @@ const BookSchema = new Schema({
     maxlength: 50
   }],
   
+  // Enhanced AI-generated metadata fields
+  summary: {
+    type: String,
+    trim: true,
+    maxlength: 2000
+  },
+  key_concepts: [{
+    type: String,
+    trim: true,
+    maxlength: 100
+  }],
+  difficulty: {
+    type: String,
+    enum: ['Beginner', 'Intermediate', 'Advanced', 'Expert'],
+    trim: true
+  },
+  target_audience: {
+    type: String,
+    enum: ['Students', 'Professionals', 'Researchers', 'General'],
+    trim: true
+  },
+  prerequisites: [{
+    type: String,
+    trim: true,
+    maxlength: 200
+  }],
+  
   // File information
   fileName: {
     type: String,
@@ -77,6 +104,12 @@ const BookSchema = new Schema({
   fileSize: {
     type: Number,
     min: 0
+  },
+  file_url: {
+    type: String,
+    default: "N/A",
+    trim: true,
+    maxlength: 500
   },
   
   // Availability and status
@@ -126,8 +159,9 @@ const BookSchema = new Schema({
 });
 
 // Indexes for better query performance
-BookSchema.index({ title: 'text', author: 'text', description: 'text' });
+BookSchema.index({ title: 'text', author: 'text', description: 'text', summary: 'text', key_concepts: 'text' });
 BookSchema.index({ subject: 1, category: 1 });
+BookSchema.index({ difficulty: 1, target_audience: 1 });
 BookSchema.index({ addedDate: -1 });
 BookSchema.index({ downloadCount: -1 });
 BookSchema.index({ rating: -1 });

@@ -12,6 +12,12 @@ docs/library/*.pdf
 docs/library/
 **/library/*.pdf
 
+# RAG System PDF files - exclude downloaded reference books
+META_dataretreval/github_refrences/*.pdf
+META_dataretreval/github_refrences/
+mcp-rag-system/chromadb/
+mcp-rag-system/**/*.pdf
+
 # Environment variables
 .env
 .env.local
