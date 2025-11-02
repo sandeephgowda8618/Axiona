@@ -31,21 +31,25 @@ export interface StudyMaterialSort {
 
 // Library Types
 export interface LibraryBook {
+  _id: string  // MongoDB ID
   id: string
   title: string
   author: string
-  isbn: string
-  publisher: string
-  edition: string
+  isbn?: string
+  publisher?: string
+  edition?: string
   subject: string
   category: string
-  year: number
-  pages: number
+  year?: number
+  pages?: number
   language: string
   rating: number
   reviewCount: number
   description: string
   coverImage: string
+  fileName: string
+  fileSize?: number
+  file_url?: string  // GitHub URL for PDFs
   downloadUrl?: string
   previewUrl?: string
   fileSize?: string

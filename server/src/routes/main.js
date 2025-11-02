@@ -170,6 +170,45 @@ router.get('/users/profile', authenticateToken, async (req, res) => {
   }
 });
 
+// USER PROFILE ROUTES - Add missing endpoints
+router.get('/users/me/saved', async (req, res) => {
+  try {
+    // For now, return empty array since we don't have user authentication
+    // In the future, implement proper user auth and saved content
+    res.json({
+      success: true,
+      data: [],
+      message: 'No saved videos found'
+    });
+  } catch (error) {
+    console.error('Error fetching saved videos:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch saved videos',
+      error: error.message
+    });
+  }
+});
+
+router.get('/users/me/liked', async (req, res) => {
+  try {
+    // For now, return empty array since we don't have user authentication
+    // In the future, implement proper user auth and liked content
+    res.json({
+      success: true,
+      data: [],
+      message: 'No liked videos found'
+    });
+  } catch (error) {
+    console.error('Error fetching liked videos:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch liked videos',
+      error: error.message
+    });
+  }
+});
+
 // VIDEO ROUTES
 router.get('/videos', async (req, res) => {
   try {
@@ -1126,5 +1165,42 @@ router.use('/meetings', meetingsRouter);
 
 // Mount the books router
 router.use('/books', booksRouter);
+
+// PDF PROXY ENDPOINT - Serve PDFs from GitHub URLs
+router.get('/docs/library/:filename', async (req, res) => {
+  try {
+    const { filename } = req.params;
+    
+    // Import Book model to get GitHub URL
+    const { Book } = require('../models/Book');
+    
+    // Find the book by filename
+    const book = await Book.findOne({ 
+      $or: [
+        { fileName: filename },
+        { title: filename.replace('.pdf', '').replace(/comp\((\d+)\)/, 'comp($1)') }
+      ]
+    });
+    
+    if (!book || !book.file_url || book.file_url === 'N/A') {
+      return res.status(404).json({
+        success: false,
+        message: 'PDF not found or no GitHub URL available',
+        hint: 'This book may not have a direct PDF URL'
+      });
+    }
+    
+    // Redirect to GitHub URL instead of trying to serve locally
+    res.redirect(book.file_url);
+    
+  } catch (error) {
+    console.error('Error serving PDF:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to serve PDF',
+      error: error.message
+    });
+  }
+});
 
 module.exports = router;

@@ -29,6 +29,8 @@ import { useAuth } from '../contexts/AuthContext';
 import { useNotesContext } from '../contexts/NotesContext';
 import { apiService } from '../services/api';
 
+import { LibraryBook } from '../types/library';
+
 // Configure PDF.js worker
 const pdfWorkerUrl = 'https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js';
 
@@ -40,30 +42,6 @@ const highlightColors = [
   { name: 'Pink', value: '#E91E63' },
   { name: 'Orange', value: '#FF9800' }
 ];
-
-interface LibraryBook {
-  _id: string;
-  title: string;
-  author: string;
-  isbn?: string;
-  publisher?: string;
-  edition?: string;
-  subject: string;
-  category: string;
-  year?: number;
-  pages?: number;
-  language: string;
-  rating: number;
-  reviewCount: number;
-  description: string;
-  coverImage: string;
-  fileName: string;
-  fileSize?: number;
-  availability: 'available' | 'borrowed' | 'reserved';
-  addedDate: string;
-  downloadCount: number;
-  tags: string[];
-}
 
 const BookReader: React.FC = () => {
   const { bookId } = useParams<{ bookId: string }>();

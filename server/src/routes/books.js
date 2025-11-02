@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { Book } = require('../models/Book');
+const axios = require('axios');
 
 // GET /api/books - Get all books with filtering and pagination
 router.get('/', async (req, res) => {
@@ -361,6 +362,49 @@ router.get('/category/:category', async (req, res) => {
       success: false,
       message: 'Failed to fetch books by category',
       error: error.message
+    });
+  }
+});
+
+// GET /api/books/pdf-proxy/:bookId - Proxy PDF files from GitHub with proper CORS headers
+router.get('/pdf-proxy/:bookId', async (req, res) => {
+  try {
+    const { bookId } = req.params;
+    
+    // Find the book to get the GitHub URL
+    const book = await Book.findById(bookId);
+    if (!book) {
+      return res.status(404).json({ success: false, message: 'Book not found' });
+    }
+    
+    if (!book.file_url || book.file_url === 'N/A') {
+      return res.status(404).json({ success: false, message: 'PDF not available' });
+    }
+    
+    // Stream the PDF from GitHub
+    const response = await axios({
+      method: 'GET',
+      url: book.file_url,
+      responseType: 'stream',
+      timeout: 30000
+    });
+    
+    // Set proper headers for PDF
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET');
+    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    res.setHeader('Content-Disposition', `inline; filename="${book.fileName || book.title}.pdf"`);
+    
+    // Pipe the PDF stream to response
+    response.data.pipe(res);
+    
+  } catch (error) {
+    console.error('PDF proxy error:', error.message);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Failed to load PDF',
+      error: error.message 
     });
   }
 });

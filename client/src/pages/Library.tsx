@@ -11,31 +11,8 @@ import {
 } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import FloatingWorkspaceButton from '../components/FloatingWorkspaceButton'
+import { LibraryBook } from '../types/library'
 import axios from '../api/axios'
-
-interface LibraryBook {
-  _id: string
-  title: string
-  author: string
-  isbn?: string
-  publisher?: string
-  edition?: string
-  subject: string
-  category: string
-  year?: number
-  pages?: number
-  language: string
-  rating: number
-  reviewCount: number
-  description: string
-  coverImage: string
-  fileName: string
-  fileSize?: number
-  availability: 'available' | 'borrowed' | 'reserved'
-  addedDate: string
-  downloadCount: number
-  tags: string[]
-}
 
 const Library: React.FC = () => {
   const navigate = useNavigate()
@@ -122,12 +99,13 @@ const Library: React.FC = () => {
 
   const handleBookClick = (book: LibraryBook) => {
     // Navigate to book reader page with book data
-    // Properly encode the filename for URL
-    const encodedFileName = encodeURIComponent(book.fileName)
+    // Use the PDF proxy endpoint to handle CORS and GitHub URL issues
+    const pdfUrl = `http://localhost:5050/api/books/pdf-proxy/${book._id}`
+    
     navigate(`/library/reader/${book._id}`, { 
       state: { 
         book,
-        pdfUrl: `http://localhost:5050/docs/library/${encodedFileName}`
+        pdfUrl
       } 
     })
   }
