@@ -14,7 +14,7 @@ from typing import Dict, List, Optional, Any
 import requests
 
 # Configuration
-GOOGLE_API_KEY = "AIzaSyBuesQHpmMfx-gjkCQ7R6gh4t_FAG0qnYE"
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY", "YOUR_GOOGLE_API_KEY_HERE")
 GEMINI_MODEL = "models/gemini-2.0-flash"
 MATERIALS_FOLDER = "materials"
 OUTPUT_FILE = "StudyPES_data.json"

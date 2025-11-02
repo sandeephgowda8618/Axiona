@@ -4,7 +4,7 @@ const { logger } = require('../utils/logger');
 
 class AIService {
   constructor() {
-    this.apiKey = process.env.GOOGLE_AI_API_KEY || 'AIzaSyBuesQHpmMfx-gjkCQ7R6gh4t_FAG0qnYE';
+    this.apiKey = process.env.GOOGLE_AI_API_KEY || 'YOUR_GOOGLE_API_KEY_HERE';
     this.genAI = new GoogleGenerativeAI(this.apiKey);
     this.model = this.genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
     

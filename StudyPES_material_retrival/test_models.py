@@ -3,10 +3,11 @@
 Test available Google AI models
 """
 
+import os
 import google.generativeai as genai
 
 # Configure AI
-api_key = "AIzaSyBuesQHpmMfx-gjkCQ7R6gh4t_FAG0qnYE"
+api_key = os.getenv("GOOGLE_API_KEY", "YOUR_GOOGLE_API_KEY_HERE")
 genai.configure(api_key=api_key)
 
 print("🔍 Checking available models...")
