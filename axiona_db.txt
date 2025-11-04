@@ -1,0 +1,374 @@
+SEMESTER – 1
+Chemistry
+255  Electrochemical Equilibria  →  Sem1_Chemistry_U2_Electrochemistry.pdf
+256  Nanomaterials  →  Sem1_Chemistry_U4_Storage_Materials_And_Green_Chemistry.pdf
+257  Energy Storage  →  Sem1_Chemistry_U3_Energy_Storage_Devices_And_Hydrogen_Storage_Sensor.pdf
+258  Phase Equilibria  →  Sem1_Chemistry_U1_Phase Equilibria.pdf
+259  Spectroscopy  →  Sem1_Chemistry_U1_Spectroscopy.pdf
+260  Corrosion  →  Sem1_Chemistry_U2_Corrosion.pdf
+
+Electronic Principles & Devices
+210  Basic Elements/Diodes  →  Sem1_EPD_U1_Semiconductor_Diodes.pdf
+212  Diode Applications  →  Sem1_EPD_U2_Semiconductor_Diodes_Applicatiom.pdf
+321  Modulation  →  Sem1_EPD_U4_Digital_Electronics.pdf
+322  Digital Electronics  →  Sem1_EPD_U3_Transistor_And_operational_Amplifier.pdf
+
+Engineering Mathematics – I
+275  Higher-Order DE/PDE  →  Sem1_Maths_U3_And_U4_Class_Work_Problems.pdf
+
+Mathematics (class-work)
+267  Classwork U1-U2  →  Sem1_Maths_U1_And_U2_Class_Work_Problems.pdf
+
+Mechanics Textbook
+220  Mechanics Textbook  →  Sem1_Mechanics_Textbook.pdf
+
+Constitution Q&A
+327  Constitution Q&A  →  Sem1_Constitution_All_Constitution_Q&A.pdf
+
+
+SEMESTER – 2
+Electrical Engineering
+Sem2_Electrical_U1_DC_Circuits.pdf → 211 DC Circuits
+Sem2_Electrical_U2_Singal_Phase_AC_Circuits.pdf → 330 Single-Phase AC
+Sem2_Electrical_U3_Three_Phase_Balanced_Sysytem.pdf → 326 3-Phase Systems
+Sem2_Electrical_U4_Electrical_Machine.pdf → 319 Electrical Machines
+
+Engineering Mathematics – II
+268  Fourier  →  Sem2_Maths_U4_Fourier.pdf
+269  Probability  →  Sem2_Maths_U1_Probability.pdf
+270  Double Integrals  →  Sem2_Maths_U3_Integration.pdf
+317  Laplace  →  Sem2_Maths_U2_Laplace.pdf
+
+MATLAB
+163  MATLAB Examples  →  Sem2_MATLAB.pdf
+
+Mechanical Engineering
+161  Casting/Forming/Joining  →  Sem2_Mechanical_U3_Casting_Forming_And_Joining_Processes.pdf
+162  IC Engines & Turbines  →  Sem2_Mechanical_U1_IC_Engines_And_Turbines.pdf
+218  Machining/Automation  →  Sem2_Mechanical_U4_Machinig_Automation_Robotics_Control_System_And_Industry_4.0.pdf
+219  Engg Materials  →  Sem2_Mechanical_U2_Engineering_Material_Stress_And_strain_And_Transmission _System.pdf
+
+Environmental Studies
+320  Biomimetics  →  Sem2_EVS_U2.pdf
+323  Organic Farming  →  Sem2_EVS_U3.pdf
+324  Ecosystems  →  Sem2_EVS_U1.pdf
+325  Infectious Diseases  →  Sem2_EVS_U4.pdf
+
+Physics Notes
+328  Physics Notes  →  Sem2_Physics_ All_Units_Notes.pdf
+
+Problem Solving with C
+312  Intro to C  →  Sem2_C_U1_Problem_Solving_Fundamentals_With_C.pdf
+313  Arrays/Pointers  →  Sem2_C_U2_Counting_Sorting_Searching.pdf
+314  Strings  →  Sem2_C_U3_Text_Processing_And_User_Defined_Types.pdf
+
+
+SEMESTER – 3
+
+Data Structures & Algorithms
+58  DSA U3 L4  →  Sem3_DSA_U3_L4.pps
+59  Queue Basics  →  Sem3_DSA_U2_L1.pdf
+60  Circular Queue  →  Sem3_DSA_U2_L3.pdf
+61  DSA U3 L7  →  Sem3_DSA_U3_L7.pps
+62  Queue Linked List  →  Sem3_DSA_U2_L2.pdf
+63  Josephus Problem  →  Sem3_DSA_U2_L6.pdf
+64  DSA U3 L2  →  Sem3_DSA_U3_L2.pps
+65  Queues & CPU Scheduling  →  Sem3_DSA_U2_L7.pdf
+66  Deque  →  Sem3_DSA_U2_L5.pdf
+67  Priority Queue  →  Sem3_DSA_U2_L4.pdf
+68  Binary Tree Programs  →  Sem3_DSA_U3_L19.pdf
+69  Splay Tree Delete  →  Sem3_DSA_U3_L18.pdf
+70  Iterative BST  →  Sem3_DSA_U3_L8.pdf
+71  Iterative BST (2)  →  Sem3_DSA_U3_L9.pdf
+72  Expression Tree  →  Sem3_DSA_U3_L10.pdf
+73  BST Insert MCQs  →  Sem3_DSA_U3_L3.pdf
+74  Threaded BST  →  Sem3_DSA_U3_L11.pdf
+75  Sparse Matrix  →  Sem3_DSA_U1_L6.pdf
+76  Singly Linked List  →  Sem3_DSA_U1_L4.pdf
+77  Priority Queue & Heaps  →  Sem3_DSA_U3_L13.pdf
+78  BST Arrays  →  Sem3_DSA_U3_L1.pdf
+79  DSA U3 L12  →  Sem3_DSA_U3_L12.pdf
+80  Circular Doubly LL  →  Sem3_DSA_U1_L5.pdf
+81  DS Intro  →  Sem3_DSA_U1_L1.pdf
+82  Splay Insert  →  Sem3_DSA_U3_L16.pdf
+83  Binary Tree Programs (2)  →  Sem3_DSA_U3_L5.pdf
+84  Splay Tree Intro  →  Sem3_DSA_U3_L17.pdf
+85  Memory Allocation  →  Sem3_DSA_U1_L2.pdf
+86  Balanced Trees  →  Sem3_DSA_U3_L15.pdf
+87  DSA U2 L10  →  Sem3_DSA_U2_L10.pdf
+88  DSA U2 L11  →  Sem3_DSA_U2_L11.pdf
+89  BST Deletion  →  Sem3_DSA_U3_L6.pdf
+90  DSA U3 L14  →  Sem3_DSA_U3_L14.pdf
+91  DSA U2 L9  →  Sem3_DSA_U2_L9.pdf
+92  Tree Basics  →  Sem3_DSA_U2_L8.pdf
+93  DSA U3 L  →  Sem3_DSA_U3_L.pps
+286  Linked Lists  →  Sem3_DSA_U1_L3.docx
+287  Stacks & Queues  →  Sem3_DSA_U1_L7.docx
+
+Digital Design & Computer Organisation
+213  Mealy/Moore  →  Sem3_DDCO_U2_L7.pptx
+214  Flip-Flops  →  Sem3_DDCO_U2_L4.pptx
+215  Counters  →  Sem3_DDCO_U2_L12.pptx
+216  K-Map  →  Sem3_DDCO_U1_L4.pptx
+217  Sequential Circuits  →  Sem3_DDCO_U2_L2.pptx
+221  Basic Structure  →  Sem3_DDCO_U3_L1.pptx
+222  Logic Circuits  →  Sem3_DDCO_U1_L6.pptx
+223  Adders  →  Sem3_DDCO_U1_L7.pptx
+224  Sequential Logic  →  Sem3_DDCO_U2_L1.pptx
+225  Ripple Counters  →  Sem3_DDCO_U2_L11.pptx
+226  Registers  →  Sem3_DDCO_U2_L10.pptx
+227  Gate-Level Minimization  →  Sem3_DDCO_U1_L1.pptx
+228  Boolean Functions  →  Sem3_DDCO_U1_L2.pptx
+229  Memory Operations  →  Sem3_DDCO_U3_L5.pptx
+230  State Reduction  →  Sem3_DDCO_U2_L8.pptx
+231  I/O Interfaces  →  Sem3_DDCO_U3_L9.pptx
+232  I/O Organisation  →  Sem3_DDCO_U3_L8.pptx
+233  State Diagrams  →  Sem3_DDCO_U2_L9.pptx
+234  Memory Addresses  →  Sem3_DDCO_U3_L4.pptx
+235  State Equations  →  Sem3_DDCO_U2_L5.pptx
+236  Canonical Forms  →  Sem3_DDCO_U1_L3.pptx
+237  Multipliers  →  Sem3_DDCO_U1_L8.pptx
+238  Encoders  →  Sem3_DDCO_U1_L10.pptx
+239  Number Representation  →  Sem3_DDCO_U3_L3.pptx
+240  Basic Concepts  →  Sem3_DDCO_U3_L2.pptx
+241  Multiplexers  →  Sem3_DDCO_U1_L11.pptx
+242  NAND/NOR  →  Sem3_DDCO_U1_L5.pptx
+243  Decoders  →  Sem3_DDCO_U1_L9.pptx
+288  Assembly Language  →  Sem3_DDCO_U3_L7.pptx
+289  Addressing Modes  →  Sem3_DDCO_U3_L6.pptx
+299  D/JK Analysis  →  Sem3_DDCO_U2_L6.pptx
+300  Latches/Flip-Flops  →  Sem3_DDCO_U2_L3.pptx
+
+
+Automata, Formal Languages & Logic
+201  RegEx Algebra  →  Sem3_AFLL_U1_L14.pptx
+202  RegEx Practice  →  Sem3_AFLL_U1_L15.pptx
+203  DFA/NFA  →  Sem3_AFLL_U1_L2.pptx
+204  RegEx Equivalence  →  Sem3_AFLL_U1_L19.pptx
+205  DFA Definition  →  Sem3_AFLL_U1_L7.pdf
+206  Basic Notations  →  Sem3_AFLL_U1_L5.pdf
+207  DFA Acceptor  →  Sem3_AFLL_U1_L8.pptx
+208  Math Prelim  →  Sem3_AFLL_U1_L3.pdf
+209  DFA Minimization  →  Sem3_AFLL_U1_L13.pptx
+279  CYK Parsing  →  Sem3_AFLL_U3_L3.pdf
+280  Chomsky Normal Form  →  Sem3_AFLL_U3_L2.pdf
+281  Ambiguous CFG  →  Sem3_AFLL_U3_L1.pdf
+282  CFG to PDA  →  Sem3_AFLL_U3_L5.pdf
+283  Pumping Lemma CFL  →  Sem3_AFLL_U3_L7.pdf
+284  Turing Machine  →  Sem3_AFLL_U3_L8.pdf
+285  CFG Beyond Regular  →  Sem3_AFLL_U2_L3.pdf
+
+
+Web Technologies
+30  Tech_U1_L10  →  Tech_U1_L10 (10).pptx
+31  HTML5 Audio/Video  →  Sem3_Web_Tech_U2_L1.pptx
+32  HTML Forms  →  Sem3_Web_Tech_U1_L2 (2).pptx
+33  CSS Box Model  →  Sem3_Web_Tech_U1_L5 (5).pptx
+34  Async/Await  →  Sem3_Web_Tech_U2_L6.pptx
+35  JS Objects  →  Sem3_Web_Tech_U1_L9(9).pptx
+36  Axios  →  Sem3_Web_Tech_U2_L7.pptx
+37  React Styling  →  Sem3_Web_Tech_U2_L12.pptx
+38  React Components/JSX  →  Sem3_Web_Tech_U2_L11.pptx
+39  MERN Intro  →  Sem3_Web_Tech_U2_L8.pptx
+40  React Event Handling  →  Sem3_Web_Tech_U3_L3.docx
+41  DOM Events  →  Sem3_Web_Tech_U1_L12 (12).pptx
+42  JS Objects/Arrays  →  Sem3_Web_Tech_U1_L8 (8).pptx
+43  XML vs JSON  →  Sem3_Web_Tech_U2_L4.pptx
+44  SPA vs MPA  →  Sem3_Web_Tech_U2_L5.pptx
+45  JS Basics  →  Sem3_Web_Tech_U1_L6 (6).pptx
+46  React Keys/map  →  Sem3_Web_Tech_U3_L2.docx
+47  JSX Rules  →  Sem3_Web_Tech_U2_L9.pptx
+48  HTML Basics  →  Sem3_Web_Tech_U1_L1 (1).pptx
+49  React Setup  →  Sem3_Web_Tech_U2_L10.pptx
+50  Geolocation API  →  Sem3_Web_Tech_U2_L2.pptx
+51  Node FS & Query  →  Sem3_Web_Tech_U3_L9.docx
+52  React Hooks  →  Sem3_Web_Tech_U3_L5.docx
+53  React Forms  →  Sem3_Web_Tech_U3_L4.docx
+54  Node Buffers/Streams  →  Sem3_Web_Tech_U3_L10.docx
+55  Node Modules  →  Sem3_Web_Tech_U3_L8.docx
+56  JS Functions  →  Sem3_Web_Tech_U1_L7 (7).pptx
+57  Callbacks & Promises  →  Sem3_Web_Tech_U2_L3.pptx
+
+
+Mathematics for CSE
+266  Classwork U1  →  Sem3_Maths_U1_Class_work_problems.pdf
+309  U2 Classwork  →  Sem3_Maths_U2_Class_work_problems.pdf
+310  U1 Solutions  →  Sem3_Maths_U1_Class_work_solutions.pdf
+311  U2 Solutions  →  Sem3_Maths_U2_Class_work_solutions.pdf
+
+Essentials of Innovation & Entrepreneurship
+290  Selling/Pitching  →  Sem3_CIE_U3_L3.pdf
+291  Business Model Canvas  →  Sem3_CIE_U3_L2.pdf
+292  Idea Validation  →  Sem3_CIE_U3_L1.pdf
+293  Opportunity & Ethics  →  Sem3_CIE_U1_L4.pdf
+294  Course Orientation  →  Sem3_CIE_U1_L1.pdf
+295  Entrepreneurial Mindset  →  Sem3_CIE_U1_L3.pdf
+296  Finance for Start-ups  →  Sem3_CIE_U4_L1.pdf
+297  Problem Validation  →  Sem3_CIE_U2_L1.pdf
+298  Human-Centred Innovation  →  Sem3_CIE_U2_L2.pdf
+315  Startup Olympiad  →  Sem3_CIE_U1_L2.pdf
+316  CIE Guidelines  →  Sem4_CIE.pdf
+329  Design Thinking  →  Sem3_CIE_U2_L3.pdf
+
+
+SEMESTER – 4
+Computer Networks
+301  Network Layer  →  Sem4_Computer_Networks_U4_Netorking_Layer_And_HTTP_Protocol.pdf
+302  Application Layer  →  Sem4_Computer_Networks_U2_Application_Layer.pdf
+303  Transport Layer  →  Sem4_Computer_Networks_U3_Transpot_Layer.pdf
+304  Internet Intro  →  Sem4_Computer_Networks_U1_Computer_Networks_And_Internet.pdf
+Design & Analysis of Algorithms
+276  Decrease & Conquer  →  Sem4_Design_Analysis_And_Algorithm_U2_DECREASE_AND_CONQUER.pdf
+277  Transform & Conquer  →  Sem4_Design_Analysis_And_Algorithm_U3_Transform_And_Conquer.pdf
+278  Intro to Algorithms  →  Sem4_Design_Analysis_And_Algorithm_U1_Introduction to Algorithms,.pdf
+318  Dynamic Programming  →  Sem4_Design_Analysis_And_Algorithm_U4_Dynamic_Programming.pdf
+Linear Algebra
+261  Linear Transformations  →  Sem4_Linear_Algebra_U3_LINEAR_TRANSFORMATIONS_AND_VECTOR_SPACE.pdf
+262  Eigenvalues  →  Sem4_Linear_Algebra_U4_ORTHOGONALISATION_EIGEN_VALUES_AND_EIGEN_VECTORS.pdf
+263  SVD  →  Sem4_Linear_Algebra_U5_SINGULAR_VALUE_DECOMPOSITION.pdf
+264  Vector Spaces  →  Sem4_Linear_Algebra_U2_VECTOR_SPACES.pdf
+265  Matrices  →  Sem4_Linear_Algebra_U1_MATRICES_AND_GAUSSIAN_ELIMINATION.pdf
+Microprocessor & Computer Architecture
+271  Pipelining  →  Sem4_Microprocessor_And_computer_Architecture_U2_Pipelining.pdf
+272  Processor Design  →  Sem4_Microprocessor_And_computer_Architecture_U1_Basic_Processor_Architecure_And_Designt.pdf
+273  Memory  →  Sem4_Microprocessor_And_computer_Architecture_U3_Memory.pdf
+274  Parallel Computing  →  Sem4_Microprocessor_And_computer_Architecture_U4_Memory_Optimization_Constant_And_IO_Subsystem.pdf
+
+SEMESTER – 5
+(only the files that are not already listed in your filtered lists above)
+
+Database Management Systems
+94  Normalisation Exercises  →  Sem5_DBMS_U3_81_82_Normalisation_excercises_2024.pptx
+95  MongoDB  →  Sem5_DBMS_U4_105_DocumentDatabases(MongoDB).pptx
+96  Recursive Queries  →  Sem5_DBMS_U2_Lecture_33_Recursive_queries.pdf
+97  Mapping Cardinalities  →  Sem5_DBMS_U1_Lecture_11_Mapping Cardinalities.pdf
+98  DB Design Overview  →  Sem5_DBMS_U1_Lecture_8_Database design- Overview.pdf
+99  Cypher Query Lang  →  Sem5_DBMS_U4_111 - Cypher Query Language.pptx
+100  Attributes  →  Sem5_DBMS_U1_Lecture_10_Attributes.pdf
+101  Weak Entity Sets  →  Sem5_DBMS_U1_Lecture_13a_Weak Entity Sets.pdf
+102  1NF-2NF-3NF  →  Sem5_DBMS_U3_73_74_1NF, 2NF, 3NF_2024.pptx
+103  Binary Relational Ops  →  Sem5_DBMS_U2_Lecture_18_Binary_Operations.pdf
+104  SQL Overview  →  Sem5_DBMS_U2_Lecture_21_a_SQL_overview.pdf
+105  SQL Set Operations  →  Sem5_DBMS_U2_Lecture_24_SQL_Set_operations.pdf
+106  FD Equivalence  →  Sem5_DBMS_U3_62_Equivalence.pptx
+107  DB Languages  →  Sem5_DBMS_U1_Lecture_5_Database Languages.pdf
+108  Transactions ACID  →  Sem5_DBMS_U4_84_Database transactions, Concept, ACID Properties Simple Transaction Model.pptx
+109  DynamoDB  →  Sem5_DBMS_U4_109_Key-Value Database(DynamoDB).pptx
+110  Serializability  →  Sem5_DBMS_U4_86_Transaction Serializability, Isolation and Atomicity.pptx
+111  SQL Functions  →  Sem5_DBMS_U2_Lecture_31_Functions_Procedures.pdf
+112  Purpose/View/Data Model  →  Sem5_DBMS_U1_Lecture_3_Purpose, View of data, Data Model.pdf
+113  BCNF  →  Sem5_DBMS_U3_75_76_77_BCNF and Higher Normal Forms_2024.pptx
+114  Deadlock Handling  →  Sem5_DBMS_U4_95_Deadlock Handling.pptx
+115  SQL Views  →  Sem5_DBMS_U2_Lecture_29_a_SQL_View.pdf
+116  Neo4j  →  Sem5_DBMS_U4_110 - Graph Databases(Neo4j).pptx
+117  Nested Queries  →  Sem5_DBMS_U2_Lecture_27_Nested_queries.pdf
+118  Keys/Schemas  →  Sem5_DBMS_U1_Lecture_14_Keys, Schema Diagrams, Relational Query Languages.pdf
+119  Set Ops & Equiv  →  Sem5_DBMS_U2_Lecture_19_Set_Operations_Equivalent_Queries.pdf
+120  Mongo CRUD  →  Sem5_DBMS_U4_106_Crud Operations, System Characteristics (1).pptx
+121  Join Expressions  →  Sem5_DBMS_U2_Lecture_28_b_Join_expressions.pdf
+122  Serializability (2)  →  Sem5_DBMS_U4_85_Transaction Serializability, Isolation and Atomicity.pptx
+123  Intro to DB  →  Sem5_DBMS_U1_Lecture_1_ Introduction to Databases and Database System Applications.pdf
+124  More SQL Ops  →  Sem5_DBMS_U2_Lecture_23_Additional_Basic_Operations.pdf
+125  Aggregate Functions  →  Sem5_DBMS_U2_Lecture_20_Algebra_Aggregate.pdf
+126  Triggers  →  Sem5_DBMS_U2_Lecture_32_Triggers.pdf
+127  ER-to-Relational  →  Sem5_DBMS_U1_Lecture_15_Reducing ER to a relational schema.pdf
+128  Intro DB (2)  →  Sem5_DBMS_U1_Lecture_2_Introduction to Databases and Database System Applications.pdf
+129  ER Mapping (2)  →  Sem5_DBMS_U1_Lecture_16_Reducing ER to a relational schema.pdf
+130  Indexing  →  Sem5_DBMS_U2_Lecture_30 Indexing.pdf
+131  DB App Arch  →  Sem5_DBMS_U1_Lecture_7_Database application architecture,Users and Administrators.pdf
+132  Relational Design Ex  →  Sem5_DBMS_U3_69_70_Exercise_questions.pptx
+133  HBase  →  Sem5_DBMS_U4_117_HBase.pptx
+134  SQL Views/Roles  →  Sem5_DBMS_U2_Lecture_29_b_SQL_View.pdf
+135  Minimal Cover  →  Sem5_DBMS_U3_67_Minimal_Cover.pptx
+136  NoSQL Intro  →  Sem5_DBMS_U4_104_Introduction to NoSQL Systems.pptx
+137  Concurrency Control  →  Sem5_DBMS_U4_93-94_Concurrency control, Lock-based protocols.pptx
+138  Relational Decomp  →  Sem5_DBMS_U3_68_Relational_Decomposition-Matrix method (1).pptx
+139  Relational Structure  →  Sem5_DBMS_U1_Lecture_13b_Structure of relational databases, Database schema.pdf
+140  Aggregate Functions (2)  →  Sem5_DBMS_U2_Lecture_25-Aggregate_functions.pdf
+141  Functional Dependencies  →  Sem5_DBMS_U3_58_Functional_Dependencies.pptx
+142  Relational Algebra  →  Sem5_DBMS_U2_Lecture_17_Relational_operations.pdf
+143  Join Expressions (2)  →  Sem5_DBMS_U2_Lecture_28_a_Join_expressions.pdf
+144  Entity Sets  →  Sem5_DBMS_U1_Lecture_9_Entity and Entity sets.pdf
+145  Data Abstraction  →  Sem5_DBMS_U1_Lecture_4_Data Abstraction, Instances and Schema.pdf
+146  DB Design/Engine  →  Sem5_DBMS_U1_Lecture_6_Database Design,Database Engine.pdf
+147  Decomp & Inference  →  Sem5_DBMS_U3_59_60_Decomposition, Inferences-Rules.pptx
+148  Closure  →  Sem5_DBMS_U3_61_Closure.pptx
+149  Nested Queries (2)  →  Sem5_DBMS_U2_Lecture_26_Nested_queries.pdf
+150  ACID Transactions  →  Sem5_DBMS_U4_83_Database transactions, Concept, ACID Properties Simple Transaction Model.pptx
+151  Neo4j Practice  →  Sem5_DBMS_U4_112_113_Practice Session (Neo4j).pptx
+152  Dependency Preservation  →  Sem5_DBMS_U3_63_Dependency-Preservation.pptx
+153  Recovery System  →  Sem5_DBMS_U4_96-97_Recovery System, Failure Classification, Storage.pptx
+154  Dep-Pres Examples  →  Sem5_DBMS_U3_71_72_Dependency Preservation & Minimal cover-Examples.pptx
+155  Primary Keys  →  Sem5_DBMS_U1_Lecture_12_Primary Keys In Relationship and Entity Sets.pdf
+156  Recovery Atomicity  →  Sem5_DBMS_U4_98-99_Recovery Atomicity, Recovery Algorithm.pptx
+157  DB Modification  →  Sem5_DBMS_U2_Lecture_22_Database_Modification.pdf
+158  DB Security  →  Sem5_DBMS_U4_102_103_Database Security Issues_Discretionary Access Control, Mandatory Access control.pptx
+159  SQL Overview (2)  →  Sem5_DBMS_U2_Lecture_21_b_SQL_overview.pdf
+160  Query Processing  →  Sem5_DBMS_U2_Lecture_34_Query Processing and Optimization.pdf
+
+Machine Learning
+164  Decision Trees (2)  →  Sem5_Machine_Learning_U1_L4_Decision_Trees_(Part 2).pdf
+165  Ensemble Learning  →  Sem5_Machine_Learning_U2_L7_Ensemble_Models.pdf
+166  Intro to ANN  →  Sem5_Machine_Learning_U2_L1_Introduction_to_ANN.pdf
+167  Performance Metrics  →  Sem5_Machine_Learning_U1_L8_ Performance_Metrics.pdf
+168  Bayesian MAP/ML  →  Sem5_Machine_Learning_U3_L1.2_Bayesian_Learning_MAP_and_ML.pdf
+169  KNN  →  Sem5_Machine_Learning_U1_L7_ KNN.pdf
+170  Hidden Markov Models  →  Sem5_Machine_Learning_U3_L2.2_HMM_Intro.pdf
+171  SVM Soft Margin  →  Sem5_Machine_Learning_U2_L6_SVM_Soft_Margin.pdf
+172  Naïve Bayes  →  Sem5_Machine_Learning_U3_L1.3_Bayesian_Learning_Naïve_Bayes_Classifier.pdf
+173  Decision Trees (1)  →  Sem5_Machine_Learning_U1_L3_Decision_Trees_(Part 1).pdf
+174  K-Means  →  Sem5_Machine_Learning_U4_2_K-means_clustering_Bisecting_K-means_K-Means_as_special_case_of_Expectation_Maximization.pdf
+175  Logistic Regression  →  Sem5_Machine_Learning_U1_L6_Logistic_Regression.pdf
+176  Baum-Welch  →  Sem5_Machine_Learning_U3_L2.5_Learning_Problem.pdf
+177  CNN  →  Sem5_Machine_Learning_U4_5_CNN.pdf
+178  CNN Dimensions  →  Sem5_Machine_Learning_U4_6_CNN_Dimension_parameter_calc_training.pdf
+179  Likelihood Problem  →  Sem5_Machine_Learning_U3_L2.3_Likelihood_Problem.pdf
+180  Transformers  →  Sem5_Machine_Learning_U4_8_Introduction_to_Transformers.pdf
+181  Bias-Variance  →  Sem5_Machine_Learning_U1_L5_Bias_Variance_Tradeoff.pdf
+182  Bayes Optimal  →  Sem5_Machine_Learning_U3_L1.4 _Bayesian_Learning_Optimal_Classifier.pdf
+183  Random Forest  →  Sem5_Machine_Learning_U2_L9_Random_Forest.pdf
+184  Viterbi  →  Sem5_Machine_Learning_U3_L2.4_Decoding_Problem.pdf
+185  Concept Learning  →  Sem5_Machine_Learning_U1_L2_Concept_Learning.pdf
+186  GMM  →  Sem5_Machine_Learning_U3_L1.8_Gaussian_Mixture_Models.pdf
+187  Activation Functions  →  Sem5_Machine_Learning_U2_L3_Activation_Functions.pdf
+188  NN Working  →  Sem5_Machine_Learning_U2_L2_Working_of_Neural_Networks.pdf
+189  Deep Learning  →  Sem5_Machine_Learning_U4_4_Introduction_to_deep_Learning.pdf
+190  Gradient Boosting  →  Sem5_Machine_Learning_U2_L8_Gradient_Boosting.pdf
+191  PCA/SVD  →  Sem5_Machine_Learning_U4_3_PCA_SVD_with_example.pdf
+192  LLM 2025  →  Sem5_Machine_Learning_U4_9_LLM_2025.pdf
+193  Reinforcement Learning  →  Sem5_Machine_Learning_U4_7_Introduction to RL.pdf
+194  Hierarchical Clustering  →  Sem5_Machine_Learning_U4_1_Hierarchical_vs_nonhierarchical_Agglomerative_and_divisive(2 sessions).pdf
+195  SVM  →  Sem5_Machine_Learning_U2_L5_SVM.pdf
+196  Optimizers  →  Sem5_Machine_Learning_U2_L4_Optimizers.pdf
+197  Bayesian Intro  →  Sem5_Machine_Learning_U3_L1.1_Bayesian_Learning_Introduction.pdf
+198  ML Models  →  Sem5_Machine_Learning_U1_L1 ML models.pdf
+199  Markov Intro  →  Sem5_Machine_Learning_U3_L2.1_Markov_Intro.pdf
+200  EM Continued  →  Sem5_Machine_Learning_U3_L1.6_EM_Continued.pdf
+
+Software Engineering
+244  SDLC Models  →  Sem5_Software_Engineering_U1_L3_SDLC_Models_updated.pptx
+245  CBSE  →  Sem5_Software_Engineering_U1_L5_CBSE_updated.pptx
+246  Principles & Life-Cycles  →  Sem5_Software_Engineering_U1_L2 Life Cycles - updated.pptx
+247  Intro SE  →  Sem5_Software_Engineering_U1_L1_Intro_to_SE_updated.pptx
+248  Req Elicitation  →  Sem5_Software_Engineering_U1_L7_Req_Elicitation_and_Analysis_updated.pptx
+249  SRS  →  Sem5_Software_Engineering_U1_L8_SRS_updated.pptx
+250  Req Engg  →  Sem5_Software_Engineering_U1_L6_Req_Engg_updated.pptx
+251  SPM Notes  →  Sem5_Software_Engineering_U2_Notes.pdf
+252  U3 Notes  →  Sem5_Software_Engineering_U3_Notes_Updated.pdf
+253  Agile  →  Sem5_Software_Engineering_U1_L4_Agile_Methodology_updated.pptx
+254  Testing Notes  →  Sem5_Software_Engineering_U4_Notes.pdf
+
+Data Analytics
+305  Recommendation Systems  →  Sem5_Data_Analytics_U4_Introduction_To_Recommendation_System.pdf
+306  Simple Linear Regression  →  Sem5_Data_Analytics_U2_Simple_Linear_Regression.pdf
+307  Intro to DA  →  Sem5_Data_Analytics_U1_Introduction_To_DA_Data_Sources_And_Representation.pdf
+308  Time Series  →  Sem5_Data_Analytics_U3_Introduction_To_Time_Series.pdf
+
+
+
+
+
+
+
+
+

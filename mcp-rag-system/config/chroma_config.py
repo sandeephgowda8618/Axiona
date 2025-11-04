@@ -19,7 +19,7 @@ class ChromaDBConfig:
         return chromadb.HttpClient(host=host, port=port)
 
 # Global configuration
-CHROMA_PERSIST_DIR = os.getenv("CHROMA_PERSIST_DIRECTORY", "./vector_db")
+CHROMA_PERSIST_DIR = os.getenv("CHROMA_PERSIST_DIRECTORY", "./chromadb")
 chroma_config = ChromaDBConfig(CHROMA_PERSIST_DIR)
 
 # Initialize global client

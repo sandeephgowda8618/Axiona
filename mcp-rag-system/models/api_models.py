@@ -149,6 +149,33 @@ class RoadmapDocumentMetadata(DocumentMetadata):
     learning_objectives: Optional[List[str]] = None
     completion_criteria: Optional[List[str]] = None
 
+class RoadmapResource(BaseModel):
+    """Rich resource information for roadmap display"""
+    title: str = Field(..., description="Resource title")
+    author: Optional[str] = Field(None, description="Resource author")
+    subject: Optional[str] = Field(None, description="Subject area")
+    file_name: Optional[str] = Field(None, description="File name")
+    file_url: Optional[str] = Field(None, description="Download URL")
+    document_id: Optional[str] = Field(None, description="MongoDB document ID")
+    file_type: Optional[str] = Field(None, description="File type (PDF, PPTX, etc.)")
+    level: Optional[str] = Field(None, description="Difficulty level")
+    tags: Optional[str] = Field(None, description="Resource tags")
+    pages: Optional[str] = Field(None, description="Number of pages")
+    duration: Optional[str] = Field(None, description="Video duration")
+    views: Optional[str] = Field(None, description="View count for videos")
+    semester: Optional[str] = Field(None, description="Academic semester")
+    unit: Optional[str] = Field(None, description="Unit number")
+    topic: Optional[str] = Field(None, description="Specific topic")
+    url: Optional[str] = Field(None, description="External URL")
+    video_id: Optional[str] = Field(None, description="Video ID")
+    isbn: Optional[str] = Field(None, description="Book ISBN")
+    publisher: Optional[str] = Field(None, description="Publisher")
+    publication_year: Optional[str] = Field(None, description="Publication year")
+    category: Optional[str] = Field(None, description="Resource category")
+    approved: Optional[str] = Field(None, description="Approval status")
+    source_type: str = Field(..., description="Source type (studymaterial, video, book)")
+    relevance_score: float = Field(..., description="Relevance score (0-1)")
+
 # Error Models
 class ErrorResponse(BaseModel):
     """Standard error response"""
@@ -180,18 +207,11 @@ class RoadmapRequest(BaseModel):
     daily_time: int = Field(..., description="Daily study time in minutes", ge=15, le=480)
     previous_answers: Dict[str, Any] = Field(..., description="Previous quiz/assessment answers")
 
-class RoadmapPhase(BaseModel):
-    """Individual phase in a learning roadmap"""
-    phase_name: str = Field(..., description="Name of the learning phase")
-    description: str = Field(..., description="Phase description")
-    videos: List[str] = Field(..., description="List of recommended video URLs/IDs")
-    pdfs: List[str] = Field(..., description="List of recommended PDF resources")
-    reference_book: str = Field(..., description="Recommended reference book")
-    quizzes: List[str] = Field(..., description="List of quiz IDs for assessment")
+
 
 class RoadmapResponse(BaseModel):
     """Response model for roadmap generation"""
-    roadmap: Dict[str, List[RoadmapPhase]] = Field(..., description="Generated learning roadmap")
+    roadmap: Dict[str, Any] = Field(..., description="Generated learning roadmap")
     user_id: str = Field(..., description="User ID")
     generated_at: datetime = Field(default_factory=datetime.utcnow)
 
@@ -333,3 +353,124 @@ class DriveIngestResponse(BaseModel):
     folder_id: str = Field(..., description="Processed folder ID")
     ingestion_results: Dict[str, int] = Field(..., description="Results per content type")
     total_files: int = Field(..., description="Total files processed")
+
+# Roadmap Generation Models
+class RoadmapPhaseData(BaseModel):
+    """Data for a single phase of the roadmap wizard"""
+    goal: Optional[str] = None
+    currentLevel: Optional[str] = None
+    experience: Optional[str] = None
+    timeCommitment: Optional[str] = None
+    timeframe: Optional[str] = None
+    learningStyle: Optional[str] = None
+    budget: Optional[str] = None
+    primaryMotivation: Optional[str] = None
+    successMetric: Optional[str] = None
+
+class RoadmapGenerationRequest(BaseModel):
+    """Request model for roadmap generation"""
+    user_id: Optional[str] = Field(None, description="User ID for personalization")
+    phase1: Optional[Dict[str, Any]] = Field(None, description="Goals and objectives phase")
+    phase2: Optional[Dict[str, Any]] = Field(None, description="Background and experience phase")
+    phase3: Optional[Dict[str, Any]] = Field(None, description="Timeline and commitment phase")
+    phase4: Optional[Dict[str, Any]] = Field(None, description="Resources and preferences phase")
+    phase5: Optional[Dict[str, Any]] = Field(None, description="Motivation and success phase")
+    search_namespaces: Optional[List[str]] = Field(
+        default=["roadmap", "pdf", "books", "videos"], 
+        description="Namespaces to search for relevant content"
+    )
+    max_resources: int = Field(5, description="Maximum number of resources to include", ge=1, le=10)
+    
+    class Config:
+        schema_extra = {
+            "example": {
+                "user_id": "user_123",
+                "phase1": {
+                    "goal": "Learn machine learning"
+                },
+                "phase2": {
+                    "currentLevel": "beginner",
+                    "experience": "Some Python programming"
+                },
+                "phase3": {
+                    "timeCommitment": "10 hours",
+                    "timeframe": "week"
+                },
+                "phase4": {
+                    "learningStyle": "hands-on",
+                    "budget": "free"
+                },
+                "phase5": {
+                    "primaryMotivation": "career_change",
+                    "successMetric": "Build a portfolio project"
+                }
+            }
+        }
+
+class RoadmapPhase(BaseModel):
+    """Individual phase in a generated roadmap"""
+    title: str = Field(..., description="Phase title")
+    content: str = Field(..., description="Phase content and instructions")
+    duration: Optional[str] = Field(None, description="Estimated duration")
+    objectives: Optional[List[str]] = Field(None, description="Learning objectives")
+    resources: Optional[List[str]] = Field(None, description="Recommended resources")
+    milestones: Optional[List[str]] = Field(None, description="Success milestones")
+
+class RoadmapGenerationResponse(BaseModel):
+    """Response model for generated roadmap"""
+    user_profile: str = Field(..., description="Formatted user profile summary")
+    roadmap_content: str = Field(..., description="Generated roadmap content")
+    phases: List[RoadmapPhase] = Field(..., description="Structured roadmap phases")
+    estimated_duration: str = Field(..., description="Total estimated duration")
+    personalization_score: float = Field(..., description="Personalization quality score (0-1)")
+    relevant_resources: int = Field(..., description="Number of relevant resources found")
+    model_used: str = Field(..., description="LLM model used for generation")
+    generated_at: str = Field(..., description="ISO timestamp of generation")
+    success: bool = Field(True, description="Generation success status")
+    resource_metadata: Optional[List[RoadmapResource]] = Field(None, description="Detailed resource metadata for frontend display")
+    
+class RoadmapSearchRequest(BaseModel):
+    """Request model for searching roadmap-related content"""
+    query: str = Field(..., description="Search query derived from user profile")
+    user_level: str = Field("intermediate", description="User skill level")
+    goal: Optional[str] = Field(None, description="User's learning goal")
+    namespaces: List[str] = Field(
+        default=["roadmap", "pdf", "books", "videos"],
+        description="Namespaces to search"
+    )
+    n_results: int = Field(5, description="Number of results per namespace", ge=1, le=10)
+
+# StudyPES Material Models
+class StudyPESMaterial(BaseModel):
+    """Individual StudyPES material"""
+    id: str = Field(..., description="Material ID")
+    title: str = Field(..., description="Material title")
+    description: Optional[str] = Field("", description="Material description")
+    url: Optional[str] = Field("", description="Material URL")
+    pdfUrl: Optional[str] = Field("", description="PDF URL")
+    fileSize: Optional[str] = Field("N/A", description="File size")
+    pages: Optional[int] = Field(0, description="Number of pages")
+    author: Optional[str] = Field("Unknown", description="Author")
+    semester: Optional[int] = Field(0, description="Semester")
+    year: Optional[str] = Field("", description="Academic year")
+    type: Optional[str] = Field("PDF", description="Material type")
+    difficulty: Optional[str] = Field("Medium", description="Difficulty level")
+
+class StudyPESUnit(BaseModel):
+    """Unit containing StudyPES materials"""
+    name: str = Field(..., description="Unit name")
+    materials: List[StudyPESMaterial] = Field(..., description="Materials in this unit")
+
+class StudyPESSubject(BaseModel):
+    """Subject containing units and materials"""
+    name: str = Field(..., description="Subject name")
+    units: Dict[str, List[StudyPESMaterial]] = Field(..., description="Units with their materials")
+    totalMaterials: int = Field(..., description="Total number of materials in subject")
+
+class StudyPESSubjectsResponse(BaseModel):
+    """Response model for StudyPES subjects endpoint"""
+    subjects: Dict[str, StudyPESSubject] = Field(..., description="All subjects organized by name")
+    totalSubjects: int = Field(..., description="Total number of subjects")
+    totalMaterials: int = Field(..., description="Total number of materials across all subjects")
+    success: bool = Field(True, description="Request success status")
+    message: str = Field("StudyPES materials retrieved successfully", description="Response message")

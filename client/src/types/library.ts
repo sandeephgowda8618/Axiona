@@ -48,11 +48,10 @@ export interface LibraryBook {
   description: string
   coverImage: string
   fileName: string
-  fileSize?: number
+  fileSize?: string  // Changed to string to handle "N/A" values from MongoDB
   file_url?: string  // GitHub URL for PDFs
   downloadUrl?: string
   previewUrl?: string
-  fileSize?: string
   availability: 'available' | 'borrowed' | 'reserved'
   addedDate: Date
   downloadCount: number

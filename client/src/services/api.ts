@@ -13,6 +13,7 @@ export interface UserProfile {
   weeklyActivity: string
   joinedDate: string
   lastActive: string
+  roadmapCompleted: boolean
   preferences: {
     theme: 'light' | 'dark'
     notifications: boolean
@@ -72,6 +73,11 @@ export interface PDFMaterial {
   uploadedBy: string
   createdAt: string
   formattedFileSize?: string
+  // Additional fields from StudyMaterial
+  semester?: number
+  unit?: string
+  level?: string
+  tags?: string[]
 }
 
 export interface SubjectSummary {
@@ -185,6 +191,40 @@ export interface Subject {
   thumbnailUrl: string
   lastUpdated: string
   description: string
+}
+
+// StudyPES Material Interfaces
+export interface StudyPESMaterial {
+  id: string
+  title: string
+  description: string
+  url: string
+  pdfUrl: string
+  fileSize: string
+  pages: number
+  author: string
+  semester: number
+  year: string
+  type: string
+  difficulty: string
+  subject: string
+  unit: string
+  gridFSFileId?: string
+  fileName?: string
+}
+
+export interface StudyPESSubject {
+  name: string
+  units: Record<string, StudyPESMaterial[]>
+  totalMaterials: number
+}
+
+export interface StudyPESSubjectsResponse {
+  subjects: Record<string, StudyPESSubject>
+  totalSubjects: number
+  totalMaterials: number
+  success: boolean
+  message: string
 }
 
 // API Service Class
@@ -472,6 +512,50 @@ class ApiService {
     ]
   }
 
+  // StudyPES Materials API - Updated to use new Axiona database endpoints
+  async getStudyPESSubjects(): Promise<StudyPESSubjectsResponse> {
+    try {
+      const response = await fetch(`${this.baseURL}/studypes/subjects`, {
+        headers: this.getHeaders()
+      })
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch StudyPES subjects')
+      }
+      
+      const result = await response.json()
+      
+      if (result.success) {
+        // Count total subjects and materials
+        const subjects = result.subjects || {}
+        const totalSubjects = Object.keys(subjects).length
+        const totalMaterials = Object.values(subjects).reduce((sum: number, subject: any) => {
+          return sum + (subject.totalMaterials || 0)
+        }, 0)
+        
+        return {
+          subjects,
+          totalSubjects,
+          totalMaterials,
+          success: true,
+          message: 'StudyPES materials loaded successfully'
+        }
+      }
+      
+      return result
+    } catch (error) {
+      console.error('Error fetching StudyPES subjects:', error)
+      // Return empty structure if backend is not available
+      return {
+        subjects: {},
+        totalSubjects: 0,
+        totalMaterials: 0,
+        success: false,
+        message: 'Failed to load StudyPES materials'
+      }
+    }
+  }
+
   async getPDFsBySubject(domain: string, page: number = 1, limit: number = 20): Promise<PaginatedResponse<PDFMaterial>> {
     const response = await fetch(`${this.baseURL}/pdfs/subject/${domain}?page=${page}&limit=${limit}`, {
       headers: this.getHeaders()
@@ -702,6 +786,7 @@ export const mockUserProfile: UserProfile = {
   weeklyActivity: '8.5h',
   joinedDate: '2024-08-15',
   lastActive: '2025-10-09',
+  roadmapCompleted: false,
   preferences: {
     theme: 'light',
     notifications: true,

@@ -1,4 +1,4 @@
-# Simplified ChromaDB Collection Manager - No OpenAI Dependency
+# Simplified ChromaDB Collection Manager - Enhanced with Advanced Workflow
 from typing import Dict, List, Optional, Any
 import chromadb
 from chromadb.utils import embedding_functions
@@ -9,7 +9,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 class ChromaCollectionManager:
-    """Manages ChromaDB collections for different content namespaces"""
+    """Manages ChromaDB collections for different content namespaces with advanced workflow support"""
     
     def __init__(self, client):
         self.client = client
@@ -18,29 +18,47 @@ class ChromaCollectionManager:
             model_name="all-MiniLM-L6-v2"
         )
         logger.info("ChromaDB Collection Manager initialized with local embeddings")
+        
+        # Initialize advanced workflow integration
+        self._initialize_advanced_workflow()
+    
+    def _initialize_advanced_workflow(self):
+        """Initialize advanced workflow if available"""
+        try:
+            from core.advanced_rag_workflow import initialize_advanced_workflow
+            self.advanced_workflow = initialize_advanced_workflow(self.client)
+            logger.info("🚀 Advanced RAG Workflow integrated successfully")
+        except ImportError:
+            self.advanced_workflow = None
+            logger.warning("Advanced RAG Workflow not available")
     
     def get_or_create_collection(self, namespace: str):
         """Get or create a collection for the given namespace"""
         try:
-            collection_name = f"{namespace}_collection"
+            # Use the direct namespace as collection name (matching ingestion script)
+            collection_name = namespace
             
-            # Try to get existing collection
+            # Try to get existing collection first (without specifying embedding function to match ingestion)
             try:
-                collection = self.client.get_collection(
-                    name=collection_name,
-                    embedding_function=self.embedding_function
-                )
+                collection = self.client.get_collection(name=collection_name)
                 logger.debug(f"Retrieved existing collection: {collection_name}")
+                return collection
             except Exception:
-                # Create new collection if it doesn't exist
-                collection = self.client.create_collection(
-                    name=collection_name,
-                    embedding_function=self.embedding_function,
-                    metadata={"namespace": namespace, "created_at": datetime.utcnow().isoformat()}
-                )
-                logger.info(f"Created new collection: {collection_name}")
-            
-            return collection
+                # Collection doesn't exist, create with embedding function
+                try:
+                    collection = self.client.create_collection(
+                        name=collection_name,
+                        embedding_function=self.embedding_function,
+                        metadata={"namespace": namespace, "created_at": datetime.utcnow().isoformat()}
+                    )
+                    logger.info(f"Created new collection: {collection_name}")
+                    return collection
+                except Exception as create_error:
+                    # If creation fails, try getting without embedding function one more time
+                    logger.warning(f"Failed to create collection {collection_name}: {create_error}")
+                    collection = self.client.get_collection(name=collection_name)
+                    logger.info(f"Retrieved existing collection without embedding function: {collection_name}")
+                    return collection
             
         except Exception as e:
             logger.error(f"Failed to get/create collection for namespace '{namespace}': {e}")
@@ -115,7 +133,7 @@ class ChromaCollectionManager:
             
             return {
                 "namespace": namespace,
-                "collection_name": f"{namespace}_collection",
+                "collection_name": namespace,  # Updated to match actual collection names
                 "document_count": count,
                 "embedding_function": "all-MiniLM-L6-v2",
                 "status": "active" if count > 0 else "empty"
@@ -136,9 +154,15 @@ class ChromaCollectionManager:
             stats = []
             
             for collection in collections:
-                # Extract namespace from collection name
-                namespace = collection.name.replace("_collection", "")
-                collection_stats = self.get_collection_stats(namespace)
+                # Use the collection name directly as namespace
+                namespace = collection.name
+                collection_stats = {
+                    "namespace": namespace,
+                    "collection_name": collection.name,
+                    "document_count": collection.count(),
+                    "embedding_function": "all-MiniLM-L6-v2",
+                    "status": "active" if collection.count() > 0 else "empty"
+                }
                 stats.append(collection_stats)
             
             return stats
@@ -150,7 +174,8 @@ class ChromaCollectionManager:
     def delete_collection(self, namespace: str) -> bool:
         """Delete a collection"""
         try:
-            collection_name = f"{namespace}_collection"
+            # Use direct namespace as collection name (matching get_or_create_collection)
+            collection_name = namespace
             self.client.delete_collection(collection_name)
             logger.info(f"Deleted collection: {collection_name}")
             return True
@@ -162,7 +187,8 @@ class ChromaCollectionManager:
     def reset_collection(self, namespace: str) -> bool:
         """Reset a collection (delete and recreate)"""
         try:
-            collection_name = f"{namespace}_collection"
+            # Use direct namespace as collection name (matching get_or_create_collection)
+            collection_name = namespace
             
             # Delete existing collection
             try:
@@ -179,3 +205,154 @@ class ChromaCollectionManager:
         except Exception as e:
             logger.error(f"Failed to reset collection {namespace}: {e}")
             return False
+    
+    def advanced_search_with_analytics(self, 
+                                     query: str, 
+                                     namespaces: List[str],
+                                     n_results: int = 5,
+                                     filters: Optional[Dict] = None,
+                                     min_relevance: float = 0.0) -> Dict[str, Any]:
+        """
+        Perform advanced search with comprehensive analytics and monitoring
+        """
+        if self.advanced_workflow:
+            try:
+                # Use advanced workflow for enhanced search
+                resources, metrics = self.advanced_workflow.advanced_search(
+                    query=query,
+                    namespaces=namespaces,
+                    n_results=n_results,
+                    filters=filters,
+                    min_relevance=min_relevance
+                )
+                
+                # Generate detailed report
+                report = self.advanced_workflow.generate_search_report(resources, metrics)
+                logger.info(f"🔍 Advanced search completed with analytics")
+                logger.debug(f"Search report:\n{report}")
+                
+                return {
+                    "resources": [
+                        {
+                            "title": r.title,
+                            "author": r.author,
+                            "subject": r.subject,
+                            "document_id": r.document_id,
+                            "source_type": r.source_type.value,
+                            "relevance_score": r.relevance_score,
+                            "file_name": r.file_name,
+                            "file_url": r.file_url,
+                            "file_type": r.file_type,
+                            "level": r.level,
+                            "tags": r.tags,
+                            "pages": r.pages,
+                            "duration": r.duration,
+                            "views": r.views,
+                            "semester": r.semester,
+                            "unit": r.unit,
+                            "topic": r.topic,
+                            "url": r.url,
+                            "video_id": r.video_id,
+                            "isbn": r.isbn,
+                            "publisher": r.publisher,
+                            "publication_year": r.publication_year,
+                            "category": r.category,
+                            "approved": r.approved,
+                            "content_preview": r.content_preview,
+                            "quality": r.get_quality().value
+                        }
+                        for r in resources
+                    ],
+                    "metrics": {
+                        "query": metrics.query,
+                        "namespace": metrics.namespace,
+                        "total_results": metrics.total_results,
+                        "average_relevance": metrics.average_relevance,
+                        "max_relevance": metrics.max_relevance,
+                        "min_relevance": metrics.min_relevance,
+                        "search_duration_ms": metrics.search_duration_ms,
+                        "quality_distribution": metrics.quality_distribution,
+                        "timestamp": metrics.timestamp
+                    },
+                    "report": report
+                }
+                
+            except Exception as e:
+                logger.error(f"Advanced search failed, falling back to basic search: {e}")
+                
+        # Fallback to basic search
+        return self._basic_multi_search(query, namespaces, n_results, filters)
+    
+    def _basic_multi_search(self, query: str, namespaces: List[str], n_results: int, filters: Optional[Dict]) -> Dict[str, Any]:
+        """Basic multi-namespace search fallback"""
+        all_results = []
+        
+        for namespace in namespaces:
+            try:
+                results = self.search_collection(namespace, query, n_results, filters)
+                
+                if results["documents"]:
+                    for i, doc in enumerate(results["documents"]):
+                        metadata = results["metadatas"][i] if i < len(results["metadatas"]) else {}
+                        distance = results["distances"][i] if i < len(results["distances"]) else 0.5
+                        
+                        all_results.append({
+                            "title": metadata.get("title", "Untitled"),
+                            "author": metadata.get("author", "Unknown"),
+                            "subject": metadata.get("subject", "General"),
+                            "document_id": metadata.get("document_id", ""),
+                            "source_type": namespace,
+                            "relevance_score": 1.0 - distance,
+                            "content_preview": doc[:200] if doc else None,
+                            **metadata
+                        })
+            except Exception as e:
+                logger.error(f"Basic search failed for namespace {namespace}: {e}")
+        
+        # Sort by relevance
+        all_results.sort(key=lambda x: x["relevance_score"], reverse=True)
+        
+        return {
+            "resources": all_results,
+            "metrics": {
+                "query": query,
+                "namespace": ", ".join(namespaces),
+                "total_results": len(all_results),
+                "search_duration_ms": 0,
+                "timestamp": datetime.utcnow().isoformat()
+            },
+            "report": f"Basic search completed: {len(all_results)} results found"
+        }
+    
+    def get_analytics_dashboard(self) -> Dict[str, Any]:
+        """Get comprehensive analytics dashboard"""
+        if self.advanced_workflow:
+            return self.advanced_workflow.get_performance_dashboard()
+        else:
+            return {
+                "status": "Advanced workflow not available",
+                "basic_stats": {
+                    "collections": self.list_all_collections(),
+                    "timestamp": datetime.utcnow().isoformat()
+                }
+            }
+    
+    def export_analytics(self, filepath: Optional[str] = None) -> str:
+        """Export analytics data"""
+        if self.advanced_workflow:
+            return self.advanced_workflow.export_search_analytics(filepath)
+        else:
+            basic_data = {
+                "export_timestamp": datetime.utcnow().isoformat(),
+                "collections": self.list_all_collections(),
+                "note": "Advanced analytics not available"
+            }
+            
+            if not filepath:
+                filepath = f"/tmp/basic_analytics_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}.json"
+            
+            import json
+            with open(filepath, 'w') as f:
+                json.dump(basic_data, f, indent=2)
+                
+            return filepath

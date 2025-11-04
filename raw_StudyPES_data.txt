@@ -1,0 +1,387 @@
+Tech_U1_L10 (10).pptx | material_id: 6908e610f6c86acdc22a2d65 | gridfs_id: 6908e610f6c86acdc22a2d5e
+Card #30: Web Technology: Introduction to React Router | fileName: Sem3_Web_Tech_U3_L6.docx | material_id: 6908e611f6c86acdc22a2de9 | gridfs_id: 6908e611f6c86acdc22a2de7
+Card #31: HTML5 Audio, Video, and Progress Elements | fileName: Sem3_Web_Tech_U2_L1.pptx | material_id: 6908e611f6c86acdc22a2ebc | gridfs_id: 6908e611f6c86acdc22a2eba
+Card #32: Web Technologies - HTML Forms Fundamentals | fileName: Sem3_Web_Tech_U1_L2 (2).pptx | material_id: 6908e611f6c86acdc22a3043 | gridfs_id: 6908e611f6c86acdc22a303f
+Card #33: Web Technology - Unit 1 - CSS Box Model and Position Property | fileName: Sem3_Web_Tech_U1_L5 (5).pptx | material_id: 6908e611f6c86acdc22a30d8 | gridfs_id: 6908e611f6c86acdc22a30cf
+Card #34: Web Technology - Unit 2: Async / Await in JavaScript | fileName: Sem3_Web_Tech_U2_L6.pptx | material_id: 6908e612f6c86acdc22a321c | gridfs_id: 6908e612f6c86acdc22a3218
+Card #35: Web Technology - Unit 1, Lecture 9: JavaScript Objects | fileName: Sem3_Web_Tech_U1_L9(9).pptx | material_id: 6908e612f6c86acdc22a3248 | gridfs_id: 6908e612f6c86acdc22a3241
+Card #36: Axios: Making HTTP Requests in Web Technologies | fileName: Sem3_Web_Tech_U2_L7.pptx | material_id: 6908e612f6c86acdc22a332e | gridfs_id: 6908e612f6c86acdc22a332b
+Card #37: Web Technology - Unit 2: React Component Styling | fileName: Sem3_Web_Tech_U2_L12.pptx | material_id: 6908e612f6c86acdc22a33fc | gridfs_id: 6908e612f6c86acdc22a33fa
+Card #38: Web Technology - Unit 2: React Components and JSX | fileName: Sem3_Web_Tech_U2_L11.pptx | material_id: 6908e612f6c86acdc22a34eb | gridfs_id: 6908e612f6c86acdc22a34e9
+Card #39: Web Technologies: MERN Stack and ReactJS Introduction | fileName: Sem3_Web_Tech_U2_L8.pptx | material_id: 6908e612f6c86acdc22a3519 | gridfs_id: 6908e612f6c86acdc22a3517
+Card #40: Web Technology - Unit 3, Lesson 3: Event Handling in React | fileName: Sem3_Web_Tech_U3_L3.docx | material_id: 6908e612f6c86acdc22a3523 | gridfs_id: 6908e612f6c86acdc22a3521
+Card #41: Web Technologies: Event Handling and Propagation in DOM | fileName: Sem3_Web_Tech_U1_L12 (12).pptx | material_id: 6908e612f6c86acdc22a3541 | gridfs_id: 6908e612f6c86acdc22a353e
+Card #42: JavaScript Built-in Objects and Arrays | fileName: Sem3_Web_Tech_U1_L8 (8).pptx | material_id: 6908e613f6c86acdc22a3587 | gridfs_id: 6908e612f6c86acdc22a3581
+Card #43: Web Technology - Unit 2 - XML vs. JSON | fileName: Sem3_Web_Tech_U2_L4.pptx | material_id: 6908e613f6c86acdc22a35e1 | gridfs_id: 6908e613f6c86acdc22a35de
+Card #44: Introduction to Single Page Applications (SPAs) and Multi-Page Applications (MPAs) | fileName: Sem3_Web_Tech_U2_L5.pptx | material_id: 6908e613f6c86acdc22a372c | gridfs_id: 6908e613f6c86acdc22a372a
+Card #45: Web Technologies - Unit 1: JavaScript Basics | fileName: Sem3_Web_Tech_U1_L6 (6).pptx | material_id: 6908e613f6c86acdc22a3731 | gridfs_id: 6908e613f6c86acdc22a372d
+Card #46: React Keys and map() Function for Dynamic Lists | fileName: Sem3_Web_Tech_U3_L2.docx | material_id: 6908e613f6c86acdc22a383d | gridfs_id: 6908e613f6c86acdc22a383b
+Card #47: JSX Rendering in React: Introduction and Conversion Rules | fileName: Sem3_Web_Tech_U2_L9.pptx | material_id: 6908e613f6c86acdc22a38b1 | gridfs_id: 6908e613f6c86acdc22a38ad
+Card #48: WEB TECHNOLOGIES - HTML Basic Markups | fileName: Sem3_Web_Tech_U1_L1 (1).pptx | material_id: 6908e613f6c86acdc22a38cd | gridfs_id: 6908e613f6c86acdc22a38c5
+Card #49: Web Technologies - React Installation and Project Setup using npm | fileName: Sem3_Web_Tech_U2_L10.pptx | material_id: 6908e613f6c86acdc22a390d | gridfs_id: 6908e613f6c86acdc22a390a
+Card #50: HTML5 Geolocation API - Concepts and Usage | fileName: Sem3_Web_Tech_U2_L2.pptx | material_id: 6908e613f6c86acdc22a3988 | gridfs_id: 6908e613f6c86acdc22a3986
+Card #51: Lesson 3: File system module and query String in Node.js | fileName: Sem3_Web_Tech_U3_L9.docx | material_id: 6908e613f6c86acdc22a3996 | gridfs_id: 6908e613f6c86acdc22a3994
+Card #52: Introduction to React Hooks and useState/useEffect Usage | fileName: Sem3_Web_Tech_U3_L5.docx | material_id: 6908e613f6c86acdc22a3b05 | gridfs_id: 6908e613f6c86acdc22a3b03
+Card #53: React JS Forms: Controlled Components and Form Handling | fileName: Sem3_Web_Tech_U3_L4.docx | material_id: 6908e614f6c86acdc22a3c31 | gridfs_id: 6908e614f6c86acdc22a3c2f
+Card #54: Lesson 7: Buffers and Streams in Node.js | fileName: Sem3_Web_Tech_U3_L10.docx | material_id: 6908e614f6c86acdc22a3c88 | gridfs_id: 6908e614f6c86acdc22a3c86
+Card #55: Node.js Module System and Core Modules | fileName: Sem3_Web_Tech_U3_L8.docx | material_id: 6908e614f6c86acdc22a3ca1 | gridfs_id: 6908e614f6c86acdc22a3c9f
+Card #56: JavaScript Functions: Declaration, Expression, Parameters, and Arguments | fileName: Sem3_Web_Tech_U1_L7 (7).pptx | material_id: 6908e614f6c86acdc22a3ca4 | gridfs_id: 6908e614f6c86acdc22a3ca2
+Card #57: Web Technologies - Callback and Promises | fileName: Sem3_Web_Tech_U2_L3.pptx | material_id: 6908e614f6c86acdc22a3cb0 | gridfs_id: 6908e614f6c86acdc22a3caa
+
+=== Subject: Data Structures & Algorithms ===
+Card #58: Data Structures & Algorithms - Unit 3, Lesson 4 | fileName: Sem3_DSA_U3_L4.pps | material_id: 6908e610f6c86acdc22a2c7f | gridfs_id: 6908e610f6c86acdc22a2c76
+Card #59: Queue Data Structure: Definition, Types, Operations, and Array Implementation | fileName: Sem3_DSA_U2_L1.pdf | material_id: 6908e610f6c86acdc22a2cb4 | gridfs_id: 6908e610f6c86acdc22a2cb1
+Card #60: Data Structures: Circular Queue Implementation | fileName: Sem3_DSA_U2_L3.pdf | material_id: 6908e610f6c86acdc22a2ce0 | gridfs_id: 6908e610f6c86acdc22a2cdd
+Card #61: DSA Unit 3 - Lesson 7 | fileName: Sem3_DSA_U3_L7.pps | material_id: 6908e610f6c86acdc22a2d21 | gridfs_id: 6908e610f6c86acdc22a2d1b
+Card #62: Data Structures and Algorithms: Queues - Linked List Implementation | fileName: Sem3_DSA_U2_L2.pdf | material_id: 6908e610f6c86acdc22a2d68 | gridfs_id: 6908e610f6c86acdc22a2d66
+Card #63: Implementation of Josephus Problem using Queues/Circular Lists | fileName: Sem3_DSA_U2_L6.pdf | material_id: 6908e611f6c86acdc22a2dac | gridfs_id: 6908e611f6c86acdc22a2daa
+Card #64: Data Structures & Algorithms - Unit 3 - Lesson 2 | fileName: Sem3_DSA_U3_L2.pps | material_id: 6908e611f6c86acdc22a2dce | gridfs_id: 6908e611f6c86acdc22a2dc8
+Card #65: Data Structures & Algorithms - Unit 2: Queues and CPU Scheduling Algorithms | fileName: Sem3_DSA_U2_L7.pdf | material_id: 6908e611f6c86acdc22a2e96 | gridfs_id: 6908e611f6c86acdc22a2e94
+Card #66: Dequeue (Double Ended Queue) Definition and Implementation | fileName: Sem3_DSA_U2_L5.pdf | material_id: 6908e611f6c86acdc22a2ea8 | gridfs_id: 6908e611f6c86acdc22a2ea5
+Card #67: Data Structures and Applications - Unit 2: Priority Queue Implementation | fileName: Sem3_DSA_U2_L4.pdf | material_id: 6908e611f6c86acdc22a2f07 | gridfs_id: 6908e611f6c86acdc22a2f04
+Card #68: DSA Unit 3: Programs on Binary Trees | fileName: Sem3_DSA_U3_L19.pdf | material_id: 6908e611f6c86acdc22a302b | gridfs_id: 6908e611f6c86acdc22a3029
+Card #69: Splay Tree: Splaying Steps and Deletion | fileName: Sem3_DSA_U3_L18.pdf | material_id: 6908e611f6c86acdc22a306a | gridfs_id: 6908e611f6c86acdc22a3067
+Card #70: Data Structures & Algorithms - Unit 3: Iterative BST Traversal | fileName: Sem3_DSA_U3_L8.pdf | material_id: 6908e612f6c86acdc22a314b | gridfs_id: 6908e611f6c86acdc22a3118
+Card #71: DSA Unit 3: Iterative BST Traversal | fileName: Sem3_DSA_U3_L9.pdf | material_id: 6908e612f6c86acdc22a31f3 | gridfs_id: 6908e612f6c86acdc22a31c0
+Card #72: DSA Unit 3: Implementation of Binary Expression Tree | fileName: Sem3_DSA_U3_L10.pdf | material_id: 6908e612f6c86acdc22a3516 | gridfs_id: 6908e612f6c86acdc22a350f
+Card #73: BST Implementation using Dynamic Allocation: Insertion - MCQs | fileName: Sem3_DSA_U3_L3.pdf | material_id: 6908e612f6c86acdc22a354a | gridfs_id: 6908e612f6c86acdc22a3542
+Card #74: Threaded Binary Search Tree and its Implementation | fileName: Sem3_DSA_U3_L11.pdf | material_id: 6908e613f6c86acdc22a358c | gridfs_id: 6908e613f6c86acdc22a3588
+Card #75: Sparse Matrix: Overview and Representations | fileName: Sem3_DSA_U1_L6.pdf | material_id: 6908e613f6c86acdc22a35d1 | gridfs_id: 6908e613f6c86acdc22a35ce
+Card #76: Singly Linked List: Overview, Operations, and Pseudocode | fileName: Sem3_DSA_U1_L4.pdf | material_id: 6908e613f6c86acdc22a35d6 | gridfs_id: 6908e613f6c86acdc22a35d2
+Card #77: Lesson 13: Priority Queue Implementation using Min/Max Heaps | fileName: Sem3_DSA_U3_L13.pdf | material_id: 6908e613f6c86acdc22a3623 | gridfs_id: 6908e613f6c86acdc22a361d
+Card #78: Data Structures & Algorithms - Unit 3: BST Implementation using Arrays | fileName: Sem3_DSA_U3_L1.pdf | material_id: 6908e613f6c86acdc22a3627 | gridfs_id: 6908e613f6c86acdc22a3624
+Card #79: Data Structures & Algorithms - Unit 3, Lesson 12 | fileName: Sem3_DSA_U3_L12.pdf | material_id: 6908e613f6c86acdc22a3682 | gridfs_id: 6908e613f6c86acdc22a3678
+Card #80: Circular Doubly Linked List – Overview and Operations | fileName: Sem3_DSA_U1_L5.pdf | material_id: 6908e613f6c86acdc22a36da | gridfs_id: 6908e613f6c86acdc22a36d7
+Card #81: Data Structures: Introduction, Operations, and Classification | fileName: Sem3_DSA_U1_L1.pdf | material_id: 6908e613f6c86acdc22a36df | gridfs_id: 6908e613f6c86acdc22a36db
+Card #82: Splay Tree: Concepts and Insertion Operations | fileName: Sem3_DSA_U3_L16.pdf | material_id: 6908e613f6c86acdc22a36fc | gridfs_id: 6908e613f6c86acdc22a36f9
+Card #83: DSA Unit 3: Programs on Binary Trees | fileName: Sem3_DSA_U3_L5.pdf | material_id: 6908e613f6c86acdc22a3718 | gridfs_id: 6908e613f6c86acdc22a3716
+Card #84: Splay Tree: Self-Balancing Binary Search Tree | fileName: Sem3_DSA_U3_L17.pdf | material_id: 6908e613f6c86acdc22a3723 | gridfs_id: 6908e613f6c86acdc22a3720
+Card #85: Static and Dynamic Memory Allocation | fileName: Sem3_DSA_U1_L2.pdf | material_id: 6908e613f6c86acdc22a3736 | gridfs_id: 6908e613f6c86acdc22a3732
+Card #86: Data Structures & Algorithms - Unit 3: Balanced Trees | fileName: Sem3_DSA_U3_L15.pdf | material_id: 6908e613f6c86acdc22a37b7 | gridfs_id: 6908e613f6c86acdc22a37b3
+Card #87: Data Structures & Algorithms - Unit 2, Lecture 10 | fileName: Sem3_DSA_U2_L10.pdf | material_id: 6908e613f6c86acdc22a381a | gridfs_id: 6908e613f6c86acdc22a37e5
+Card #88: Data Structures & Algorithms: Unit 2, Lesson 11 Overview | fileName: Sem3_DSA_U2_L11.pdf | material_id: 6908e613f6c86acdc22a383a | gridfs_id: 6908e613f6c86acdc22a382b
+Card #89: BST: Deletion Operations | fileName: Sem3_DSA_U3_L6.pdf | material_id: 6908e613f6c86acdc22a385a | gridfs_id: 6908e613f6c86acdc22a3857
+Card #90: Sem3_DSA_U3_L14 | fileName: Sem3_DSA_U3_L14.pdf | material_id: 6908e613f6c86acdc22a38bb | gridfs_id: 6908e613f6c86acdc22a38b2
+Card #91: Sem3_DSA_U2_L9 | fileName: Sem3_DSA_U2_L9.pdf | material_id: 6908e613f6c86acdc22a3985 | gridfs_id: 6908e613f6c86acdc22a3950
+Card #92: Basic Concept and Definitions: Trees | fileName: Sem3_DSA_U2_L8.pdf | material_id: 6908e613f6c86acdc22a3a54 | gridfs_id: 6908e613f6c86acdc22a3a4f
+Card #93: Sem3_DSA_U3_L | fileName: Sem3_DSA_U3_L.pps | material_id: 6908e614f6c86acdc22a3c99 | gridfs_id: 6908e614f6c86acdc22a3c94
+
+=== Subject: Database Management Systems ===
+Card #94: Normalization Exercises: 1NF, 2NF, 3NF Definitions | fileName: Sem5_DBMS_U3_81_82_Normalization_excercises_2024.pptx | material_id: 6908e610f6c86acdc22a2c82 | gridfs_id: 6908e610f6c86acdc22a2c80
+Card #95: Document Databases (MongoDB) and Data Model | fileName: Sem5_DBMS_U4_105_DocumentDatabases(MongoDB).pptx | material_id: 6908e610f6c86acdc22a2ca0 | gridfs_id: 6908e610f6c86acdc22a2c9d
+Card #96: Database Management Systems - Unit 2: Recursive Queries | fileName: Sem5_DBMS_U2_Lecture_33_Recursive_queries.pdf | material_id: 6908e610f6c86acdc22a2cb0 | gridfs_id: 6908e610f6c86acdc22a2cad
+Card #97: DBMS Unit 1: Mapping Cardinalities and Relationship Constraints | fileName: Sem5_DBMS_U1_Lecture_11_Mapping Cardinalities.pdf | material_id: 6908e610f6c86acdc22a2cbb | gridfs_id: 6908e610f6c86acdc22a2cb5
+Card #98: Database Design - Overview | fileName: Sem5_DBMS_U1_Lecture_8_Database design- Overview.pdf | material_id: 6908e610f6c86acdc22a2cc6 | gridfs_id: 6908e610f6c86acdc22a2cc3
+Card #99: Introduction to Cypher Query Language for Neo4j | fileName: Sem5_DBMS_U4_111 - Cypher Query Language.pptx | material_id: 6908e610f6c86acdc22a2cd2 | gridfs_id: 6908e610f6c86acdc22a2ccf
+Card #100: Attributes in Database Management Systems (Unit 1) | fileName: Sem5_DBMS_U1_Lecture_10_Attributes.pdf | material_id: 6908e610f6c86acdc22a2cdc | gridfs_id: 6908e610f6c86acdc22a2cd3
+Card #101: Database Management Systems - Unit 1: Weak Entity Sets | fileName: Sem5_DBMS_U1_Lecture_13a_Weak Entity Sets.pdf | material_id: 6908e610f6c86acdc22a2d6d | gridfs_id: 6908e610f6c86acdc22a2d69
+Card #102: Database Normalization: First, Second, and Third Normal Forms | fileName: Sem5_DBMS_U3_73_74_1NF, 2NF, 3NF_2024.pptx | material_id: 6908e611f6c86acdc22a2d74 | gridfs_id: 6908e610f6c86acdc22a2d6e
+Card #103: Database Management Systems: Unit 2 - Binary Operations in Relational Algebra | fileName: Sem5_DBMS_U2_Lecture_18_Binary_Operations.pdf | material_id: 6908e611f6c86acdc22a2dd9 | gridfs_id: 6908e611f6c86acdc22a2dcf
+Card #104: SQL Overview, Data Definition, and Structure of SQL Queries | fileName: Sem5_DBMS_U2_Lecture_21_a_SQL_overview.pdf | material_id: 6908e611f6c86acdc22a2de6 | gridfs_id: 6908e611f6c86acdc22a2de0
+Card #105: SQL Set Operations and Null Values in DBMS | fileName: Sem5_DBMS_U2_Lecture_24_SQL_Set_operations.pdf | material_id: 6908e611f6c86acdc22a2ded | gridfs_id: 6908e611f6c86acdc22a2dea
+Card #106: DBMS Unit 3: Equivalence of Functional Dependencies | fileName: Sem5_DBMS_U3_62_Equivalence.pptx | material_id: 6908e611f6c86acdc22a2e78 | gridfs_id: 6908e611f6c86acdc22a2e74
+Card #107: Database Languages: DDL, SDL, VDL, and DML | fileName: Sem5_DBMS_U1_Lecture_5_Database Languages.pdf | material_id: 6908e611f6c86acdc22a2e9a | gridfs_id: 6908e611f6c86acdc22a2e97
+Card #108: Database Transactions: Concept, ACID Properties, and Simple Transaction Model | fileName: Sem5_DBMS_U4_84_Database transactions, Concept, ACID Properties Simple Transaction Model.pptx | material_id: 6908e611f6c86acdc22a2ea4 | gridfs_id: 6908e611f6c86acdc22a2e9f
+Card #109: Introduction to Key-Value Databases with Amazon DynamoDB | fileName: Sem5_DBMS_U4_109_Key-Value Database(DynamoDB).pptx | material_id: 6908e611f6c86acdc22a2ec5 | gridfs_id: 6908e611f6c86acdc22a2ec1
+Card #110: Transaction Serializability, Isolation and Atomicity | fileName: Sem5_DBMS_U4_86_Transaction Serializability, Isolation and Atomicity.pptx | material_id: 6908e611f6c86acdc22a2ecf | gridfs_id: 6908e611f6c86acdc22a2ecb
+Card #111: DBMS Unit 2: Functions and Procedures in SQL | fileName: Sem5_DBMS_U2_Lecture_31_Functions_Procedures.pdf | material_id: 6908e611f6c86acdc22a2ed9 | gridfs_id: 6908e611f6c86acdc22a2ed5
+Card #112: Database Management Systems - Unit 1: Purpose, View of data, Data Model | fileName: Sem5_DBMS_U1_Lecture_3_Purpose, View of data, Data Model.pdf | material_id: 6908e611f6c86acdc22a2f25 | gridfs_id: 6908e611f6c86acdc22a2f22
+Card #113: DBMS Unit 3: BCNF and Higher Normal Forms | fileName: Sem5_DBMS_U3_75_76_77_BCNF and Higher Normal Forms_2024.pptx | material_id: 6908e611f6c86acdc22a3000 | gridfs_id: 6908e611f6c86acdc22a2ffa
+Card #114: Deadlock Handling in Database Management Systems | fileName: Sem5_DBMS_U4_95_Deadlock Handling.pptx | material_id: 6908e611f6c86acdc22a303e | gridfs_id: 6908e611f6c86acdc22a303a
+Card #115: DBMS Unit 2: SQL Views | fileName: Sem5_DBMS_U2_Lecture_29_a_SQL_View.pdf | material_id: 6908e611f6c86acdc22a3091 | gridfs_id: 6908e611f6c86acdc22a308c
+Card #116: Graph Databases (Neo4j): Introduction and Data Model | fileName: Sem5_DBMS_U4_110 - Graph Databases(Neo4j).pptx | material_id: 6908e611f6c86acdc22a30bb | gridfs_id: 6908e611f6c86acdc22a30b7
+Card #117: DBMS Unit 2: Nested Queries and Subqueries in SQL | fileName: Sem5_DBMS_U2_Lecture_27_Nested_queries.pdf | material_id: 6908e611f6c86acdc22a30ce | gridfs_id: 6908e611f6c86acdc22a30cb
+Card #118: DBMS Unit 1: Keys, Schema Diagrams, and Relational Query Languages | fileName: Sem5_DBMS_U1_Lecture_14_Keys, Schema Diagrams, Relational Query Languages.pdf | material_id: 6908e611f6c86acdc22a3117 | gridfs_id: 6908e611f6c86acdc22a3113
+Card #119: DBMS Unit 2: Set Operations and Equivalent Queries | fileName: Sem5_DBMS_U2_Lecture_19_Set_Operations_Equivalent_Queries.pdf | material_id: 6908e612f6c86acdc22a317a | gridfs_id: 6908e612f6c86acdc22a3173
+Card #120: DBMS Unit 4: CRUD Operations in MongoDB and Distributed System Characteristics | fileName: Sem5_DBMS_U4_106_Crud Operations, System Characteristics (1).pptx | material_id: 6908e612f6c86acdc22a324f | gridfs_id: 6908e612f6c86acdc22a3249
+Card #121: Join Expressions in SQL and Database Management Systems (Unit 2) | fileName: Sem5_DBMS_U2_Lecture_28_b_Join_expressions.pdf | material_id: 6908e612f6c86acdc22a3267 | gridfs_id: 6908e612f6c86acdc22a3264
+Card #122: Transaction Serializability, Isolation and Atomicity in Database Management Systems | fileName: Sem5_DBMS_U4_85_Transaction Serializability, Isolation and Atomicity.pptx | material_id: 6908e612f6c86acdc22a32b0 | gridfs_id: 6908e612f6c86acdc22a32a5
+Card #123: DBMS Unit 1: Introduction to Databases and Database System Applications | fileName: Sem5_DBMS_U1_Lecture_1_ Introduction to Databases and Database System Applications.pdf | material_id: 6908e612f6c86acdc22a330f | gridfs_id: 6908e612f6c86acdc22a3308
+Card #124: DBMS: Unit 2 - Additional Basic Operations in SQL | fileName: Sem5_DBMS_U2_Lecture_23_Additional_Basic_Operations.pdf | material_id: 6908e612f6c86acdc22a332a | gridfs_id: 6908e612f6c86acdc22a3326
+Card #125: Relational Algebra: Aggregate Functions and Grouping | fileName: Sem5_DBMS_U2_Lecture_20_Algebra_Aggregate.pdf | material_id: 6908e612f6c86acdc22a3343 | gridfs_id: 6908e612f6c86acdc22a333e
+Card #126: Triggers in Database Management Systems (Unit 2) | fileName: Sem5_DBMS_U2_Lecture_32_Triggers.pdf | material_id: 6908e612f6c86acdc22a3347 | gridfs_id: 6908e612f6c86acdc22a3344
+Card #127: Converting E-R Diagrams to Relational Schema | fileName: Sem5_DBMS_U1_Lecture_15_Reducing ER to a relational schema.pdf | material_id: 6908e612f6c86acdc22a33d5 | gridfs_id: 6908e612f6c86acdc22a33cc
+Card #128: Lecture 2: Introduction to Databases and Database System Applications | fileName: Sem5_DBMS_U1_Lecture_2_Introduction to Databases and Database System Applications.pdf | material_id: 6908e612f6c86acdc22a3428 | gridfs_id: 6908e612f6c86acdc22a3423
+Card #129: Lecture 16: Converting E-R Diagrams to Relational Schemas | fileName: Sem5_DBMS_U1_Lecture_16_Reducing ER to a relational schema.pdf | material_id: 6908e612f6c86acdc22a3434 | gridfs_id: 6908e612f6c86acdc22a342e
+Card #130: DBMS Unit 2: Index Definitions and Authorization (Indexing) | fileName: Sem5_DBMS_U2_Lecture_30 _Indexing.pdf | material_id: 6908e612f6c86acdc22a3439 | gridfs_id: 6908e612f6c86acdc22a3435
+Card #131: Unit 1: Database Application Architecture, Users and Administrators | fileName: Sem5_DBMS_U1_Lecture_7_Database application architecture,Users and Administrators.pdf | material_id: 6908e612f6c86acdc22a343e | gridfs_id: 6908e612f6c86acdc22a343a
+Card #132: DBMS Unit 3 Exercise Questions: Relational Design | fileName: Sem5_DBMS_U3_69_70_Exercise_questions.pptx | material_id: 6908e612f6c86acdc22a3447 | gridfs_id: 6908e612f6c86acdc22a3444
+Card #133: HBase: Introduction to Wide-Column Store Databases | fileName: Sem5_DBMS_U4_117_HBase.pptx | material_id: 6908e612f6c86acdc22a350e | gridfs_id: 6908e612f6c86acdc22a350a
+Card #134: SQL Views and Database Roles | fileName: Sem5_DBMS_U2_Lecture_29_b_SQL_View.pdf | material_id: 6908e612f6c86acdc22a3538 | gridfs_id: 6908e612f6c86acdc22a3534
+Card #135: DBMS Unit 3: Minimal Cover for Functional Dependencies | fileName: Sem5_DBMS_U3_67_Minimal_Cover.pptx | material_id: 6908e612f6c86acdc22a353d | gridfs_id: 6908e612f6c86acdc22a3539
+Card #136: Introduction to NoSQL Systems, Emergence, Characteristics, Categories, CAP Theorem | fileName: Sem5_DBMS_U4_104_Introduction to NoSQL Systems.pptx | material_id: 6908e613f6c86acdc22a3594 | gridfs_id: 6908e613f6c86acdc22a358d
+Card #137: Unit 4: Concurrency Control and Lock-based Protocols in DBMS | fileName: Sem5_DBMS_U4_93-94_Concurrency control, Lock-based protocols.pptx | material_id: 6908e613f6c86acdc22a35b8 | gridfs_id: 6908e613f6c86acdc22a35af
+Card #138: Relational Decomposition using Matrix Method in DBMS | fileName: Sem5_DBMS_U3_68_Relational_Decomposition-Matrix method (1).pptx | material_id: 6908e613f6c86acdc22a35be | gridfs_id: 6908e613f6c86acdc22a35b9
+Card #139: Database Management Systems - Unit 1: Structure of Relational Databases and Database Schema | fileName: Sem5_DBMS_U1_Lecture_13b_Structure of relational databases, Database schema.pdf | material_id: 6908e613f6c86acdc22a35c8 | gridfs_id: 6908e613f6c86acdc22a35c3
+Card #140: Database Management Systems: Aggregate Functions and Grouping | fileName: Sem5_DBMS_U2_Lecture_25_-Aggregate_functions.pdf | material_id: 6908e613f6c86acdc22a35cd | gridfs_id: 6908e613f6c86acdc22a35c9
+Card #141: Functional Dependencies in Database Management Systems | fileName: Sem5_DBMS_U3_58_Functional_Dependencies.pptx | material_id: 6908e613f6c86acdc22a35dd | gridfs_id: 6908e613f6c86acdc22a35d7
+Card #142: DBMS Unit 2: Relational Query Language, Algebra & Unary Operations | fileName: Sem5_DBMS_U2_Lecture_17_Relational_operations.pdf | material_id: 6908e613f6c86acdc22a36f8 | gridfs_id: 6908e613f6c86acdc22a36f2
+Card #143: Unit 2: Join expressions | fileName: Sem5_DBMS_U2_Lecture_28_a_Join_expressions.pdf | material_id: 6908e613f6c86acdc22a3711 | gridfs_id: 6908e613f6c86acdc22a370e
+Card #144: Database Management Systems - Unit 1: Entity and Entity Sets (Lecture 9) | fileName: Sem5_DBMS_U1_Lecture_9_Entity and Entity sets.pdf | material_id: 6908e613f6c86acdc22a3783 | gridfs_id: 6908e613f6c86acdc22a377e
+Card #145: DBMS Unit 1 Lecture 4: Data Abstraction, Instances and Schema | fileName: Sem5_DBMS_U1_Lecture_4_Data Abstraction, Instances and Schema.pdf | material_id: 6908e613f6c86acdc22a3799 | gridfs_id: 6908e613f6c86acdc22a3794
+Card #146: Database Management Systems: Unit 1 - Database Design and Database Engine | fileName: Sem5_DBMS_U1_Lecture_6_Database Design,Database Engine.pdf | material_id: 6908e613f6c86acdc22a37a0 | gridfs_id: 6908e613f6c86acdc22a379a
+Card #147: DBMS Unit 3: Decomposition and Inference Rules | fileName: Sem5_DBMS_U3_59_60_Decomposition, Inferences-Rules.pptx | material_id: 6908e613f6c86acdc22a3821 | gridfs_id: 6908e613f6c86acdc22a381b
+Card #148: Functional Dependencies: Inference Rules and Closure | fileName: Sem5_DBMS_U3_61_Closure.pptx | material_id: 6908e613f6c86acdc22a387b | gridfs_id: 6908e613f6c86acdc22a3878
+Card #149: Sem5_DBMS_U2_Lecture_26_Nested_queries | fileName: Sem5_DBMS_U2_Lecture_26_Nested_queries.pdf | material_id: 6908e613f6c86acdc22a38c4 | gridfs_id: 6908e613f6c86acdc22a38c0
+Card #150: Database Transactions, Concept, ACID Properties, Simple Transaction Model | fileName: Sem5_DBMS_U4_83_Database transactions, Concept, ACID Properties Simple Transaction Model.pptx | material_id: 6908e613f6c86acdc22a38d7 | gridfs_id: 6908e613f6c86acdc22a38ce
+Card #151: Sem5 DBMS Unit 4 Practice Session on Neo4j Graph Database | fileName: Sem5_DBMS_U4_112_113_Practice Session (Neo4j).pptx | material_id: 6908e613f6c86acdc22a38e6 | gridfs_id: 6908e613f6c86acdc22a38dc
+Card #152: Dependency Preservation in Database Management Systems | fileName: Sem5_DBMS_U3_63_Dependency-Preservation.pptx | material_id: 6908e613f6c86acdc22a39f7 | gridfs_id: 6908e613f6c86acdc22a39f1
+Card #153: Recovery System, Failure Classification, Storage - DBMS Unit 4 | fileName: Sem5_DBMS_U4_96-97_Recovery System, Failure Classification, Storage.pptx | material_id: 6908e614f6c86acdc22a3b66 | gridfs_id: 6908e614f6c86acdc22a3b63
+Card #154: Dependency Preservation & Minimal Cover Examples in DBMS | fileName: Sem5_DBMS_U3_71_72_Dependency Preservation & Minimal cover-Examples.pptx | material_id: 6908e614f6c86acdc22a3b84 | gridfs_id: 6908e614f6c86acdc22a3b7f
+Card #155: Sem5_DBMS_U1_Lecture_12_Primary Keys In Relationship and Entity Sets | fileName: Sem5_DBMS_U1_Lecture_12_Primary Keys In Relationship and Entity Sets.pdf | material_id: 6908e614f6c86acdc22a3c1a | gridfs_id: 6908e614f6c86acdc22a3c15
+Card #156: Recovery Atomicity and Recovery Algorithm in DBMS | fileName: Sem5_DBMS_U4_98-99_Recovery Atomicity, Recovery Algorithm.pptx | material_id: 6908e614f6c86acdc22a3c50 | gridfs_id: 6908e614f6c86acdc22a3c4b
+Card #157: Sem5_DBMS_U2_Lecture_22_Database_Modification | fileName: Sem5_DBMS_U2_Lecture_22_Database_Modification.pdf | material_id: 6908e614f6c86acdc22a3c5a | gridfs_id: 6908e614f6c86acdc22a3c56
+Card #158: Database Security Issues: Discretionary Access Control, Mandatory Access Control | fileName: Sem5_DBMS_U4_102_103_Database Security Issues_Discretionary Access Control, Mandatory Access control.pptx | material_id: 6908e614f6c86acdc22a3c85 | gridfs_id: 6908e614f6c86acdc22a3c7e
+Card #159: Sem5_DBMS_U2_Lecture_21_b_SQL_overview | fileName: Sem5_DBMS_U2_Lecture_21_b_SQL_overview.pdf | material_id: 6908e614f6c86acdc22a3c93 | gridfs_id: 6908e614f6c86acdc22a3c8d
+Card #160: Sem5_DBMS_U2_Lecture_34_Query Processing and Optimization | fileName: Sem5_DBMS_U2_Lecture_34_Query Processing and Optimization.pdf | material_id: 6908e614f6c86acdc22a3cc0 | gridfs_id: 6908e614f6c86acdc22a3cbc
+
+=== Subject: Mechanical Engineering Science ===
+Card #161: Mechanical Engineering Science - Unit 3: Casting, Forming, and Joining Processes | fileName: Sem2_Mechanical_U3_Casting_Forming_And_Joining_Processes.pdf | material_id: 6908e610f6c86acdc22a2c93 | gridfs_id: 6908e610f6c86acdc22a2c83
+Card #162: IC Engines and Turbines | fileName: Sem2_Mechanical_U1_IC_Engines_And_Turbines.pdf | material_id: 6908e614f6c86acdc22a3b62 | gridfs_id: 6908e614f6c86acdc22a3b3a
+
+=== Subject: Engineering Mathematics-II ===
+Card #163: MATLAB Examples for Engineering Mathematics II | fileName: Sem2_MATLAB.pdf | material_id: 6908e610f6c86acdc22a2c9c | gridfs_id: 6908e610f6c86acdc22a2c94
+
+=== Subject: Machine Learning ===
+Card #164: Machine Learning: Unit 1 - Decision Trees (Part 2) - ID3 Algorithm and Issues | fileName: Sem5_Machine_Learning_U1_L4_Decision_Trees_(Part 2).pdf | material_id: 6908e610f6c86acdc22a2ca8 | gridfs_id: 6908e610f6c86acdc22a2ca1
+Card #165: Ensemble Learning: Basic Idea and Real-life Examples | fileName: Sem5_Machine_Learning_U2_L7_Ensemble_Models.pdf | material_id: 6908e610f6c86acdc22a2cac | gridfs_id: 6908e610f6c86acdc22a2ca9
+Card #166: Machine Learning: Unit 2 - Introduction to Artificial Neural Networks (ANN) | fileName: Sem5_Machine_Learning_U2_L1_Introduction_to_ANN.pdf | material_id: 6908e610f6c86acdc22a2cc2 | gridfs_id: 6908e610f6c86acdc22a2cbc
+Card #167: Machine Learning: Performance Metrics and Confusion Matrix | fileName: Sem5_Machine_Learning_U1_L8_ Performance_Metrics.pdf | material_id: 6908e610f6c86acdc22a2d44 | gridfs_id: 6908e610f6c86acdc22a2d33
+Card #168: Bayesian Learning: Maximum A Posteriori (MAP) and Maximum Likelihood (ML) Hypotheses | fileName: Sem5_Machine_Learning_U3_L1.2_Bayesian_Learning_MAP_and_ML.pdf | material_id: 6908e610f6c86acdc22a2d51 | gridfs_id: 6908e610f6c86acdc22a2d4b
+Card #169: K-Nearest Neighbors (KNN) Algorithm and Instance-Based Learning | fileName: Sem5_Machine_Learning_U1_L7_ KNN.pdf | material_id: 6908e611f6c86acdc22a2dc7 | gridfs_id: 6908e611f6c86acdc22a2dbc
+Card #170: Introduction to Hidden Markov Models in Machine Learning | fileName: Sem5_Machine_Learning_U3_L2.2_HMM_Intro.pdf | material_id: 6908e611f6c86acdc22a2ed4 | gridfs_id: 6908e611f6c86acdc22a2ed0
+Card #171: Machine Learning: Support Vector Machines (SVM) - Soft Margin | fileName: Sem5_Machine_Learning_U2_L6_SVM_Soft_Margin.pdf | material_id: 6908e611f6c86acdc22a2f03 | gridfs_id: 6908e611f6c86acdc22a2f00
+Card #172: Machine Learning Unit 3: Naïve Bayes Classifier | fileName: Sem5_Machine_Learning_U3_L1.3_Bayesian_Learning_Naïve_Bayes_Classifier.pdf | material_id: 6908e611f6c86acdc22a3020 | gridfs_id: 6908e611f6c86acdc22a3014
+Card #173: Machine Learning - Unit 1 - Lesson 3: Decision Trees (Part 1) | fileName: Sem5_Machine_Learning_U1_L3_Decision_Trees_(Part 1).pdf | material_id: 6908e611f6c86acdc22a30ca | gridfs_id: 6908e611f6c86acdc22a30c1
+Card #174: K-Means Clustering Algorithm: Concepts, Variants, and Relation to Expectation Maximization | fileName: Sem5_Machine_Learning_U4_2_K-means_clustering_Bisecting_K-means_K-Means_as_special_case_of_Expectation_Maximization.pdf | material_id: 6908e612f6c86acdc22a3156 | gridfs_id: 6908e612f6c86acdc22a314c
+Card #175: Machine Learning - Unit 1: Logistic Regression | fileName: Sem5_Machine_Learning_U1_L6_Logistic_Regression.pdf | material_id: 6908e612f6c86acdc22a31fd | gridfs_id: 6908e612f6c86acdc22a31f4
+Card #176: Machine Learning: Unit 3 - The Learning Problem and Baum-Welch Algorithm | fileName: Sem5_Machine_Learning_U3_L2.5_Learning_Problem.pdf | material_id: 6908e612f6c86acdc22a3335 | gridfs_id: 6908e612f6c86acdc22a332f
+Card #177: Machine Learning: Unit 4, Topic 5 - Convolutional Neural Networks (CNNs) | fileName: Sem5_Machine_Learning_U4_5_CNN.pdf | material_id: 6908e612f6c86acdc22a3472 | gridfs_id: 6908e612f6c86acdc22a3450
+Card #178: Machine Learning: Unit 4 - Dimensions and Parameter Calculations in CNNs for Training | fileName: Sem5_Machine_Learning_U4_6_CNN_Dimension_parameter_calc_training.pdf | material_id: 6908e612f6c86acdc22a34e0 | gridfs_id: 6908e612f6c86acdc22a34cb
+Card #179: The Likelihood Problem: Brute Force Solution in Machine Learning | fileName: Sem5_Machine_Learning_U3_L2.3_Likelihood_Problem.pdf | material_id: 6908e612f6c86acdc22a34f7 | gridfs_id: 6908e612f6c86acdc22a34ec
+Card #180: Machine Learning: Introduction to Transformers | fileName: Sem5_Machine_Learning_U4_8_Introduction_to_Transformers.pdf | material_id: 6908e612f6c86acdc22a3509 | gridfs_id: 6908e612f6c86acdc22a34f8
+Card #181: Machine Learning: Bias and Variance Tradeoff | fileName: Sem5_Machine_Learning_U1_L5_Bias_Variance_Tradeoff.pdf | material_id: 6908e612f6c86acdc22a3520 | gridfs_id: 6908e612f6c86acdc22a351a
+Card #182: Bayes Optimal Classifier and Gibbs Algorithm in Machine Learning | fileName: Sem5_Machine_Learning_U3_L1.4 _Bayesian_Learning_Optimal_Classifier.pdf | material_id: 6908e613f6c86acdc22a366d | gridfs_id: 6908e613f6c86acdc22a3669
+Card #183: Machine Learning - Unit 2: Random Forest (Ensemble Learning) | fileName: Sem5_Machine_Learning_U2_L9_Random_Forest.pdf | material_id: 6908e613f6c86acdc22a377d | gridfs_id: 6908e613f6c86acdc22a377a
+Card #184: Machine Learning: Unit 3 - The Decoding Problem and Viterbi Algorithm | fileName: Sem5_Machine_Learning_U3_L2.4_Decoding_Problem.pdf | material_id: 6908e613f6c86acdc22a378a | gridfs_id: 6908e613f6c86acdc22a3784
+Card #185: Machine Learning - Concept Learning | fileName: Sem5_Machine_Learning_U1_L2_Concept_Learning.pdf | material_id: 6908e613f6c86acdc22a37a4 | gridfs_id: 6908e613f6c86acdc22a37a1
+Card #186: Gaussian Mixture Models in Machine Learning | fileName: Sem5_Machine_Learning_U3_L1.8_Gaussian_Mixture_Models.pdf | material_id: 6908e613f6c86acdc22a38bf | gridfs_id: 6908e613f6c86acdc22a38bc
+Card #187: Sem5_Machine_Learning_U2_L3_Activation_Functions | fileName: Sem5_Machine_Learning_U2_L3_Activation_Functions.pdf | material_id: 6908e613f6c86acdc22a38db | gridfs_id: 6908e613f6c86acdc22a38d8
+Card #188: Sem5_Machine_Learning_U2_L2_Working_of_Neural_Networks | fileName: Sem5_Machine_Learning_U2_L2_Working_of_Neural_Networks.pdf | material_id: 6908e613f6c86acdc22a3905 | gridfs_id: 6908e613f6c86acdc22a38e7
+Card #189: Sem5_Machine_Learning_U4_4_Introduction_to_deep_Learning | fileName: Sem5_Machine_Learning_U4_4_Introduction_to_deep_Learning.pdf | material_id: 6908e613f6c86acdc22a39b5 | gridfs_id: 6908e613f6c86acdc22a39af
+Card #190: Sem5 Machine Learning Unit 2 Lesson 8 Gradient Boosting | fileName: Sem5_Machine_Learning_U2_L8_Gradient_Boosting.pdf | material_id: 6908e613f6c86acdc22a3a1a | gridfs_id: 6908e613f6c86acdc22a3a16
+Card #191: Sem5_Machine_Learning_U4_3_PCA_SVD_with_example | fileName: Sem5_Machine_Learning_U4_3_PCA_SVD_with_example.pdf | material_id: 6908e613f6c86acdc22a3a32 | gridfs_id: 6908e613f6c86acdc22a3a28
+Card #192: Sem5_Machine_Learning_U4_9_LLM_2025 | fileName: Sem5_Machine_Learning_U4_9_LLM_2025.pdf | material_id: 6908e613f6c86acdc22a3a5c | gridfs_id: 6908e613f6c86acdc22a3a55
+Card #193: Sem5_Machine_Learning_U4_7_Introduction to RL | fileName: Sem5_Machine_Learning_U4_7_Introduction to RL.pdf | material_id: 6908e613f6c86acdc22a3ad0 | gridfs_id: 6908e613f6c86acdc22a3ac7
+Card #194: Hierarchical vs Nonhierarchical Clustering: Agglomerative and Divisive Methods | fileName: Sem5_Machine_Learning_U4_1_Hierarchical_vs_nonhierarchical_Agglomerative_and_divisive(2 sessions).pdf | material_id: 6908e613f6c86acdc22a3ae3 | gridfs_id: 6908e613f6c86acdc22a3adb
+Card #195: Sem5 Machine Learning Unit 2 Lesson 5 - Support Vector Machine (SVM) | fileName: Sem5_Machine_Learning_U2_L5_SVM.pdf | material_id: 6908e613f6c86acdc22a3b02 | gridfs_id: 6908e613f6c86acdc22a3ae4
+Card #196: Optimization Algorithms in Machine Learning | fileName: Sem5_Machine_Learning_U2_L4_Optimizers.pdf | material_id: 6908e614f6c86acdc22a3b74 | gridfs_id: 6908e614f6c86acdc22a3b67
+Card #197: Bayesian Learning Introduction - Machine Learning Unit 3 | fileName: Sem5_Machine_Learning_U3_L1.1_Bayesian_Learning_Introduction.pdf | material_id: 6908e614f6c86acdc22a3bf9 | gridfs_id: 6908e614f6c86acdc22a3bf4
+Card #198: Sem5_Machine_Learning_U1_L1 ML models | fileName: Sem5_Machine_Learning_U1_L1 ML models.pdf | material_id: 6908e614f6c86acdc22a3c09 | gridfs_id: 6908e614f6c86acdc22a3bfe
+Card #199: Sem5_Machine_Learning_U3_L2.1_Markov_Intro | fileName: Sem5_Machine_Learning_U3_L2.1_Markov_Intro.pdf | material_id: 6908e614f6c86acdc22a3c9e | gridfs_id: 6908e614f6c86acdc22a3c9a
+Card #200: Sem5_Machine_Learning_U3_L1.6_EM_Continued | fileName: Sem5_Machine_Learning_U3_L1.6_EM_Continued.pdf | material_id: 6908e614f6c86acdc22a3ca9 | gridfs_id: 6908e614f6c86acdc22a3ca5
+
+=== Subject: Automata Formal Languages & Logic ===
+Card #201: Automata Formal Languages & Logic - Unit 1: Regular Expressions and their Algebraic Laws | fileName: Sem3_AFLL_U1_L14.pptx | material_id: 6908e610f6c86acdc22a2cc9 | gridfs_id: 6908e610f6c86acdc22a2cc7
+Card #202: Automata Formal Languages & Logic - Unit 1: Regular Expression in Practice | fileName: Sem3_AFLL_U1_L15.pptx | material_id: 6908e611f6c86acdc22a2e9e | gridfs_id: 6908e611f6c86acdc22a2e9b
+Card #203: AFLL: Unit 1, Lesson 2 - Deterministic and Non-Deterministic Finite Automata | fileName: Sem3_AFLL_U1_L2.pptx | material_id: 6908e611f6c86acdc22a2eca | gridfs_id: 6908e611f6c86acdc22a2ec6
+Card #204: Equivalence of Regular Expressions: Formal and Informal Methods | fileName: Sem3_AFLL_U1_L19.pptx | material_id: 6908e611f6c86acdc22a3003 | gridfs_id: 6908e611f6c86acdc22a3001
+Card #205: Automata Formal Languages & Logic - Unit 1: Deterministic Finite Automata (DFA) - Formal Definition and Transition Diagrams | fileName: Sem3_AFLL_U1_L7.pdf | material_id: 6908e611f6c86acdc22a3066 | gridfs_id: 6908e611f6c86acdc22a305d
+Card #206: Automata Formal Languages & Logic - Unit 1: Basic Notations | fileName: Sem3_AFLL_U1_L5.pdf | material_id: 6908e611f6c86acdc22a3112 | gridfs_id: 6908e611f6c86acdc22a310f
+Card #207: Automata Formal Languages & Logic - Unit 1: Deterministic Finite Acceptor/Automata | fileName: Sem3_AFLL_U1_L8.pptx | material_id: 6908e612f6c86acdc22a3419 | gridfs_id: 6908e612f6c86acdc22a3413
+Card #208: Automata Formal Languages & Logic - Unit 1: Mathematical Preliminaries | fileName: Sem3_AFLL_U1_L3.pdf | material_id: 6908e612f6c86acdc22a3422 | gridfs_id: 6908e612f6c86acdc22a341a
+Card #209: Automata Formal Languages & Logic - Unit 1: Minimization of DFA | fileName: Sem3_AFLL_U1_L13.pptx | material_id: 6908e612f6c86acdc22a3490 | gridfs_id: 6908e612f6c86acdc22a348e
+
+=== Subject: Electronic Principles & Devices ===
+Card #210: Electronic Principles & Devices - Unit 1: Basic Circuit Elements and Semiconductor Diodes | fileName: Sem1_EPD_U1_Semiconductor_Diodes.pdf | material_id: 6908e610f6c86acdc22a2cfa | gridfs_id: 6908e610f6c86acdc22a2ce1
+Card #211: Unit I: Fundamentals of DC Circuits | fileName: Sem2_Electrical_U1_DC_Circuits.pdf | material_id: 6908e611f6c86acdc22a2dbb | gridfs_id: 6908e611f6c86acdc22a2dad
+Card #212: EPD Unit 2: Semiconductor Diode Applications - Regulated Power Supply & Half Wave Rectifier | fileName: Sem1_EPD_U2_Semiconductor_Diodes_Applicatiom.pdf | material_id: 6908e611f6c86acdc22a2eb9 | gridfs_id: 6908e611f6c86acdc22a2ea9
+Card #213: Introduction to Mealy and Moore Finite State Machines | fileName: Sem3_DDCO_U2_L7.pptx | material_id: 6908e612f6c86acdc22a342d | gridfs_id: 6908e612f6c86acdc22a3429
+Card #214: Introduction to Flip-Flops and Edge-Triggered D Flip-Flops | fileName: Sem3_DDCO_U2_L4.pptx | material_id: 6908e612f6c86acdc22a3533 | gridfs_id: 6908e612f6c86acdc22a3524
+Card #215: Design and Analysis of Synchronous Counters | fileName: Sem3_DDCO_U2_L12.pptx | material_id: 6908e613f6c86acdc22a3729 | gridfs_id: 6908e613f6c86acdc22a3724
+Card #216: Gate-Level Minimization and Karnaugh Map Techniques for Boolean Function Simplification | fileName: Sem3_DDCO_U1_L4.pptx | material_id: 6908e613f6c86acdc22a3a69 | gridfs_id: 6908e613f6c86acdc22a3a5d
+Card #217: Sem3_DDCO_U2_L2 - Sequential Circuits and Memory Elements | fileName: Sem3_DDCO_U2_L2.pptx | material_id: 6908e614f6c86acdc22a3b30 | gridfs_id: 6908e614f6c86acdc22a3b2c
+
+=== Subject: Mechanical Engineering ===
+Card #218: Mechanical Engineering Science: Unit 4 - Machining, Automation, Robotics, Control System, and Industry 4.0 | fileName: Sem2_Mechanical_U4_Machinig_Automation_Robotics_Control_System_And_Industry_4.0.pdf | material_id: 6908e610f6c86acdc22a2d1a | gridfs_id: 6908e610f6c86acdc22a2cfb
+Card #219: Mechanical Engineering Science: Unit 2 - Engineering Materials, Stress, Strain, and Transmission Systems | fileName: Sem2_Mechanical_U2_Engineering_Material_Stress_And_strain_And_Transmission _System.pdf | material_id: 6908e611f6c86acdc22a2e6f | gridfs_id: 6908e611f6c86acdc22a2e35
+Card #220: Mechanics Textbook - Unit Conversion Factors | fileName: Sem1_Mechanics_Textbook.pdf | material_id: 6908e611f6c86acdc22a2ff9 | gridfs_id: 6908e611f6c86acdc22a2f26
+
+=== Subject: Digital Design and Computer Organization ===
+Card #221: Digital Design and Computer Organization: Basic Structure of Computers (Lesson 1) | fileName: Sem3_DDCO_U3_L1.pptx | material_id: 6908e610f6c86acdc22a2d25 | gridfs_id: 6908e610f6c86acdc22a2d22
+Card #222: Digital Logic: Introduction to Logic Circuits and Combinational Circuit Analysis | fileName: Sem3_DDCO_U1_L6.pptx | material_id: 6908e611f6c86acdc22a2d8b | gridfs_id: 6908e611f6c86acdc22a2d7e
+Card #223: Binary Adders and Subtractors: Half Adder and Full Adder | fileName: Sem3_DDCO_U1_L7.pptx | material_id: 6908e611f6c86acdc22a2d99 | gridfs_id: 6908e611f6c86acdc22a2d8c
+Card #224: Synchronous Sequential Logic: Latches, Flip-flops, and Memory Elements | fileName: Sem3_DDCO_U2_L1.pptx | material_id: 6908e611f6c86acdc22a2ddf | gridfs_id: 6908e611f6c86acdc22a2dda
+Card #225: Synchronous Sequential Logic: Ripple Counters | fileName: Sem3_DDCO_U2_L11.pptx | material_id: 6908e612f6c86acdc22a3217 | gridfs_id: 6908e612f6c86acdc22a3210
+Card #226: Introduction to Registers and Shift Registers | fileName: Sem3_DDCO_U2_L10.pptx | material_id: 6908e612f6c86acdc22a333d | gridfs_id: 6908e612f6c86acdc22a3336
+Card #227: Digital Design and Computer Organization: Unit 1 - Introduction to Gate-Level Minimization and Combinational Logic | fileName: Sem3_DDCO_U1_L1.pptx | material_id: 6908e612f6c86acdc22a33f9 | gridfs_id: 6908e612f6c86acdc22a33f1
+Card #228: Introduction to Boolean Functions and Logic Gates | fileName: Sem3_DDCO_U1_L2.pptx | material_id: 6908e612f6c86acdc22a34e8 | gridfs_id: 6908e612f6c86acdc22a34e1
+Card #229: Digital Design and Computer Organization: Memory Operations and Instruction Sequencing | fileName: Sem3_DDCO_U3_L5.pptx | material_id: 6908e612f6c86acdc22a3550 | gridfs_id: 6908e612f6c86acdc22a354b
+Card #230: State Reduction in Sequential Circuits | fileName: Sem3_DDCO_U2_L8.pptx | material_id: 6908e613f6c86acdc22a362d | gridfs_id: 6908e613f6c86acdc22a3628
+Card #231: Digital Design and Computer Organization: Standard Input and Output Interfaces and Bus Standards | fileName: Sem3_DDCO_U3_L9.pptx | material_id: 6908e613f6c86acdc22a3688 | gridfs_id: 6908e613f6c86acdc22a3683
+Card #232: Digital Design and Computer Organization: Input/Output Organisation and Accessing I/O Devices | fileName: Sem3_DDCO_U3_L8.pptx | material_id: 6908e613f6c86acdc22a36e6 | gridfs_id: 6908e613f6c86acdc22a36e0
+Card #233: Synchronous Sequential Circuit Design: State Diagrams and Flip-Flop Implementation | fileName: Sem3_DDCO_U2_L9.pptx | material_id: 6908e613f6c86acdc22a371f | gridfs_id: 6908e613f6c86acdc22a3719
+Card #234: Introduction to Memory Locations and Addresses | fileName: Sem3_DDCO_U3_L4.pptx | material_id: 6908e613f6c86acdc22a37b2 | gridfs_id: 6908e613f6c86acdc22a37a5
+Card #235: Introduction to Analysis of Clocked Sequential Circuits and State Equations | fileName: Sem3_DDCO_U2_L5.pptx | material_id: 6908e613f6c86acdc22a3853 | gridfs_id: 6908e613f6c86acdc22a384e
+Card #236: Canonical and Standard Forms in Combinational Logic | fileName: Sem3_DDCO_U1_L3.pptx | material_id: 6908e613f6c86acdc22a3909 | gridfs_id: 6908e613f6c86acdc22a3906
+Card #237: Digital Design and Computer Organization: Binary Multipliers and Magnitude Comparator | fileName: Sem3_DDCO_U1_L8.pptx | material_id: 6908e613f6c86acdc22a3937 | gridfs_id: 6908e613f6c86acdc22a3928
+Card #238: Digital Design and Computer Organization - Encoders | fileName: Sem3_DDCO_U1_L10.pptx | material_id: 6908e613f6c86acdc22a3ada | gridfs_id: 6908e613f6c86acdc22a3ad6
+Card #239: Number Representation, Arithmetic Operations, and Characters in Digital Design and Computer Organization | fileName: Sem3_DDCO_U3_L3.pptx | material_id: 6908e614f6c86acdc22a3b34 | gridfs_id: 6908e614f6c86acdc22a3b31
+Card #240: Digital Design and Computer Organization - Basic Operational Concepts and Functional Units | fileName: Sem3_DDCO_U3_L2.pptx | material_id: 6908e614f6c86acdc22a3bfd | gridfs_id: 6908e614f6c86acdc22a3bfa
+Card #241: Digital Design and Computer Organization - Unit 1 Lesson 11: Multiplexers | fileName: Sem3_DDCO_U1_L11.pptx | material_id: 6908e614f6c86acdc22a3c55 | gridfs_id: 6908e614f6c86acdc22a3c51
+Card #242: Gate Level Minimization and Universal Gate Implementation Using NAND and NOR | fileName: Sem3_DDCO_U1_L5.pptx | material_id: 6908e614f6c86acdc22a3c7d | gridfs_id: 6908e614f6c86acdc22a3c75
+Card #243: Digital Design and Computer Organization - Decoders | fileName: Sem3_DDCO_U1_L9.pptx | material_id: 6908e614f6c86acdc22a3cbb | gridfs_id: 6908e614f6c86acdc22a3cb4
+
+=== Subject: Software Engineering ===
+Card #244: Software Engineering - Unit 1, Lesson 3: SDLC Models (Waterfall, V, Prototype, Incremental & Iterative) | fileName: Sem5_Software_Engineering_U1_L3_SDLC_Models_updated.pptx | material_id: 6908e610f6c86acdc22a2d5d | gridfs_id: 6908e610f6c86acdc22a2d52
+Card #245: Reuse Focused Software Development Approaches - Component Based Software Engineering (CBSE) | fileName: Sem5_Software_Engineering_U1_L5_CBSE_updated.pptx | material_id: 6908e611f6c86acdc22a2d7d | gridfs_id: 6908e611f6c86acdc22a2d75
+Card #246: Software Engineering: Principles and Life Cycles (SDLC) | fileName: Sem5_Software_Engineering_U1_L2 Life Cycles - updated.pptx | material_id: 6908e611f6c86acdc22a2df8 | gridfs_id: 6908e611f6c86acdc22a2dee
+Card #247: Software Engineering - Unit 1: Introduction to Software Engineering | fileName: Sem5_Software_Engineering_U1_L1_Intro_to_SE_updated.pptx | material_id: 6908e612f6c86acdc22a3172 | gridfs_id: 6908e612f6c86acdc22a3157
+Card #248: Software Requirements: Elicitation and Analysis Processes & Techniques | fileName: Sem5_Software_Engineering_U1_L7_Req_Elicitation_and_Analysis_updated.pptx | material_id: 6908e612f6c86acdc22a320f | gridfs_id: 6908e612f6c86acdc22a31fe
+Card #249: Software Requirements Specification (SRS), Documentation, and Management | fileName: Sem5_Software_Engineering_U1_L8_SRS_updated.pptx | material_id: 6908e613f6c86acdc22a3694 | gridfs_id: 6908e613f6c86acdc22a3689
+Card #250: Requirement Engineering - Introduction, Properties, and Process | fileName: Sem5_Software_Engineering_U1_L6_Req_Engg_updated.pptx | material_id: 6908e613f6c86acdc22a382a | gridfs_id: 6908e613f6c86acdc22a3822
+Card #251: Software Engineering Notes (UE22CS341A) - Unit 2: Software Project Management Fundamentals | fileName: Sem5_Software_Engineering_U2_Notes.pdf | material_id: 6908e613f6c86acdc22a3940 | gridfs_id: 6908e613f6c86acdc22a3938
+Card #252: Sem5 Software Engineering Unit 3 Notes Updated | fileName: Sem5_Software_Engineering_U3_Notes_Updated.pdf | material_id: 6908e614f6c86acdc22a3b77 | gridfs_id: 6908e614f6c86acdc22a3b75
+Card #253: Sem5_Software_Engineering_U1_L4_Agile_Methodology_updated | fileName: Sem5_Software_Engineering_U1_L4_Agile_Methodology_updated.pptx | material_id: 6908e614f6c86acdc22a3bd4 | gridfs_id: 6908e614f6c86acdc22a3bc2
+Card #254: Software Engineering Notes - Unit 4: Software Testing | fileName: Sem5_Software_Engineering_U4_Notes.pdf | material_id: 6908e614f6c86acdc22a3c44 | gridfs_id: 6908e614f6c86acdc22a3c3e
+
+=== Subject: Chemistry ===
+Card #255: Engineering Chemistry - Unit 2: Electrochemical Equilibria | fileName: Sem1_Chemistry_U2_Electrochemistry.pdf | material_id: 6908e611f6c86acdc22a2da9 | gridfs_id: 6908e611f6c86acdc22a2d9a
+Card #256: Engineering Chemistry: Nanomaterials (Unit 4) | fileName: Sem1_Chemistry_U4_Storage_Materials_And_Green_Chemistry.pdf | material_id: 6908e612f6c86acdc22a3325 | gridfs_id: 6908e612f6c86acdc22a3310
+Card #257: Engineering Chemistry: Module 5 - Energy Storage Devices, Fuel Cells, and Sensors | fileName: Sem1_Chemistry_U3_Energy_Storage_Devices_And_Hydrogen_Storage_Sensor.pdf | material_id: 6908e613f6c86acdc22a37e4 | gridfs_id: 6908e613f6c86acdc22a37b8
+Card #258: Engineering Chemistry: Phase Equilibria (Module 3) | fileName: Sem1_Chemistry_U1_Phase Equilibria.pdf | material_id: 6908e613f6c86acdc22a384d | gridfs_id: 6908e613f6c86acdc22a383e
+Card #259: Engineering Chemistry Module I - Molecular Spectroscopy | fileName: Sem1_Chemistry_U1_Spectroscopy.pdf | material_id: 6908e613f6c86acdc22a3ab8 | gridfs_id: 6908e613f6c86acdc22a3a9e
+Card #260: Engineering Chemistry Module 6 - Corrosion Chemistry | fileName: Sem1_Chemistry_U2_Corrosion.pdf | material_id: 6908e614f6c86acdc22a3c74 | gridfs_id: 6908e614f6c86acdc22a3c5b
+
+=== Subject: Linear Algebra ===
+Card #261: Unit 3: Linear Transformations and Vector Space | fileName: Sem4_Linear_Algebra_U3_LINEAR_TRANSFORMATIONS_AND_VECTOR_SPACE.pdf | material_id: 6908e611f6c86acdc22a2e34 | gridfs_id: 6908e611f6c86acdc22a2df9
+Card #262: Linear Algebra - Unit 4: Orthogonalisation, Eigenvalues and Eigenvectors | fileName: Sem4_Linear_Algebra_U4_ORTHOGONALISATION_EIGEN_VALUES_AND_EIGEN_VECTORS.pdf | material_id: 6908e612f6c86acdc22a31bf | gridfs_id: 6908e612f6c86acdc22a318a
+Card #263: Linear Algebra - Unit 5: Singular Value Decomposition and Positive Definiteness | fileName: Sem4_Linear_Algebra_U5_SINGULAR_VALUE_DECOMPOSITION.pdf | material_id: 6908e612f6c86acdc22a32a0 | gridfs_id: 6908e612f6c86acdc22a326e
+Card #264: Linear Algebra Unit 2: Vector Spaces - Definitions, Axioms, Properties, and Examples | fileName: Sem4_Linear_Algebra_U2_VECTOR_SPACES.pdf | material_id: 6908e612f6c86acdc22a34ca | gridfs_id: 6908e612f6c86acdc22a349b
+Card #265: Linear Algebra - Unit 1: Matrices and Gaussian Elimination | fileName: Sem4_Linear_Algebra_U1_MATRICES_AND_GAUSSIAN_ELIMINATION.pdf | material_id: 6908e613f6c86acdc22a361c | gridfs_id: 6908e613f6c86acdc22a35e2
+
+=== Subject: Mathematics ===
+Card #266: Classwork Problems | fileName: Sem3_Maths_U1_Class_work_problems.pdf | material_id: 6908e611f6c86acdc22a2e73 | gridfs_id: 6908e611f6c86acdc22a2e70
+Card #267: Engineering Mathematics I - Units 1 & 2 Class Work Problems | fileName: Sem1_Maths_U1_And_U2_Class_Work_Problems.pdf | material_id: 6908e611f6c86acdc22a3023 | gridfs_id: 6908e611f6c86acdc22a3021
+Card #268: Engineering Mathematics II - Unit 4: Fourier Series and Fourier Transforms Problems | fileName: Sem2_Maths_U4_Fourier.pdf | material_id: 6908e612f6c86acdc22a33f0 | gridfs_id: 6908e612f6c86acdc22a33ee
+Card #269: Mathematics Unit 1: Probability | fileName: Sem2_Maths_U1_Probability.pdf | material_id: 6908e613f6c86acdc22a3756 | gridfs_id: 6908e613f6c86acdc22a3737
+Card #270: Engineering Mathematics - II (UE23MA141B) Unit 1: Integral Calculus - Problems on Double Integrals and Change of Variables | fileName: Sem2_Maths_U3_Integration.pdf | material_id: 6908e613f6c86acdc22a3910 | gridfs_id: 6908e613f6c86acdc22a390e
+
+=== Subject: Microprocessor & Computer Architecture ===
+Card #271: Microprocessor & Computer Architecture - Unit 2: Pipelining | fileName: Sem4_Microprocessor_And_computer_Architecture_U2_Pipelining.pdf | material_id: 6908e611f6c86acdc22a2e93 | gridfs_id: 6908e611f6c86acdc22a2e79
+Card #272: Unit 1: Basic Processor Architecture and Design in Microprocessor & Computer Architecture | fileName: Sem4_Microprocessor_And_computer_Architecture_U1_Basic_Processor_Architecure_And_Designt.pdf | material_id: 6908e611f6c86acdc22a2f21 | gridfs_id: 6908e611f6c86acdc22a2f08
+Card #273: Microprocessor & Computer Architecture - Unit 3: Introduction to Memory | fileName: Sem4_Microprocessor_And_computer_Architecture_U3_Memory.pdf | material_id: 6908e612f6c86acdc22a3240 | gridfs_id: 6908e612f6c86acdc22a321d
+Card #274: Microprocessor & Computer Architecture - Unit 4: Introduction to Parallel Computing | fileName: Sem4_Microprocessor_And_computer_Architecture_U4_Memory_Optimization_Constant_And_IO_Subsystem.pdf | material_id: 6908e612f6c86acdc22a3580 | gridfs_id: 6908e612f6c86acdc22a3551
+
+=== Subject: Engineering Mathematics – I ===
+Card #275: Class Work Problems: Differential Equations of Higher Order and Partial Differential Equations | fileName: Sem1_Maths_U3_And_U4_Class_Work_Problems.pdf | material_id: 6908e611f6c86acdc22a2ec0 | gridfs_id: 6908e611f6c86acdc22a2ebd
+
+=== Subject: Design and Analysis of Algorithms ===
+Card #276: Design and Analysis of Algorithms - Decrease and Conquer | fileName: Sem4_Design_Analysis_And_Algorithm_U2_DECREASE_AND_CONQUER.pdf | material_id: 6908e611f6c86acdc22a2eff | gridfs_id: 6908e611f6c86acdc22a2eda
+Card #277: Design and Analysis of Algorithms - Unit 3: Transform and Conquer | fileName: Sem4_Design_Analysis_And_Algorithm_U3_Transform_And_Conquer.pdf | material_id: 6908e612f6c86acdc22a33cb | gridfs_id: 6908e612f6c86acdc22a337a
+Card #278: Design and Analysis of Algorithms - Unit 1: Introduction to Algorithms, Design Techniques and Analysis | fileName: Sem4_Design_Analysis_And_Algorithm_U1_Introduction to Algorithms,.pdf | material_id: 6908e613f6c86acdc22a3668 | gridfs_id: 6908e613f6c86acdc22a362e
+
+=== Subject: Automata Formal Language and Logic ===
+Card #279: Automata Formal Language and Logic - Unit 3: CYK Parsing Algorithm | fileName: Sem3_AFLL_U3_L3.pdf | material_id: 6908e611f6c86acdc22a3009 | gridfs_id: 6908e611f6c86acdc22a3004
+Card #280: Automata Formal Language and Logic - Unit 3: Chomsky Normal Form (CNF) | fileName: Sem3_AFLL_U3_L2.pdf | material_id: 6908e611f6c86acdc22a30c0 | gridfs_id: 6908e611f6c86acdc22a30bc
+Card #281: Automata Formal Language and Logic - Unit 3: Ambiguous CFGs and Inherently Ambiguous CFLs | fileName: Sem3_AFLL_U3_L1.pdf | material_id: 6908e612f6c86acdc22a326d | gridfs_id: 6908e612f6c86acdc22a3268
+Card #282: Converting CFG in GNF to PDA: Algorithm and Example | fileName: Sem3_AFLL_U3_L5.pdf | material_id: 6908e612f6c86acdc22a32a4 | gridfs_id: 6908e612f6c86acdc22a32a1
+Card #283: AFLL Unit 3: Pumping Lemma for Context-Free Languages | fileName: Sem3_AFLL_U3_L7.pdf | material_id: 6908e612f6c86acdc22a3495 | gridfs_id: 6908e612f6c86acdc22a3491
+Card #284: Turing Machine: The Foundation of Modern Computing | fileName: Sem3_AFLL_U3_L8.pdf | material_id: 6908e613f6c86acdc22a36d6 | gridfs_id: 6908e613f6c86acdc22a36d0
+Card #285: Context Free Grammars and Beyond Regular Languages | fileName: Sem3_AFLL_U2_L3.pdf | material_id: 6908e614f6c86acdc22a3b39 | gridfs_id: 6908e614f6c86acdc22a3b35
+
+=== Subject: Data Structures and its Applications ===
+Card #286: Data Structures: Introduction, Memory Management, and Linked Lists | fileName: Sem3_DSA_U1_L3.docx | material_id: 6908e611f6c86acdc22a3013 | gridfs_id: 6908e611f6c86acdc22a300f
+Card #287: Stacks and Queues - Data Structures and its Applications - Unit 2 | fileName: Sem3_DSA_U1_L7.docx | material_id: 6908e614f6c86acdc22a3b7e | gridfs_id: 6908e614f6c86acdc22a3b78
+
+=== Subject: DIGITAL DESIGN AND COMPUTER ORGANIZATION ===
+Card #288: Assembly Language Fundamentals and Program Execution | fileName: Sem3_DDCO_U3_L7.pptx | material_id: 6908e611f6c86acdc22a3028 | gridfs_id: 6908e611f6c86acdc22a3024
+Card #289: Introduction to Addressing Modes in Computer Organization | fileName: Sem3_DDCO_U3_L6.pptx | material_id: 6908e612f6c86acdc22a344f | gridfs_id: 6908e612f6c86acdc22a3448
+
+=== Subject: Essentials of Innovation and Entrepreneurship ===
+Card #290: Essentials of Innovation and Entrepreneurship - Module M8: Selling Your Idea/Product + Pitching | fileName: Sem3_CIE_U3_L3.pdf | material_id: 6908e611f6c86acdc22a3039 | gridfs_id: 6908e611f6c86acdc22a302c
+Card #291: Essentials of Innovation and Entrepreneurship - Unit 3: Business Model Canvas | fileName: Sem3_CIE_U3_L2.pdf | material_id: 6908e611f6c86acdc22a305c | gridfs_id: 6908e611f6c86acdc22a304a
+Card #292: EIE: CIE Spark 2025 - Idea Validation Sprint & Value Proposition | fileName: Sem3_CIE_U3_L1.pdf | material_id: 6908e612f6c86acdc22a3189 | gridfs_id: 6908e612f6c86acdc22a317b
+Card #293: Essentials of Innovation and Entrepreneurship - Opportunity Identification & Ethics (L4) | fileName: Sem3_CIE_U1_L4.pdf | material_id: 6908e612f6c86acdc22a325f | gridfs_id: 6908e612f6c86acdc22a3250
+Card #294: Essentials of Innovation and Entrepreneurship - Course Orientation (Module M0) | fileName: Sem3_CIE_U1_L1.pdf | material_id: 6908e612f6c86acdc22a33ed | gridfs_id: 6908e612f6c86acdc22a33da
+Card #295: EIE: Entrepreneurial Mindset - Growth vs. Fixed, Opportunity Seeking & NABC Approach | fileName: Sem3_CIE_U1_L3.pdf | material_id: 6908e612f6c86acdc22a340d | gridfs_id: 6908e612f6c86acdc22a33fd
+Card #296: Essentials of Innovation and Entrepreneurship - Module M9: Finance for Startups (Lesson 1) | fileName: Sem3_CIE_U4_L1.pdf | material_id: 6908e613f6c86acdc22a3677 | gridfs_id: 6908e613f6c86acdc22a366e
+Card #297: CIE Spark 2025: Problem Validation Sprint | fileName: Sem3_CIE_U2_L1.pdf | material_id: 6908e613f6c86acdc22a394f | gridfs_id: 6908e613f6c86acdc22a3941
+Card #298: Essentials of Innovation and Entrepreneurship - Module M5 Human-Centered Innovation | fileName: Sem3_CIE_U2_L2.pdf | material_id: 6908e613f6c86acdc22a3ac6 | gridfs_id: 6908e613f6c86acdc22a3ab9
+
+=== Subject: Digital Design & Computer Organization ===
+Card #299: Sequential Circuit Analysis using D and JK Flip-Flops | fileName: Sem3_DDCO_U2_L6.pptx | material_id: 6908e611f6c86acdc22a3049 | gridfs_id: 6908e611f6c86acdc22a3044
+Card #300: Latches and Flip-Flops in Digital Circuits | fileName: Sem3_DDCO_U2_L3.pptx | material_id: 6908e614f6c86acdc22a3c38 | gridfs_id: 6908e614f6c86acdc22a3c32
+
+=== Subject: Computer Networks ===
+Card #301: Network Layer Protocols, IP Addressing, DHCP, IPv6, Routing, and HTTP Protocol | fileName: Sem4_Computer_Networks_U4_Netorking_Layer_And_HTTP_Protocol.pdf | material_id: 6908e611f6c86acdc22a30b6 | gridfs_id: 6908e611f6c86acdc22a3092
+Card #302: Computer Networks - Unit 2: Application Layer (Domain Name System) | fileName: Sem4_Computer_Networks_U2_Application_Layer.pdf | material_id: 6908e612f6c86acdc22a3371 | gridfs_id: 6908e612f6c86acdc22a3352
+Card #303: Computer Networks: Unit 3 - Transport Layer (Reliable Data Transfer and TCP) | fileName: Sem4_Computer_Networks_U3_Transpot_Layer.pdf | material_id: 6908e613f6c86acdc22a3779 | gridfs_id: 6908e613f6c86acdc22a3757
+Card #304: Sem4 Computer Networks Unit 1: Computer Networks and the Internet | fileName: Sem4_Computer_Networks_U1_Computer_Networks_And_Internet.pdf | material_id: 6908e613f6c86acdc22a3a9d | gridfs_id: 6908e613f6c86acdc22a3a6a
+
+=== Subject: Data Analytics ===
+Card #305: Data Analytics - Unit 4: Introduction to Recommendation Systems | fileName: Sem5_Data_Analytics_U4_Introduction_To_Recommendation_System.pdf | material_id: 6908e611f6c86acdc22a310e | gridfs_id: 6908e611f6c86acdc22a30d9
+Card #306: Data Analytics - Unit 2: Simple Linear Regression | fileName: Sem5_Data_Analytics_U2_Simple_Linear_Regression.pdf | material_id: 6908e612f6c86acdc22a3307 | gridfs_id: 6908e612f6c86acdc22a32b1
+Card #307: Data Analytics - Unit 1: Introduction to Data Analytics, Data Sources and Representations | fileName: Sem5_Data_Analytics_U1_Introduction_To_DA_Data_Sources_And_Representation.pdf | material_id: 6908e613f6c86acdc22a36cf | gridfs_id: 6908e613f6c86acdc22a3695
+Card #308: Sem5 Data Analytics Unit 3: Introduction to Time Series | fileName: Sem5_Data_Analytics_U3_Introduction_To_Time_Series.pdf | material_id: 6908e614f6c86acdc22a3bb6 | gridfs_id: 6908e614f6c86acdc22a3b85
+
+=== Subject: Mathematics for Computer Science Engineers ===
+Card #309: Unit 2 Classwork Problems | fileName: Sem3_Maths_U2_Class_work_problems.pdf | material_id: 6908e612f6c86acdc22a3263 | gridfs_id: 6908e612f6c86acdc22a3260
+Card #310: Unit 1 Classwork Problem Solutions | fileName: Sem3_Maths_U1_Class_work_solutions.pdf | material_id: 6908e612f6c86acdc22a3443 | gridfs_id: 6908e612f6c86acdc22a343f
+Card #311: Sem3 Maths Unit 2 Classwork Solutions | fileName: Sem3_Maths_U2_Class_work_solutions.pdf | material_id: 6908e613f6c86acdc22a39bb | gridfs_id: 6908e613f6c86acdc22a39b6
+
+=== Subject: Problem Solving with C ===
+Card #312: Problem Solving Fundamentals with C - Introduction to Programming (Unit 1) | fileName: Sem2_C_U1_Problem_Solving_Fundamentals_With_C.pdf | material_id: 6908e612f6c86acdc22a348d | gridfs_id: 6908e612f6c86acdc22a3473
+Card #313: Problem Solving with C: Unit 2 - Arrays, Pointers, Counting, Sorting, and Searching | fileName: Sem2_C_U2_Counting_Sorting_Searching.pdf | material_id: 6908e613f6c86acdc22a370d | gridfs_id: 6908e613f6c86acdc22a3705
+Card #314: Strings and String Manipulation in C - Unit 3 | fileName: Sem2_C_U3_Text_Processing_And_User_Defined_Types.pdf | material_id: 6908e613f6c86acdc22a3793 | gridfs_id: 6908e613f6c86acdc22a378b
+
+=== Subject: Innovation and Entrepreneurship ===
+Card #315: Startup Nation Olympiad 2025: Participation Guide for EIE Students | fileName: Sem3_CIE_U1_L2.pdf | material_id: 6908e612f6c86acdc22a349a | gridfs_id: 6908e612f6c86acdc22a3496
+
+=== Subject: N/A ===
+Card #316: Semester 4 Continuous Internal Evaluation Guidelines | fileName: Sem4_CIE.pdf | material_id: 6908e613f6c86acdc22a36f1 | gridfs_id: 6908e613f6c86acdc22a36e7
+
+=== Subject: Engineering Mathematics - II ===
+Card #317: Laplace Transforms: Solved and Homework Problems | fileName: Sem2_Maths_U2_Laplace.pdf | material_id: 6908e613f6c86acdc22a3856 | gridfs_id: 6908e613f6c86acdc22a3854
+
+=== Subject: Design, Analysis, and Algorithm ===
+Card #318: Design, Analysis, and Algorithm - Unit 4: Dynamic Programming | fileName: Sem4_Design_Analysis_And_Algorithm_U4_Dynamic_Programming.pdf | material_id: 6908e613f6c86acdc22a38ac | gridfs_id: 6908e613f6c86acdc22a387c
+
+=== Subject: Electrical Machines ===
+Card #319: Unit-4: Electrical Machines - Magnetic Quantities and Fundamentals | fileName: Sem2_Electrical_U4_Electrical_Machine.pdf | material_id: 6908e613f6c86acdc22a3927 | gridfs_id: 6908e613f6c86acdc22a3911
+
+=== Subject: Environmental Studies and Life Sciences ===
+Card #320: Environmental Studies and Life Sciences - Biomimetics | fileName: Sem2_EVS_U2.pdf | material_id: 6908e613f6c86acdc22a39ae | gridfs_id: 6908e613f6c86acdc22a3997
+
+=== Subject: Electronic Principles and Devices ===
+Card #321: Electronic Principles and Devices - Modulation and Demodulation | fileName: Sem1_EPD_U4_Digital_Electronics.pdf | material_id: 6908e613f6c86acdc22a39f0 | gridfs_id: 6908e613f6c86acdc22a39bc
+Card #322: Electronic Principles and Devices - Unit 3: Digital Electronics including Transistor and Operational Amplifier | fileName: Sem1_EPD_U3_Transistor_And_operational_Amplifier.pdf | material_id: 6908e614f6c86acdc22a3bf3 | gridfs_id: 6908e614f6c86acdc22a3be6
+
+=== Subject: Environmental Studies & Life Sciences ===
+Card #323: Organic Farming - Principles, Methods, and History | fileName: Sem2_EVS_U3.pdf | material_id: 6908e613f6c86acdc22a3a08 | gridfs_id: 6908e613f6c86acdc22a39f8
+Card #324: Introduction to Ecosystems and Ecology | fileName: Sem2_EVS_U1.pdf | material_id: 6908e614f6c86acdc22a3b2b | gridfs_id: 6908e613f6c86acdc22a3b06
+Card #325: Environmental Studies & Life Sciences - Types of Infectious diseases by Dr. Sasmita Sabat | fileName: Sem2_EVS_U4.pdf | material_id: 6908e614f6c86acdc22a3c2e | gridfs_id: 6908e614f6c86acdc22a3c1b
+
+=== Subject: Electrical and Electronics Engineering ===
+Card #326: Three Phase Balanced Systems - Unit III Electrical Engineering Study Material | fileName: Sem2_Electrical_U3_Three_Phase_Balanced_Sysytem.pdf | material_id: 6908e613f6c86acdc22a3a15 | gridfs_id: 6908e613f6c86acdc22a3a09
+
+=== Subject: Constitution of India ===
+Card #327: Semester 1 Constitution All Constitution Q&A | fileName: Sem1_Constitution_All_Constitution_Q&A.pdf | material_id: 6908e613f6c86acdc22a3a27 | gridfs_id: 6908e613f6c86acdc22a3a1b
+
+=== Subject: Physics ===
+Card #328: Sem2 Physics All Units Notes | fileName: Sem2_Physics_ All_Units_Notes.pdf | material_id: 6908e613f6c86acdc22a3a4e | gridfs_id: 6908e613f6c86acdc22a3a33
+
+=== Subject: Design Thinking ===
+Card #329: Introduction to Design Thinking and Designer Qualities | fileName: Sem3_CIE_U2_L3.pdf | material_id: 6908e614f6c86acdc22a3bbd | gridfs_id: 6908e614f6c86acdc22a3bb7
+
+=== Subject: Electrical Engineering ===
+Card #330: Unit II: Single Phase AC Circuits | fileName: Sem2_Electrical_U2_Singal_Phase_AC_Circuits.pdf | material_id: 6908e614f6c86acdc22a3c14 | gridfs_id: 6908e614f6c86acdc22a3c0a
+
+Total unique materials displayed: 330
+
+
+
+
+
+
+

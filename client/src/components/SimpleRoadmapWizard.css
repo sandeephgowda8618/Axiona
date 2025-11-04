@@ -1,0 +1,555 @@
+/* Simple Roadmap Wizard Styles */
+
+/* Modal overlay */
+.roadmap-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(113, 201, 206, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+/* Main container */
+.roadmap-container {
+  background: #ffffff;
+  border-radius: 1.5rem;
+  border: 3px solid #CBF1F5;
+  box-shadow: 0 25px 50px -12px rgba(113, 201, 206, 0.25);
+  width: 100%;
+  max-width: 800px;
+  max-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  color: #1e293b;
+  position: relative;
+}
+
+/* Header */
+.roadmap-header {
+  background: linear-gradient(135deg, #71C9CE, #A6E3E9);
+  color: white;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(113, 201, 206, 0.25);
+}
+
+.roadmap-header h1 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.roadmap-header p {
+  font-size: 1.1rem;
+  opacity: 0.95;
+}
+
+/* Step content */
+.step-content {
+  padding: 2.5rem;
+  background: #FFFFFF;
+  overflow-y: auto;
+  max-height: 60vh;
+}
+
+.step-content h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 0.8rem;
+}
+
+.step-content > p {
+  color: #475569;
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+/* Question Card */
+.question {
+  background: #E3FDFD;
+  border: 2px solid #CBF1F5;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(113, 201, 206, 0.1);
+}
+
+.question label {
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 0.75rem;
+  display: block;
+  font-size: 1.05rem;
+}
+
+/* Required asterisk */
+.question.required label::after {
+  content: " *";
+  color: #ef4444;
+}
+
+/* Option Buttons */
+.option-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.75rem;
+}
+
+.option-btn {
+  background: #FFFFFF;
+  border: 2px solid #CBF1F5;
+  color: #1e293b;
+  padding: 1rem 1.2rem;
+  border-radius: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(113, 201, 206, 0.08);
+}
+
+.option-btn:hover {
+  background: #E3FDFD;
+  border-color: #71C9CE;
+  box-shadow: 0 4px 10px rgba(113, 201, 206, 0.2);
+}
+
+.option-btn.selected {
+  background: #71C9CE;
+  color: white;
+  border-color: #71C9CE;
+  box-shadow: 0 6px 20px rgba(113, 201, 206, 0.35);
+}
+
+/* Radio buttons */
+.radio-option {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border: 2px solid #CBF1F5;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  background: white;
+  color: #1e293b;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.radio-option:hover {
+  background: #E3FDFD;
+  border-color: #71C9CE;
+}
+
+.radio-option:has(input[type="radio"]:checked) {
+  background: #A6E3E9;
+  border-color: #71C9CE;
+  font-weight: 700;
+}
+
+.radio-option input[type="radio"] {
+  accent-color: #71C9CE;
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+/* Checkboxes */
+.checkbox-option {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border: 2px solid #CBF1F5;
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  background: white;
+  color: #1e293b;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.checkbox-option:hover {
+  background: #E3FDFD;
+  border-color: #71C9CE;
+}
+
+.checkbox-option:has(input[type="checkbox"]:checked) {
+  background: #A6E3E9;
+  border-color: #71C9CE;
+  font-weight: 600;
+}
+
+.checkbox-option input[type="checkbox"] {
+  accent-color: #71C9CE;
+}
+
+/* Inputs */
+.select-input, .text-input, .textarea-input {
+  width: 100%;
+  border: 2px solid #CBF1F5;
+  border-radius: 0.75rem;
+  background: #FFFFFF;
+  padding: 1rem 1.2rem;
+  color: #1e293b;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.select-input:focus, .text-input:focus, .textarea-input:focus {
+  border-color: #71C9CE;
+  box-shadow: 0 0 0 3px rgba(113, 201, 206, 0.2);
+}
+
+.textarea-input {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Slider */
+.slider {
+  width: 100%;
+  height: 0.5rem;
+  background: #CBF1F5;
+  border-radius: 0.25rem;
+}
+
+.slider::-webkit-slider-thumb {
+  background: #71C9CE;
+  border-radius: 50%;
+  width: 1.3rem;
+  height: 1.3rem;
+  cursor: pointer;
+}
+
+.slider-value {
+  text-align: center;
+  font-weight: 600;
+  color: #71C9CE;
+  margin-top: 0.5rem;
+}
+
+/* Summary Section */
+.summary {
+  background: #E3FDFD;
+  border: 2px solid #CBF1F5;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+}
+
+.summary h3 {
+  color: #1e293b;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.summary-items div {
+  color: #334155;
+}
+
+/* Footer */
+.roadmap-footer {
+  background: #E3FDFD;
+  border-top: 2px solid #CBF1F5;
+  padding: 2rem 2.5rem;
+  border-bottom-left-radius: 1.5rem;
+  border-bottom-right-radius: 1.5rem;
+  margin: 0;
+}
+
+.navigation-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: #71C9CE;
+  color: white;
+  border: none;
+  padding: 1rem 1.75rem;
+  border-radius: 0.875rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 3px 10px rgba(113, 201, 206, 0.25);
+  min-width: 110px;
+  justify-content: center;
+  text-align: center;
+}
+
+.nav-btn:hover:not(.disabled) {
+  background: #5fb3b8;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(113, 201, 206, 0.35);
+}
+
+.nav-btn:active:not(.disabled) {
+  transform: translateY(0px);
+  box-shadow: 0 2px 8px rgba(113, 201, 206, 0.2);
+}
+
+.nav-btn.disabled {
+  background: #CBF1F5;
+  color: #94a3b8;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: 0 2px 6px rgba(203, 241, 245, 0.4);
+}
+
+.nav-btn .arrow {
+  font-size: 1rem;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.skip-btn {
+  background: transparent;
+  color: #0f766e;
+  border: 1px solid transparent;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  white-space: nowrap;
+  text-decoration: none;
+  border: 1px solid #71C9CE;
+  background: rgba(113, 201, 206, 0.05);
+}
+
+.skip-btn:hover {
+  color: #134e4a;
+  background: rgba(113, 201, 206, 0.15);
+  border-color: #5fb3b8;
+  transform: translateY(-1px);
+}
+
+/* Error message */
+.error-message {
+  color: #dc2626;
+  font-weight: 600;
+  background: #fef2f2;
+  border: 2px solid #fecaca;
+  border-radius: 0.5rem;
+  padding: 0.6rem 0.8rem;
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Auto-progression feedback */
+.auto-progress-message {
+  background: linear-gradient(135deg, #71C9CE, #A6E3E9);
+  color: white;
+  text-align: center;
+  padding: 1rem;
+  font-weight: 600;
+  font-size: 1rem;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Loading Overlay for MCP RAG Generation */
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  border-radius: 1.5rem;
+}
+
+.loading-content {
+  text-align: center;
+  padding: 3rem;
+  max-width: 500px;
+  color: #1e293b;
+}
+
+.loading-spinner {
+  width: 80px;
+  height: 80px;
+  border: 6px solid #CBF1F5;
+  border-top: 6px solid #71C9CE;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 2rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-content h3 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #2dd4bf;
+  background: linear-gradient(135deg, #71C9CE, #2dd4bf);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.loading-content p {
+  font-size: 1.1rem;
+  color: #64748b;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.loading-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  text-align: left;
+}
+
+.loading-step {
+  font-size: 1rem;
+  color: #475569;
+  padding: 0.8rem 1.2rem;
+  background: linear-gradient(90deg, #f1f9fa, #e0f4f5);
+  border-left: 4px solid #71C9CE;
+  border-radius: 0.5rem;
+  opacity: 0;
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.loading-step:nth-child(1) {
+  animation-delay: 0.2s;
+}
+
+.loading-step:nth-child(2) {
+  animation-delay: 0.4s;
+}
+
+.loading-step:nth-child(3) {
+  animation-delay: 0.6s;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .roadmap-modal-overlay {
+    padding: 0.5rem;
+  }
+  
+  .roadmap-header h1 {
+    font-size: 1.8rem;
+  }
+  
+  .step-content {
+    padding: 1.5rem;
+  }
+  
+  .roadmap-footer {
+    padding: 1.75rem 1.5rem;
+  }
+  
+  .navigation-buttons {
+    flex-direction: row;
+    gap: 1rem;
+    max-width: none;
+  }
+  
+  .nav-btn {
+    min-width: 90px;
+    padding: 0.875rem 1.25rem;
+    font-size: 0.875rem;
+    gap: 0.5rem;
+  }
+  
+  .skip-btn {
+    font-size: 0.825rem;
+    padding: 0.625rem 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .roadmap-footer {
+    padding: 1.5rem 1rem;
+  }
+  
+  .navigation-buttons {
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 280px;
+  }
+  
+  .nav-btn {
+    width: 100%;
+    min-width: auto;
+    padding: 1rem 1.5rem;
+  }
+  
+  .skip-btn {
+    order: -1;
+    text-align: center;
+    width: 100%;
+    padding: 0.75rem 1rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .loading-content {
+    padding: 2rem 1.5rem;
+  }
+  
+  .loading-content h3 {
+    font-size: 1.5rem;
+  }
+  
+  .loading-content p {
+    font-size: 1rem;
+  }
+  
+  .loading-spinner {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 1.5rem;
+  }
+}

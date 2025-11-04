@@ -51,6 +51,11 @@ class Config:
     RATE_LIMIT_REQUESTS: int = int(os.getenv("RATE_LIMIT_REQUESTS", 100))
     RATE_LIMIT_WINDOW: int = int(os.getenv("RATE_LIMIT_WINDOW", 60))  # seconds
     
+    # MongoDB Settings
+    MONGODB_URI: str = os.getenv("MONGODB_URI", "mongodb://localhost:27017/")
+    MONGODB_DATABASE: str = os.getenv("MONGODB_DATABASE", "study-ai")
+    MONGODB_COLLECTION: str = os.getenv("MONGODB_COLLECTION", "books")
+    
     # Monitoring
     ENABLE_METRICS: bool = os.getenv("ENABLE_METRICS", "true").lower() == "true"
     METRICS_PORT: int = int(os.getenv("METRICS_PORT", 9090))
