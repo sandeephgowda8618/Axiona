@@ -247,4 +247,196 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
+// Get StudyPES materials organized by subject and unit
+router.get('/studypes/subjects', async (req, res) => {
+  try {
+    console.log('📚 Fetching StudyPES materials from MongoDB...');
+    
+    // Query for StudyPES materials from the books collection
+    const db = require('mongoose').connection.db;
+    const booksCollection = db.collection('books');
+    
+    // Find StudyPES materials using multiple criteria
+    const studypesFilter = {
+      $or: [
+        { source: { $regex: 'StudyPES', $options: 'i' } },
+        { category: { $regex: 'StudyPES', $options: 'i' } },
+        { type: { $regex: 'StudyPES', $options: 'i' } },
+        { title: { $regex: 'StudyPES', $options: 'i' } },
+        { fileName: { $regex: 'StudyPES', $options: 'i' } }
+      ]
+    };
+    
+    const books = await booksCollection.find(studypesFilter).toArray();
+    console.log(`📊 Found ${books.length} StudyPES materials in MongoDB`);
+    
+    if (books.length === 0) {
+      return res.json({
+        subjects: {},
+        totalSubjects: 0,
+        totalMaterials: 0,
+        success: true,
+        message: 'No StudyPES materials found in MongoDB'
+      });
+    }
+    
+    // Organize by subject and unit
+    const subjectsData = {};
+    
+    books.forEach(book => {
+      // Extract subject and unit
+      const subject = extractSubject(book);
+      const unit = extractUnit(book);
+      
+      if (!subjectsData[subject]) {
+        subjectsData[subject] = {};
+      }
+      
+      if (!subjectsData[subject][unit]) {
+        subjectsData[subject][unit] = [];
+      }
+      
+      // Add material info
+      const materialInfo = {
+        id: book._id.toString(),
+        title: book.title || 'Untitled',
+        description: book.description || '',
+        url: book.url || '',
+        pdfUrl: book.pdfUrl || book.url || '',
+        fileSize: book.fileSize || 'N/A',
+        pages: book.pages || 0,
+        author: book.author || 'Unknown',
+        semester: book.semester || 0,
+        year: book.year || '',
+        type: book.type || 'PDF',
+        difficulty: book.difficulty || 'Medium'
+      };
+      
+      subjectsData[subject][unit].push(materialInfo);
+    });
+    
+    // Sort materials within each unit
+    Object.keys(subjectsData).forEach(subject => {
+      Object.keys(subjectsData[subject]).forEach(unit => {
+        subjectsData[subject][unit].sort((a, b) => a.title.localeCompare(b.title));
+      });
+    });
+    
+    // Format response
+    const formattedSubjects = {};
+    let totalMaterials = 0;
+    
+    Object.keys(subjectsData).forEach(subjectName => {
+      const units = subjectsData[subjectName];
+      const subjectMaterialCount = Object.values(units).reduce((sum, materials) => sum + materials.length, 0);
+      totalMaterials += subjectMaterialCount;
+      
+      formattedSubjects[subjectName] = {
+        name: subjectName,
+        units: units,
+        totalMaterials: subjectMaterialCount
+      };
+    });
+    
+    console.log(`✅ Organized ${Object.keys(formattedSubjects).length} subjects with ${totalMaterials} total materials`);
+    
+    res.json({
+      subjects: formattedSubjects,
+      totalSubjects: Object.keys(formattedSubjects).length,
+      totalMaterials: totalMaterials,
+      success: true,
+      message: `Retrieved ${Object.keys(formattedSubjects).length} subjects with ${totalMaterials} materials`
+    });
+    
+  } catch (error) {
+    console.error('❌ Error fetching StudyPES subjects:', error);
+    res.status(500).json({ 
+      subjects: {},
+      totalSubjects: 0,
+      totalMaterials: 0,
+      success: false,
+      error: 'Failed to fetch StudyPES materials from MongoDB',
+      message: error.message 
+    });
+  }
+});
+
+// Helper function to extract subject from book metadata
+function extractSubject(book) {
+  // Try different fields that might contain subject info
+  const subjectFields = ['subject', 'category', 'course', 'domain'];
+  
+  for (const field of subjectFields) {
+    if (book[field] && book[field].trim()) {
+      return book[field].trim();
+    }
+  }
+  
+  // Try to extract from title or description
+  const title = (book.title || '').toLowerCase();
+  const description = (book.description || '').toLowerCase();
+  
+  // Common subject patterns
+  const subjectPatterns = {
+    'data structures': 'Data Structures & Algorithms',
+    'algorithms': 'Data Structures & Algorithms',
+    'database': 'Database Management Systems',
+    'networks': 'Computer Networks',
+    'operating system': 'Operating Systems',
+    'software engineering': 'Software Engineering',
+    'machine learning': 'Machine Learning',
+    'web technology': 'Web Technology',
+    'mathematics': 'Mathematics',
+    'physics': 'Physics',
+    'chemistry': 'Chemistry',
+    'electronics': 'Electronics',
+    'mechanical': 'Mechanical Engineering'
+  };
+  
+  for (const [pattern, subject] of Object.entries(subjectPatterns)) {
+    if (title.includes(pattern) || description.includes(pattern)) {
+      return subject;
+    }
+  }
+  
+  return 'General';
+}
+
+// Helper function to extract unit from book metadata
+function extractUnit(book) {
+  // Try different fields that might contain unit info
+  const unitFields = ['unit', 'chapter', 'module', 'section'];
+  
+  for (const field of unitFields) {
+    if (book[field] && book[field].toString().trim()) {
+      return `Unit ${book[field].toString().trim()}`;
+    }
+  }
+  
+  // Try to extract from title
+  const title = book.title || '';
+  
+  // Look for unit patterns in title
+  const unitPatterns = [
+    /unit\s*(\d+)/i,
+    /chapter\s*(\d+)/i,
+    /module\s*(\d+)/i,
+    /part\s*(\d+)/i
+  ];
+  
+  for (const pattern of unitPatterns) {
+    const match = title.match(pattern);
+    if (match) {
+      return `Unit ${match[1]}`;
+    }
+  }
+  
+  // Default unit based on semester or other criteria
+  if (book.semester) {
+    return `Semester ${book.semester}`;
+  }
+  
+  return 'General Materials';
+}
+
 module.exports = router;

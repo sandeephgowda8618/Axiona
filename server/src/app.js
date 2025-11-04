@@ -40,6 +40,8 @@ app.use(cors({
     'http://192.168.137.133:5174',
     'http://10.238.47.49:5173',
     'http://10.238.47.49:5174',
+    'http://10.14.142.81:5173',
+    'http://10.14.142.81:5174',
     process.env.CLIENT_URL
   ].filter(Boolean),
   credentials: true
@@ -70,6 +72,16 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // Static file serving for PDFs and documents
 app.use('/docs', express.static(path.join(__dirname, '../../docs'), {
+  setHeaders: (res, path) => {
+    if (path.endsWith('.pdf')) {
+      res.set('Content-Type', 'application/pdf');
+      res.set('Content-Disposition', 'inline');
+    }
+  }
+}));
+
+// Static file serving for uploads (StudyPES materials)
+app.use('/uploads', express.static(path.join(__dirname, '../uploads'), {
   setHeaders: (res, path) => {
     if (path.endsWith('.pdf')) {
       res.set('Content-Type', 'application/pdf');
