@@ -1,0 +1,197 @@
+{
+  "generation_time": "2025-11-14T11:03:41.553254",
+  "totals": {
+    "documents": 663,
+    "chunks": 118352,
+    "gridfs_files": 308,
+    "vectors": 118585,
+    "storage_mb": 1437.93
+  },
+  "collection_breakdown": {
+    "pes_materials": {
+      "total_documents": 330,
+      "with_gridfs_ids": 208,
+      "with_pdfs": 208,
+      "gridfs_success_rate": "63.0%"
+    },
+    "reference_books": {
+      "total_documents": 100,
+      "with_gridfs_ids": 100,
+      "with_pdfs": 100,
+      "gridfs_success_rate": "100.0%"
+    },
+    "videos": {
+      "total_documents": 233,
+      "with_gridfs_ids": 0,
+      "with_pdfs": 0,
+      "gridfs_success_rate": "N/A"
+    },
+    "chunks": {
+      "total_documents": 118352,
+      "with_gridfs_refs": 118230,
+      "gridfs_ref_rate": "99.9%"
+    }
+  },
+  "storage_breakdown": {
+    "reference_books": {
+      "count": 100,
+      "total_size": 758963269,
+      "avg_size": 7589632.69
+    },
+    "PES_slides": {
+      "count": 208,
+      "total_size": 748814105,
+      "avg_size": 3600067.8125
+    }
+  },
+  "integrity_status": {
+    "gridfs_orphaned": 0,
+    "gridfs_missing": 0,
+    "chunk_orphans_sample": 0,
+    "total_gridfs_referenced": 308,
+    "total_gridfs_actual": 308,
+    "integrity_score": "100.0%"
+  },
+  "chromadb_status": {
+    "total_vectors": 118585,
+    "sample_ids": [
+      "book_book_001_0",
+      "book_book_001_1",
+      "book_book_001_2",
+      "book_book_001_3",
+      "book_book_001_4"
+    ],
+    "content_type_distribution": {
+      "reference_book": 1000
+    },
+    "source_distribution": {
+      "reference_books": 1000
+    },
+    "status": "operational"
+  },
+  "subject_distribution": {
+    "pes_subjects": [
+      {
+        "_id": "Database Management Systems",
+        "count": 67
+      },
+      {
+        "_id": "Machine Learning",
+        "count": 37
+      },
+      {
+        "_id": "Data Structures & Algorithms",
+        "count": 36
+      },
+      {
+        "_id": "Web Technology",
+        "count": 34
+      },
+      {
+        "_id": "Digital Design and Computer Organization",
+        "count": 23
+      },
+      {
+        "_id": "Automata & Formal Language Theory",
+        "count": 19
+      },
+      {
+        "_id": "Software Engineering",
+        "count": 11
+      },
+      {
+        "_id": "Automata Formal Languages & Logic",
+        "count": 9
+      },
+      {
+        "_id": "Essentials of Innovation and Entrepreneurship",
+        "count": 9
+      },
+      {
+        "_id": "Electronic Principles & Devices",
+        "count": 8
+      }
+    ],
+    "books_subjects": [
+      {
+        "_id": "Computer Science",
+        "count": 69
+      },
+      {
+        "_id": "Programming",
+        "count": 9
+      },
+      {
+        "_id": "Software Engineering",
+        "count": 3
+      },
+      {
+        "_id": "Network Engineering",
+        "count": 3
+      },
+      {
+        "_id": "Debugging & Diagnostics",
+        "count": 2
+      },
+      {
+        "_id": "Database Systems",
+        "count": 2
+      },
+      {
+        "_id": "Computer Architecture",
+        "count": 2
+      },
+      {
+        "_id": "System Administration",
+        "count": 2
+      },
+      {
+        "_id": "Data Science",
+        "count": 1
+      },
+      {
+        "_id": "Telecommunications",
+        "count": 1
+      }
+    ],
+    "chunks_by_source": [
+      {
+        "_id": "reference_books",
+        "count": 111438
+      },
+      {
+        "_id": "PES_slides",
+        "count": 6914
+      }
+    ]
+  },
+  "sample_documents": {
+    "pes_sample": {
+      "_id": "pes_002",
+      "title": "Operating Systems - Unit 3: Main Memory - Hardware and Control Structures, OS Support, Address Translation",
+      "subject": "Operating Systems",
+      "fileName": "Sem4_Operating_System_U3_Hardware_And_Control_Structures_OS_Support_Address_Translation.pdf",
+      "gridfs_id": "6916bb54dee8997f4e43c7cf"
+    },
+    "book_sample": {
+      "_id": "book_001",
+      "title": "Computer Organization and Architecture: Designing for Performance (9th Edition)",
+      "author": "William Stallings",
+      "filename": "comp(1).pdf",
+      "gridfs_id": "6916b0a72e7f4b676912916a"
+    },
+    "chunk_sample": {
+      "_id": "book_book_001_0",
+      "metadata": {
+        "source_id": "book_001",
+        "title": "Computer Organization and Architecture: Designing for Performance (9th Edition)",
+        "gridfs_id": "6916b0a72e7f4b676912916a"
+      }
+    },
+    "video_sample": {
+      "_id": "video_000",
+      "title": "Educational Video 1",
+      "url": "Computer Science & Engineering (CSE)"
+    }
+  }
+}

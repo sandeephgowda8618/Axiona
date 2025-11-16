@@ -2,6 +2,8 @@ const express = require('express');
 const { protect } = require('../middleware/auth');
 const {
   getRoadmap,
+  generateRoadmap,
+  getInterviewQuestions,
   createOrUpdateRoadmap,
   updateMilestoneProgress,
   deleteRoadmap,
@@ -9,6 +11,12 @@ const {
 } = require('../controllers/roadmaps');
 
 const router = express.Router();
+
+// Interview questions for roadmap generation
+router.get('/questions', protect, getInterviewQuestions);
+
+// Generate new roadmap using pipeline
+router.post('/generate', protect, generateRoadmap);
 
 // Roadmap routes
 router.route('/')

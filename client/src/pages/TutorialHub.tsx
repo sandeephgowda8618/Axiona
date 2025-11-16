@@ -65,7 +65,9 @@ const TutorialHub: React.FC = () => {
   useEffect(() => {
     const loadTutorials = async () => {
       try {
+        console.log('🔍 Starting to fetch tutorials from API...')
         const response = await videosAPI.getAllVideos(1, 50) // Get first 50 videos
+        console.log('📊 API Response:', response)
         
         // Transform backend data to frontend format
         const transformedTutorials: Tutorial[] = response.data.map((video: any) => ({
@@ -87,6 +89,7 @@ const TutorialHub: React.FC = () => {
           isDownloaded: false
         }))
 
+        console.log('✅ Transformed tutorials:', transformedTutorials.length, 'tutorials')
         setTutorials(transformedTutorials)
 
         // Load user's saved and liked videos
@@ -113,7 +116,7 @@ const TutorialHub: React.FC = () => {
             downloaded: [] // TODO: Implement downloaded videos from backend
           })
         } catch (userError) {
-          console.warn('Could not load user data:', userError)
+          console.warn('⚠️ Could not load user data:', userError)
           // Continue with basic tutorial data even if user data fails
           setSidebarData({
             history: [],
@@ -123,7 +126,8 @@ const TutorialHub: React.FC = () => {
           })
         }
       } catch (error) {
-        console.error('Failed to load tutorials:', error)
+        console.error('❌ Failed to load tutorials:', error)
+        console.log('🔄 Falling back to mock data or empty state')
         // Fallback to empty state or show error message
         setTutorials([])
       }

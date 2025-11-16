@@ -26,6 +26,7 @@ interface AuthContextType {
   loginAnonymously: () => Promise<void>
   logout: () => Promise<void>
   getCurrentUser: () => UserProfile | null
+  updateRoadmapCompleted: (completed: boolean) => void
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -68,6 +69,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       weeklyActivity: '0h',
       joinedDate: firebaseUser.metadata.creationTime || new Date().toISOString(),
       lastActive: new Date().toISOString(),
+      roadmapCompleted: false, // New users need to complete roadmap
       preferences: {
         theme: 'light',
         notifications: true,
@@ -170,6 +172,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     return user
   }
 
+  const updateRoadmapCompleted = (completed: boolean) => {
+    if (user) {
+      const updatedUser = { ...user, roadmapCompleted: completed }
+      setUser(updatedUser)
+      // In a real app, you would also update this on your backend/database
+      // await apiService.updateUserRoadmapStatus(user.id, completed)
+    }
+  }
+
   const isAuthenticated = !!user
 
   const value = {
@@ -184,7 +195,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     loginWithGithub,
     loginAnonymously,
     logout,
-    getCurrentUser
+    getCurrentUser,
+    updateRoadmapCompleted
   }
 
   return (
@@ -206,6 +218,7 @@ export const mockUser: UserProfile = {
   weeklyActivity: '8.5h',
   joinedDate: '2024-01-15',
   lastActive: new Date().toISOString(),
+  roadmapCompleted: false, // For testing roadmap flow
   preferences: {
     theme: 'light',
     notifications: true,

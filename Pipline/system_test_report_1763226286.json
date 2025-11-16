@@ -1,0 +1,38 @@
+{
+  "timestamp": "2025-11-15 22:34:46",
+  "duration_seconds": 3.99,
+  "total_tests": 6,
+  "successful_tests": 6,
+  "success_rate": 100.0,
+  "results": {
+    "mongodb": {
+      "pes_materials": 330,
+      "reference_books": 100,
+      "videos": 233,
+      "chunks": 118352,
+      "gridfs": 308
+    },
+    "chromadb": {
+      "status": "working",
+      "search_test": "passed"
+    },
+    "ollama": {
+      "status": "working",
+      "models": [
+        "llama3.1:latest"
+      ],
+      "test_response": "Four."
+    },
+    "data_integrity": "tested",
+    "rag_pipeline": {
+      "status": "working",
+      "context_found": 3,
+      "response_length": 409
+    },
+    "agents": {
+      "query_router": true,
+      "pdf_search": true,
+      "book_search": true
+    }
+  }
+}

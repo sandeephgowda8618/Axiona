@@ -2,6 +2,11 @@
 
 This directory contains comprehensive documentation for the Axiona study platform project.
 
+## 📋 Latest Updates
+- [Project Update Summary Nov 2024](./PROJECT_UPDATE_SUMMARY_NOV2024.md) - **Recent major updates and cleanup**
+- [Complete Project Structure Nov 2025](./COMPLETE_PROJECT_STRUCTURE_NOV2025.md) - **Full current project structure**
+- [StudyPES Material Retrieval](./STUDYPES_MATERIAL_RETRIEVAL.md) - StudyPES materials analysis and processing
+
 ## Quick Start
 - [Main README](../README.md) - Project overview and setup instructions
 - [Implementation Summary](./IMPLEMENTATION_SUMMARY.md) - Current project status and completed features
@@ -20,6 +25,12 @@ This directory contains comprehensive documentation for the Axiona study platfor
 - [Dynamic Data Audit](./backend/DYNAMIC_DATA_AUDIT.md) - Data flow and audit trail
 - [Scripts Documentation](./backend/SCRIPTS_README.md) - Utility scripts and automation
 
+## Data Processing & Schema
+- [Enhanced Metadata Template](./ENHANCED_METADATA_TEMPLATE.md) - Metadata structure for books and materials
+- [Integration Summary](./INTEGRATION_SUMMARY.md) - System integration documentation
+- [Library Schema Documentation](./LIBRARY_SCHEMA_DOCUMENTATION.md) - Library system database schema
+- [MongoDB Schema Template](./MONGODB_SCHEMA_TEMPLATE.md) - MongoDB collection schemas
+
 ## Features
 - [PDF Highlight System](./features/PDF_HIGHLIGHT_SYSTEM.md) - PDF viewing and annotation system
 - [Video Conference Status](./features/VIDEO_CONFERENCE_IMPLEMENTATION_STATUS.md) - Real-time meetings implementation
@@ -30,24 +41,34 @@ This directory contains comprehensive documentation for the Axiona study platfor
 - [Landing Page Checklist](./frontend/LANDING_PAGE_CHECKLIST.md) - Landing page implementation status
 - [Page Documentation](./frontend/pages/) - Individual page components and features
 
-## Current Status (December 2024)
+## Project Management & Cleanup
+- [API and Database Mapping](./API_AND_DATABASE_MAPPING.md) - API endpoints and database mapping
+- [Cleanup and Optimization Guide](./CLEANUP_AND_OPTIMIZATION_GUIDE.md) - System cleanup procedures
+- [Frontend Components Mapping](./FRONTEND_COMPONENTS_MAPPING.md) - Frontend component organization
+- [Project Structure and Functionality Mapping](./PROJECT_STRUCTURE_AND_FUNCTIONALITY_MAPPING.md) - Complete project mapping
 
-### ✅ Completed Features
+## Current Status (November 2025)
+
+### ✅ Recently Completed
+- **StudyPES Analysis**: Implemented filtering and analysis of study materials vs reference books
+- **System Cleanup**: Removed temporary unprocessed books system completely
+- **Data Pipeline Optimization**: Cleaned up old pipeline files, retained working batch processor
+- **Documentation Organization**: Consolidated all documentation into structured folders
+- **Database Integration**: 118 books in MongoDB with proper metadata structure
+
+### ✅ Core Features Stable
 - **Backend**: Complete REST API with Express.js, MongoDB, Firebase authentication
 - **Study Materials**: PDF upload, viewing, notes, and highlights (private to users)
 - **Real-time Notes**: Live note synchronization for authenticated users
 - **Video Conferencing**: Complete Socket.IO + WebRTC backend and frontend services implementation
 - **Database**: Optimized models and queries with compound indexes for performance
 - **Authentication**: Firebase integration with automatic user creation
-- **Documentation**: Comprehensive guides organized in structured documentation folder
+- **Library System**: Book management with advanced filtering and search
 
-### 🚧 In Progress
-- Video conference frontend UI components (services layer complete)
-- Meeting room interfaces (video grid, chat panel)
-- TURN server configuration for production
-
-### 📋 Next Steps
-1. Complete video conference UI implementation
+### 🎯 Current Focus Areas
+- **StudyPES Content**: Expanding AFLL (0), DSA (1), and Mathematics (2) materials
+- **Metadata Enhancement**: Processing remaining comp(X) titled books (27 items)
+- **Search Optimization**: Advanced filtering and recommendation systems
 2. Add meeting room management features
 3. Implement production deployment scripts
 4. Add comprehensive testing suite

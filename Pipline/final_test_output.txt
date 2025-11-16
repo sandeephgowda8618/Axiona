@@ -1,0 +1,123 @@
+2025-11-16 01:48:04,469 - __main__ - INFO - 🚀 Starting Complete Interview-Driven Roadmap Test
+2025-11-16 01:48:04,471 - __main__ - INFO - 
+📋 Step 1: Testing Interview Question Generation...
+2025-11-16 01:48:21,286 - httpx - INFO - HTTP Request: POST http://localhost:11434/api/generate "HTTP/1.1 200 OK"
+2025-11-16 01:48:21,287 - agents.interview_pipeline - ERROR - Interview generation JSON error: Expecting value: line 1 column 1 (char 0)
+2025-11-16 01:48:21,287 - __main__ - INFO - ✅ Interview generation: 5 questions generated
+2025-11-16 01:48:21,287 - __main__ - INFO - 
+💬 Step 2: Simulating User Answers...
+2025-11-16 01:48:21,287 - __main__ - INFO - 📝 Generated 5 realistic answers
+2025-11-16 01:48:21,288 - __main__ - INFO - 
+🎯 Step 3: Testing Skill Evaluation...
+2025-11-16 01:48:30,656 - httpx - INFO - HTTP Request: POST http://localhost:11434/api/generate "HTTP/1.1 200 OK"
+2025-11-16 01:48:30,657 - agents.interview_pipeline - ERROR - Skill evaluation error: Expecting value: line 1 column 1 (char 0)
+2025-11-16 01:48:30,657 - __main__ - INFO - ✅ Skill evaluation: Level = beginner
+2025-11-16 01:48:30,657 - __main__ - INFO - 
+🔍 Step 4: Testing Gap Detection...
+2025-11-16 01:48:43,850 - httpx - INFO - HTTP Request: POST http://localhost:11434/api/generate "HTTP/1.1 200 OK"
+2025-11-16 01:48:43,852 - agents.interview_pipeline - ERROR - Gap detection error: Expecting value: line 1 column 1 (char 0)
+2025-11-16 01:48:43,852 - __main__ - INFO - ✅ Gap detection: 1 gaps identified
+2025-11-16 01:48:43,852 - __main__ - INFO - 
+🕸️  Step 5: Testing Prerequisite Graph...
+2025-11-16 01:49:01,121 - httpx - INFO - HTTP Request: POST http://localhost:11434/api/generate "HTTP/1.1 200 OK"
+2025-11-16 01:49:01,123 - agents.interview_pipeline - ERROR - Prerequisite graph error: Expecting value: line 1 column 1 (char 0)
+2025-11-16 01:49:01,123 - __main__ - INFO - ✅ Prerequisite graph: 1 nodes, 0 edges
+2025-11-16 01:49:01,123 - __main__ - INFO - 
+📊 Step 6: Testing Difficulty Estimation...
+2025-11-16 01:49:09,067 - httpx - INFO - HTTP Request: POST http://localhost:11434/api/generate "HTTP/1.1 200 OK"
+2025-11-16 01:49:09,069 - agents.interview_pipeline - ERROR - Difficulty estimation error: Expecting value: line 1 column 1 (char 0)
+2025-11-16 01:49:09,069 - __main__ - INFO - ✅ Difficulty estimation: 1 phases planned
+2025-11-16 01:49:09,069 - __main__ - INFO - 
+📚 Step 7: Testing Resource Retrieval...
+2025-11-16 01:49:09,727 - __main__ - INFO - ✅ Resource retrieval: 11 total resources
+2025-11-16 01:49:09,727 - __main__ - INFO - 
+🛠️  Step 8: Testing Course Project Generation...
+2025-11-16 01:49:32,911 - httpx - INFO - HTTP Request: POST http://localhost:11434/api/generate "HTTP/1.1 200 OK"
+2025-11-16 01:49:32,913 - agents.interview_pipeline - ERROR - Project generation error: Expecting value: line 1 column 1 (char 0)
+2025-11-16 01:49:32,913 - __main__ - INFO - ✅ Project generation: 'Operating Systems Practical Project' (20h)
+2025-11-16 01:49:32,913 - __main__ - INFO - 
+⏰ Step 9: Testing Time Planning...
+🎯 Starting Complete Interview-Driven Roadmap Test
+============================================================
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/asyncio/base_events.py", line 686, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/Users/sandeeph/Documents/s2/Axiona/Pipline/test_complete_interview_driven.py", line 553, in main
+    results = await tester.run_complete_test()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sandeeph/Documents/s2/Axiona/Pipline/test_complete_interview_driven.py", line 89, in run_complete_test
+    schedule = await self._test_time_planning(resources, course_project)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sandeeph/Documents/s2/Axiona/Pipline/test_complete_interview_driven.py", line 394, in _test_time_planning
+    schedule = await time_planner.generate_schedule(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sandeeph/Documents/s2/Axiona/Pipline/agents/interview_pipeline.py", line 706, in generate_schedule
+    response = await ollama_service.generate_response(schedule_prompt, temperature=0.2)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sandeeph/Documents/s2/Axiona/Pipline/core/ollama_service.py", line 74, in generate_response
+    response = await client.post(
+               ^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/httpx/_client.py", line 1859, in post
+    return await self.request(
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/httpx/_client.py", line 1540, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/httpx/_client.py", line 1629, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/httpx/_client.py", line 1657, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/httpx/_client.py", line 1694, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/httpx/_client.py", line 1730, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/httpx/_transports/default.py", line 394, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/httpcore/_async/connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/httpcore/_async/connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/httpcore/_async/connection.py", line 103, in handle_async_request
+    return await self._connection.handle_async_request(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/httpcore/_async/http11.py", line 136, in handle_async_request
+    raise exc
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/httpcore/_async/http11.py", line 106, in handle_async_request
+    ) = await self._receive_response_headers(**kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/httpcore/_async/http11.py", line 177, in _receive_response_headers
+    event = await self._receive_event(timeout=timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/httpcore/_async/http11.py", line 217, in _receive_event
+    data = await self._network_stream.read(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/httpcore/_backends/anyio.py", line 35, in read
+    return await self._stream.receive(max_bytes=max_bytes)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/anyio/_backends/_asyncio.py", line 1203, in receive
+    await self._protocol.read_event.wait()
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/asyncio/locks.py", line 212, in wait
+    await fut
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/sandeeph/Documents/s2/Axiona/Pipline/test_complete_interview_driven.py", line 615, in <module>
+    asyncio.run(main())
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/asyncio/runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/asyncio/runners.py", line 123, in run
+    raise KeyboardInterrupt()
+KeyboardInterrupt

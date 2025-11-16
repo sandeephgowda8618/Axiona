@@ -36,11 +36,26 @@ app.use(cors({
   origin: [
     'http://localhost:5173',
     'http://localhost:5174',
+    'http://localhost:5175',
+    'http://localhost:3000',
+    'http://127.0.0.1:5173',
+    'http://192.168.137.133:5173',
+    'http://192.168.137.133:5174',
+    'http://192.168.137.133:5175',
     'http://10.238.47.49:5173',
     'http://10.238.47.49:5174',
+    'http://10.238.47.49:5175',
+    'http://10.14.142.81:5173',
+    'http://10.14.142.81:5174',
+    'http://10.14.142.81:5175',
+    'http://10.120.252.49:5173',
+    'http://10.120.252.49:5174',
+    'http://10.120.252.49:5175',
     process.env.CLIENT_URL
   ].filter(Boolean),
-  credentials: true
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 }));
 
 // Rate limiting - Increased limits for development
@@ -68,6 +83,16 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // Static file serving for PDFs and documents
 app.use('/docs', express.static(path.join(__dirname, '../../docs'), {
+  setHeaders: (res, path) => {
+    if (path.endsWith('.pdf')) {
+      res.set('Content-Type', 'application/pdf');
+      res.set('Content-Disposition', 'inline');
+    }
+  }
+}));
+
+// Static file serving for uploads (StudyPES materials)
+app.use('/uploads', express.static(path.join(__dirname, '../uploads'), {
   setHeaders: (res, path) => {
     if (path.endsWith('.pdf')) {
       res.set('Content-Type', 'application/pdf');

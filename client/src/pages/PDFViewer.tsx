@@ -35,7 +35,10 @@ import {
   Monitor,
   Columns,
   File,
-  SplitSquareHorizontal
+  SplitSquareHorizontal,
+  Info,
+  ExternalLink,
+  Briefcase
 } from 'lucide-react';
 import { Worker } from '@react-pdf-viewer/core';
 import { Viewer, SpecialZoomLevel } from '@react-pdf-viewer/core';
@@ -47,6 +50,9 @@ import { apiService } from '../services/api';
 import { PDFMaterial, Highlight } from '../services/api';
 import { useAuth } from '../contexts/AuthContext';
 import { useNotes } from '../hooks/useNotes';
+
+// Configure PDF.js worker with CDN to avoid version mismatch issues
+const pdfWorkerUrl = 'https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js';
 
 interface HighlightArea {
   id: string;
@@ -78,8 +84,8 @@ const PDFViewer: React.FC = () => {
   const [selectedColor, setSelectedColor] = useState('#FFEB3B');
   const [showNotes, setShowNotes] = useState(false);
   const [tempHighlight, setTempHighlight] = useState<any>(null);
-  const [showSidebar, setShowSidebar] = useState(false);
-  const [sidebarTab, setSidebarTab] = useState<'highlights' | 'thumbnails' | 'search'>('highlights');
+  const [showSidebar, setShowSidebar] = useState(true);
+  const [sidebarTab, setSidebarTab] = useState<'fileinfo' | 'highlights' | 'thumbnails' | 'search'>('fileinfo');
   const [searchText, setSearchText] = useState('');
   
   // Floating notes modal state
@@ -97,7 +103,6 @@ const PDFViewer: React.FC = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [pageInput, setPageInput] = useState('1');
   const [zoomLevel, setZoomLevel] = useState(100);
-  const [viewMode, setViewMode] = useState<'single' | 'continuous' | 'facing'>('continuous');
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [pageHistory, setPageHistory] = useState<number[]>([1]);
   const [annotationTool, setAnnotationTool] = useState<'highlight' | 'underline' | 'shape' | 'text'>('highlight');
@@ -226,7 +231,8 @@ const PDFViewer: React.FC = () => {
         setTotalPages(pdfData.pages || 0);
         
         // Load existing highlights
-        const highlightsData = await apiService.getHighlights(pdfId);
+        const userId = user?.id || 'guest';
+        const highlightsData = await apiService.getHighlights(pdfId, userId);
         setHighlights(highlightsData.map(transformHighlight));
         
       } catch (err) {
@@ -592,6 +598,17 @@ ${noteContent}
             {/* Tab Navigation */}
             <div className="flex mt-3 bg-gray-100 rounded-lg p-1">
               <button
+                onClick={() => setSidebarTab('fileinfo')}
+                className={`flex-1 py-2 px-3 rounded-md text-sm font-medium transition-colors ${
+                  sidebarTab === 'fileinfo'
+                    ? 'bg-white text-blue-600 shadow-sm'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                <Info className="w-4 h-4 inline mr-1" />
+                File Info
+              </button>
+              <button
                 onClick={() => setSidebarTab('highlights')}
                 className={`flex-1 py-2 px-3 rounded-md text-sm font-medium transition-colors ${
                   sidebarTab === 'highlights'
@@ -618,6 +635,151 @@ ${noteContent}
 
           {/* Sidebar Content */}
           <div className="flex-1 overflow-y-auto">
+            {sidebarTab === 'fileinfo' && (
+              <div className="p-4">
+                {/* File Info Card */}
+                <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-lg p-4 mb-4">
+                  <div className="flex items-center mb-3">
+                    <FileText className="w-5 h-5 text-blue-600 mr-2" />
+                    <h3 className="font-semibold text-gray-800">Study Material</h3>
+                  </div>
+                  
+                  <div className="space-y-3">
+                    <div>
+                      <h4 className="font-medium text-gray-900 mb-1">{pdf.topic}</h4>
+                      {pdf.description && (
+                        <p className="text-sm text-gray-600 mb-2">{pdf.description}</p>
+                      )}
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3 text-sm">
+                      <div>
+                        <span className="text-gray-500">Author:</span>
+                        <p className="font-medium text-gray-800">{pdf.author || 'Unknown'}</p>
+                      </div>
+                      <div>
+                        <span className="text-gray-500">Subject:</span>
+                        <p className="font-medium text-gray-800">{pdf.domain || 'General'}</p>
+                      </div>
+                      <div>
+                        <span className="text-gray-500">Pages:</span>
+                        <p className="font-medium text-gray-800">{pdf.pages || totalPages}</p>
+                      </div>
+                      <div>
+                        <span className="text-gray-500">Year:</span>
+                        <p className="font-medium text-gray-800">{pdf.year || 'N/A'}</p>
+                      </div>
+                      {pdf.semester && (
+                        <div>
+                          <span className="text-gray-500">Semester:</span>
+                          <p className="font-medium text-gray-800">{pdf.semester}</p>
+                        </div>
+                      )}
+                      {pdf.unit && (
+                        <div>
+                          <span className="text-gray-500">Unit:</span>
+                          <p className="font-medium text-gray-800">{pdf.unit}</p>
+                        </div>
+                      )}
+                      {pdf.level && (
+                        <div>
+                          <span className="text-gray-500">Level:</span>
+                          <p className="font-medium text-gray-800">{pdf.level}</p>
+                        </div>
+                      )}
+                      <div>
+                        <span className="text-gray-500">Size:</span>
+                        <p className="font-medium text-gray-800">{pdf.formattedFileSize || 'N/A'}</p>
+                      </div>
+                    </div>
+
+                    <div className="mt-3">
+                      <span className="text-gray-500 text-sm">Tags:</span>
+                      <div className="flex flex-wrap gap-1 mt-1">
+                        <span className="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full">
+                          {pdf.domain}
+                        </span>
+                        {pdf.year && (
+                          <span className="px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full">
+                            {pdf.year}
+                          </span>
+                        )}
+                        {pdf.tags && pdf.tags.map((tag, index) => (
+                          <span
+                            key={index}
+                            className="px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded-full"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Quick Actions */}
+                <div className="bg-white rounded-lg border border-gray-200 p-4 mb-4">
+                  <h3 className="font-semibold text-gray-800 mb-3 flex items-center">
+                    <Settings className="w-4 h-4 mr-2" />
+                    Quick Actions
+                  </h3>
+                  <div className="space-y-2">
+                    <button
+                      onClick={downloadPDF}
+                      className="w-full flex items-center justify-center bg-blue-100 text-blue-700 py-2 px-3 rounded-md hover:bg-blue-200 transition-colors text-sm"
+                    >
+                      <Download className="w-4 h-4 mr-2" />
+                      Download PDF
+                    </button>
+                    <button
+                      onClick={() => setShowNotes(true)}
+                      className="w-full flex items-center justify-center bg-green-100 text-green-700 py-2 px-3 rounded-md hover:bg-green-200 transition-colors text-sm"
+                    >
+                      <MessageSquare className="w-4 h-4 mr-2" />
+                      Add Notes
+                    </button>
+                    <button
+                      onClick={() => navigate('/workspace')}
+                      className="w-full flex items-center justify-center bg-purple-100 text-purple-700 py-2 px-3 rounded-md hover:bg-purple-200 transition-colors text-sm"
+                    >
+                      <Briefcase className="w-4 h-4 mr-2" />
+                      Open Workspace
+                      <ExternalLink className="w-3 h-3 ml-1" />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Study Progress */}
+                <div className="bg-white rounded-lg border border-gray-200 p-4">
+                  <h3 className="font-semibold text-gray-800 mb-3 flex items-center">
+                    <BookOpen className="w-4 h-4 mr-2" />
+                    Study Progress
+                  </h3>
+                  <div className="space-y-3">
+                    <div>
+                      <div className="flex justify-between text-sm mb-1">
+                        <span className="text-gray-600">Reading Progress</span>
+                        <span className="font-medium">{Math.round((currentPage / totalPages) * 100)}%</span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div 
+                          className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                          style={{ width: `${(currentPage / totalPages) * 100}%` }}
+                        ></div>
+                      </div>
+                      <p className="text-xs text-gray-500 mt-1">
+                        Page {currentPage} of {totalPages}
+                      </p>
+                    </div>
+
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600">Highlights:</span>
+                      <span className="font-medium text-yellow-600">{highlights.length}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
             {sidebarTab === 'highlights' && (
               <HighlightsList highlights={highlights} onDeleteHighlight={deleteHighlight} />
             )}
@@ -665,6 +827,15 @@ ${noteContent}
             </div>
 
             <div className="flex items-center gap-2">
+              <button
+                onClick={() => navigate('/workspace')}
+                className="flex items-center px-3 py-1.5 bg-purple-600 text-white rounded text-sm hover:bg-purple-700 transition-colors"
+              >
+                <Briefcase className="w-4 h-4 mr-1" />
+                Workspace
+                <ExternalLink className="w-3 h-3 ml-1" />
+              </button>
+
               <button
                 onClick={downloadPDF}
                 className="flex items-center px-3 py-1.5 bg-blue-600 text-white rounded text-sm hover:bg-blue-700 transition-colors"
@@ -745,22 +916,8 @@ ${noteContent}
               </button>
             </div>
 
-            {/* Center: View and Zoom Controls */}
+            {/* Center: Zoom Controls */}
             <div className="flex items-center gap-3">
-              {/* View Options */}
-              <div className="flex items-center gap-1">
-                <Eye className="w-4 h-4 text-gray-500 mr-1" />
-                <select
-                  value={viewMode}
-                  onChange={(e) => setViewMode(e.target.value as 'single' | 'continuous' | 'facing')}
-                  className="text-sm border border-gray-300 rounded px-2 py-1 bg-white"
-                >
-                  <option value="single">Single Page</option>
-                  <option value="continuous">Continuous Scroll</option>
-                  <option value="facing">2 Pages Side by Side</option>
-                </select>
-              </div>
-
               {/* Zoom Controls */}
               <div className="flex items-center gap-2 px-2 py-1 border border-gray-300 rounded bg-white">
                 <button
@@ -915,7 +1072,7 @@ ${noteContent}
 
         {/* PDF Viewer */}
         <div className="flex-1 bg-gray-100 relative">
-          <Worker workerUrl={`https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js`}>
+          <Worker workerUrl={pdfWorkerUrl}>
             <div style={{ height: '100%' }} className="pdf-viewer-container">
               <Viewer
                 fileUrl={`http://localhost:5050/api/pdfs/file/${pdf.gridFSFileId}`}
@@ -927,6 +1084,15 @@ ${noteContent}
           </Worker>
         </div>
       </div>
+
+      {/* Floating Action Button for Quick Notes */}
+      <button
+        onClick={() => setShowNotes(true)}
+        className="fixed bottom-6 right-6 bg-green-600 text-white p-4 rounded-full shadow-lg hover:bg-green-700 transition-all duration-200 hover:scale-110 z-50"
+        title="Add Note"
+      >
+        <MessageSquare className="w-6 h-6" />
+      </button>
 
       {/* Floating Notes Modal */}
       {showNotes && (

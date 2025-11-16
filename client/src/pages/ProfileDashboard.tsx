@@ -1,7 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { CheckCircle, Lock, TrendingUp, Calendar, FileText } from 'lucide-react'
+import { CheckCircle, Lock, TrendingUp, Calendar, FileText, Clock, Star, ChevronRight, Plus, RefreshCw } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
+import { apiService } from '../services/api'
+import RoadmapWizard from '../components/RoadmapWizard'
+import RoadmapTimeline from '../components/RoadmapTimeline'
 
 interface LearningRoadmapItem {
   id: string
@@ -16,6 +19,15 @@ const ProfileDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'overview' | 'settings'>('overview')
   const navigate = useNavigate()
   const { user } = useAuth()
+  
+  // Pipeline roadmap state
+  const [pipelineRoadmap, setPipelineRoadmap] = useState<any>(null)
+  const [roadmapLoading, setRoadmapLoading] = useState(true)
+  const [roadmapError, setRoadmapError] = useState<string | null>(null)
+  
+  // Roadmap wizard state
+  const [showRoadmapWizard, setShowRoadmapWizard] = useState(false)
+  const [hasCheckedRoadmap, setHasCheckedRoadmap] = useState(false)
 
   // Use real user data from AuthContext
   const userProfile = user || {
@@ -29,53 +41,101 @@ const ProfileDashboard: React.FC = () => {
     weeklyActivity: '0h'
   }
 
-  const learningRoadmap: LearningRoadmapItem[] = [
-    {
-      id: '1',
-      title: 'Python Fundamentals',
-      description: 'Master basic Python programming concepts',
-      status: 'completed',
-      progress: 100,
-      estimatedTime: '4 weeks'
-    },
-    {
-      id: '2',
-      title: 'Data Structures & Algorithms',
-      description: 'Learn essential programming concepts',
-      status: 'completed',
-      progress: 100,
-      estimatedTime: '6 weeks'
-    },
-    {
-      id: '3',
-      title: 'Machine Learning Basics',
-      description: 'Introduction to ML concepts and algorithms',
-      status: 'in-progress',
-      progress: 65,
-      estimatedTime: '8 weeks'
-    },
-    {
-      id: '4',
-      title: 'Deep Learning',
-      description: 'Advanced neural networks and AI',
-      status: 'locked',
-      progress: 0,
-      estimatedTime: '10 weeks'
-    }
-  ]
+  // Load pipeline roadmap
+  useEffect(() => {
+    const loadRoadmap = async () => {
+      if (!user?.id) return;
+      
+      try {
+        setRoadmapLoading(true);
+        setRoadmapError(null);
+        console.log('🔍 Loading roadmap for user:', user.id);
+        
+        const roadmapData = await apiService.getUserRoadmap(user.id);
+        console.log('📊 Roadmap loaded:', roadmapData);
+        
+        setPipelineRoadmap(roadmapData);
+        setHasCheckedRoadmap(true);
+        
+        // No auto-popup - user must manually click "Create Roadmap"
+      } catch (error) {
+        console.error('❌ Error loading roadmap:', error);
+        setRoadmapError('Failed to load roadmap');
+        setHasCheckedRoadmap(true);
+      } finally {
+        setRoadmapLoading(false);
+      }
+    };
 
-  const getStatusIcon = (status: LearningRoadmapItem['status']) => {
-    switch (status) {
-      case 'completed':
-        return <CheckCircle className="h-5 w-5 text-green-600" />
-      case 'in-progress':
-        return <TrendingUp className="h-5 w-5 text-blue-600" />
-      case 'locked':
-        return <Lock className="h-5 w-5 text-gray-400" />
-      default:
-        return <Calendar className="h-5 w-5 text-gray-600" />
+    loadRoadmap();
+  }, [user?.id]);
+
+  // Handle roadmap generation completion
+  const handleRoadmapComplete = async (newRoadmapData: any) => {
+    console.log('✅ Roadmap generation completed:', newRoadmapData);
+    setPipelineRoadmap(newRoadmapData);
+    setShowRoadmapWizard(false);
+    
+    // Mark wizard as seen for this user
+    if (user?.id) {
+      localStorage.setItem(`roadmap_wizard_seen_${user.id}`, 'true');
     }
-  }
+  };
+
+  const handleWizardClose = () => {
+    setShowRoadmapWizard(false);
+    // Mark wizard as dismissed for this user
+    if (user?.id) {
+      localStorage.setItem(`roadmap_wizard_dismissed_${user.id}`, 'true');
+    }
+  };
+
+  const refreshRoadmap = async () => {
+    if (!user?.id) return;
+    
+    setRoadmapLoading(true);
+    setRoadmapError(null);
+    
+    try {
+      const roadmapData = await apiService.getUserRoadmap(user.id);
+      setPipelineRoadmap(roadmapData);
+    } catch (error) {
+      console.error('❌ Error refreshing roadmap:', error);
+      setRoadmapError('Failed to refresh roadmap');
+    } finally {
+      setRoadmapLoading(false);
+    }
+  };
+
+  const handlePhaseClick = (phase: any) => {
+    console.log('📖 Phase clicked:', phase);
+    // Navigate to study materials or specific learning content
+    if (phase.pes_materials && phase.pes_materials.length > 0) {
+      navigate('/study-materials-pes');
+    }
+  };
+
+  // Function to format roadmap phase progress
+  const getPhaseStatusIcon = (phase: any) => {
+    if (phase.status === 'completed' || phase.progress >= 100) {
+      return <CheckCircle className="h-5 w-5 text-green-600" />;
+    } else if (phase.status === 'in-progress' || phase.progress > 0) {
+      return <TrendingUp className="h-5 w-5 text-blue-600" />;
+    } else {
+      return <Clock className="h-5 w-5 text-gray-400" />;
+    }
+  };
+
+  // Function to get phase status color
+  const getPhaseStatusColor = (phase: any) => {
+    if (phase.status === 'completed' || phase.progress >= 100) {
+      return 'bg-green-100 text-green-700';
+    } else if (phase.status === 'in-progress' || phase.progress > 0) {
+      return 'bg-blue-100 text-blue-700';
+    } else {
+      return 'bg-gray-100 text-gray-400';
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -199,30 +259,92 @@ const ProfileDashboard: React.FC = () => {
               </div>
             </div>
 
-            {/* AI Learning Roadmap - Matches wireframe */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-6">AI Learning Roadmap</h2>
-              <div className="space-y-4">
-                {learningRoadmap.map((item, index) => (
-                  <div key={item.id} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
-                    <div className="flex items-center space-x-4">
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
-                        item.status === 'completed' ? 'bg-green-100 text-green-700' :
-                        item.status === 'in-progress' ? 'bg-blue-100 text-blue-700' :
-                        'bg-gray-100 text-gray-400'
-                      }`}>
-                        {index + 1}
-                      </div>
-                      <div>
-                        <h3 className="font-medium text-gray-900">{item.title}</h3>
-                        <p className="text-sm text-gray-600">{item.description}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center space-x-3">
-                      {getStatusIcon(item.status)}
+            {/* Pipeline Learning Roadmap */}
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+              <div className="flex items-center justify-between p-6 border-b border-gray-200">
+                <h2 className="text-lg font-semibold text-gray-900 flex items-center">
+                  <Star className="h-5 w-5 text-blue-600 mr-2" />
+                  Your Learning Roadmap
+                </h2>
+                <div className="flex items-center space-x-3">
+                  {pipelineRoadmap && (
+                    <span className="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
+                      {pipelineRoadmap.learning_goal}
+                    </span>
+                  )}
+                  {pipelineRoadmap && (
+                    <button
+                      onClick={refreshRoadmap}
+                      disabled={roadmapLoading}
+                      className="p-2 text-gray-400 hover:text-gray-600 transition-colors"
+                      title="Refresh roadmap"
+                    >
+                      <RefreshCw className={`h-4 w-4 ${roadmapLoading ? 'animate-spin' : ''}`} />
+                    </button>
+                  )}
+                  {!pipelineRoadmap && hasCheckedRoadmap && (
+                    <button
+                      onClick={() => setShowRoadmapWizard(true)}
+                      className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+                    >
+                      <Plus className="h-4 w-4 mr-1" />
+                      Create Roadmap
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              <div className="p-6">
+                {roadmapLoading ? (
+                  <div className="flex items-center justify-center py-12">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                    <span className="ml-3 text-gray-600">Loading your learning roadmap...</span>
+                  </div>
+                ) : roadmapError ? (
+                  <div className="text-center py-12">
+                    <FileText className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                    <p className="text-gray-600 mb-4">{roadmapError}</p>
+                    <div className="space-x-3">
+                      <button
+                        onClick={refreshRoadmap}
+                        className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                      >
+                        Retry
+                      </button>
+                      <button
+                        onClick={() => setShowRoadmapWizard(true)}
+                        className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                      >
+                        Create New Roadmap
+                      </button>
                     </div>
                   </div>
-                ))}
+                ) : pipelineRoadmap?.generated_roadmap?.phases ? (
+                  <RoadmapTimeline 
+                    roadmapData={pipelineRoadmap} 
+                    onPhaseClick={handlePhaseClick}
+                  />
+                ) : (
+                  <div className="text-center py-12">
+                    <div className="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl p-8 max-w-lg mx-auto">
+                      <Star className="h-16 w-16 text-blue-500 mx-auto mb-4" />
+                      <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                        Ready to Start Learning?
+                      </h3>
+                      <p className="text-gray-600 mb-6">
+                        Create a personalized learning roadmap tailored to your goals, experience level, and interests. 
+                        Get access to curated PES materials and structured learning paths.
+                      </p>
+                      <button
+                        onClick={() => setShowRoadmapWizard(true)}
+                        className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                      >
+                        <Plus className="h-5 w-5 mr-2" />
+                        Create Your Roadmap
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -272,6 +394,16 @@ const ProfileDashboard: React.FC = () => {
           </div>
         )}
       </div>
+      
+      {/* Roadmap Wizard Modal */}
+      {user?.id && (
+        <RoadmapWizard
+          isOpen={showRoadmapWizard}
+          onClose={handleWizardClose}
+          onComplete={handleRoadmapComplete}
+          userId={user.id}
+        />
+      )}
     </div>
   )
 }

@@ -1,5 +1,7 @@
 const { Router } = require('express');
 const mainRoutes = require('./main');
+const studypesRoutes = require('./studypesRoutes');
+const pipelineRoutes = require('./pipelineRoutes');
 
 const router = Router();
 
@@ -16,16 +18,29 @@ router.get('/', (req, res) => {
       videos: '/api/videos',
       quizzes: '/api/quizzes',
       studyMaterials: '/api/study-materials',
+      studypesMaterials: '/api/studypes',
+      pipelineMaterials: '/api/pipeline/studypes',
+      pipelineBooks: '/api/pipeline/books',
+      pipelineFiles: '/api/pipeline/files',
+      pipelineRoadmaps: '/api/pipeline/roadmap',
       roadmaps: '/api/roadmaps',
       topics: '/api/topics',
       rooms: '/api/rooms',
       ai: '/api/ai',
       users: '/api/users',
       notes: '/api/notes',
-      meetings: '/api/meetings'
+      meetings: '/api/meetings',
+      books: '/api/books',
+      files: '/api/files'
     }
   });
 });
+
+// Use StudyPES routes
+router.use('/studypes', studypesRoutes);
+
+// Use Pipeline routes
+router.use('/pipeline', pipelineRoutes);
 
 // Use the main routes which include all endpoints
 router.use('/', mainRoutes);

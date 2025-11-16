@@ -13,6 +13,7 @@ export interface UserProfile {
   weeklyActivity: string
   joinedDate: string
   lastActive: string
+  roadmapCompleted: boolean
   preferences: {
     theme: 'light' | 'dark'
     notifications: boolean
@@ -72,6 +73,11 @@ export interface PDFMaterial {
   uploadedBy: string
   createdAt: string
   formattedFileSize?: string
+  // Additional fields from StudyMaterial
+  semester?: number
+  unit?: string
+  level?: string
+  tags?: string[]
 }
 
 export interface SubjectSummary {
@@ -136,6 +142,7 @@ export interface Note {
   pdfTitle: string
   pageNumber?: number
   tags: string[]
+  isPublic?: boolean
   lastViewedAt: string
   createdAt: string
   updatedAt: string
@@ -150,12 +157,14 @@ export interface CreateNoteRequest {
   userId: string
   pageNumber?: number
   tags?: string[]
+  isPublic?: boolean
 }
 
 export interface UpdateNoteRequest {
   title?: string
   content?: string
   tags?: string[]
+  isPublic?: boolean
 }
 
 export interface PaginatedResponse<T> {
@@ -182,6 +191,40 @@ export interface Subject {
   thumbnailUrl: string
   lastUpdated: string
   description: string
+}
+
+// StudyPES Material Interfaces
+export interface StudyPESMaterial {
+  id: string
+  title: string
+  description: string
+  url: string
+  pdfUrl: string
+  fileSize: string
+  pages: number
+  author: string
+  semester: number
+  year: string
+  type: string
+  difficulty: string
+  subject: string
+  unit: string
+  gridFSFileId?: string
+  fileName?: string
+}
+
+export interface StudyPESSubject {
+  name: string
+  units: Record<string, StudyPESMaterial[]>
+  totalMaterials: number
+}
+
+export interface StudyPESSubjectsResponse {
+  subjects: Record<string, StudyPESSubject>
+  totalSubjects: number
+  totalMaterials: number
+  success: boolean
+  message: string
 }
 
 // API Service Class
@@ -296,15 +339,39 @@ class ApiService {
     return response.json()
   }
 
-  async updateRoadmapProgress(itemId: string, progress: number): Promise<void> {
-    const response = await fetch(`${this.baseURL}/users/roadmap/${itemId}`, {
-      method: 'PUT',
-      headers: this.getHeaders(),
-      body: JSON.stringify({ progress })
-    })
-    
-    if (!response.ok) {
-      throw new Error('Failed to update progress')
+  async updateRoadmapProgress(userIdOrItemId: string, progress: number | any): Promise<any> {
+    // Check if it's a pipeline roadmap update (userId) or legacy roadmap update (itemId)
+    if (typeof progress === 'object') {
+      // Pipeline roadmap progress update
+      try {
+        console.log('📊 Updating roadmap progress for user:', userIdOrItemId);
+        const response = await fetch(`${this.baseURL}/pipeline/roadmap/${userIdOrItemId}/progress`, {
+          method: 'PUT',
+          headers: this.getHeaders(),
+          body: JSON.stringify({ progress })
+        });
+        
+        if (!response.ok) {
+          throw new Error('Failed to update roadmap progress');
+        }
+        
+        const result = await response.json();
+        return result.success ? result.data : null;
+      } catch (error) {
+        console.error('❌ Error updating roadmap progress:', error);
+        throw error;
+      }
+    } else {
+      // Legacy roadmap progress update
+      const response = await fetch(`${this.baseURL}/users/roadmap/${userIdOrItemId}`, {
+        method: 'PUT',
+        headers: this.getHeaders(),
+        body: JSON.stringify({ progress })
+      })
+      
+      if (!response.ok) {
+        throw new Error('Failed to update progress')
+      }
     }
   }
 
@@ -469,6 +536,50 @@ class ApiService {
     ]
   }
 
+  // StudyPES Materials API - Updated to use pipeline database endpoints
+  async getStudyPESSubjects(): Promise<StudyPESSubjectsResponse> {
+    try {
+      const response = await fetch(`${this.baseURL}/pipeline/studypes/subjects`, {
+        headers: this.getHeaders()
+      })
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch StudyPES subjects from pipeline')
+      }
+      
+      const result = await response.json()
+      
+      if (result.success) {
+        // Count total subjects and materials
+        const subjects = result.subjects || {}
+        const totalSubjects = Object.keys(subjects).length
+        const totalMaterials = Object.values(subjects).reduce((sum: number, subject: any) => {
+          return sum + (subject.totalMaterials || 0)
+        }, 0)
+        
+        return {
+          subjects,
+          totalSubjects,
+          totalMaterials,
+          success: true,
+          message: 'StudyPES materials loaded from pipeline successfully'
+        }
+      }
+      
+      return result
+    } catch (error) {
+      console.error('Error fetching StudyPES subjects from pipeline:', error)
+      // Return empty structure if pipeline is not available
+      return {
+        subjects: {},
+        totalSubjects: 0,
+        totalMaterials: 0,
+        success: false,
+        message: 'Failed to load StudyPES materials'
+      }
+    }
+  }
+
   async getPDFsBySubject(domain: string, page: number = 1, limit: number = 20): Promise<PaginatedResponse<PDFMaterial>> {
     const response = await fetch(`${this.baseURL}/pdfs/subject/${domain}?page=${page}&limit=${limit}`, {
       headers: this.getHeaders()
@@ -532,8 +643,13 @@ class ApiService {
   }
 
   // PDF Highlights/Annotations APIs
-  async getHighlights(pdfId: string): Promise<Highlight[]> {
-    const response = await fetch(`${this.baseURL}/highlights/pdf/${pdfId}`, {
+  async getHighlights(pdfId: string, userId?: string): Promise<Highlight[]> {
+    const url = new URL(`${this.baseURL}/highlights/pdf/${pdfId}`)
+    if (userId) {
+      url.searchParams.append('userId', userId)
+    }
+    
+    const response = await fetch(url.toString(), {
       method: 'GET',
       headers: this.getHeaders()
     })
@@ -599,6 +715,85 @@ class ApiService {
     
     const result = await response.json()
     return result.data
+  }
+
+  // ==================== PIPELINE APIs ====================
+  
+  // Interview Questions
+  async getInterviewQuestions(): Promise<any[]> {
+    try {
+      console.log('🎯 Fetching interview questions from pipeline...');
+      const response = await fetch(`${this.baseURL}/pipeline/roadmap/questions`, {
+        headers: this.getHeaders()
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch interview questions');
+      }
+      
+      const result = await response.json();
+      return result.success ? result.data : [];
+    } catch (error) {
+      console.error('❌ Error fetching interview questions:', error);
+      throw error;
+    }
+  }
+  
+  // Roadmap Generation
+  async generateRoadmap(userId: string, userAnswers: any[]): Promise<any> {
+    try {
+      console.log('🚀 Generating roadmap for user:', userId);
+      const response = await fetch(`${this.baseURL}/pipeline/roadmap/generate`, {
+        method: 'POST',
+        headers: this.getHeaders(),
+        body: JSON.stringify({ userId, userAnswers })
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to generate roadmap');
+      }
+      
+      const result = await response.json();
+      return result.success ? result.data : null;
+    } catch (error) {
+      console.error('❌ Error generating roadmap:', error);
+      throw error;
+    }
+  }
+  
+  // Get User Roadmap
+  async getUserRoadmap(userId: string): Promise<any> {
+    try {
+      console.log('🔍 Fetching roadmap for user:', userId);
+      const response = await fetch(`${this.baseURL}/pipeline/roadmap/${userId}`, {
+        headers: this.getHeaders()
+      });
+      
+      if (!response.ok) {
+        if (response.status === 404) {
+          return null; // No roadmap found
+        }
+        throw new Error('Failed to fetch user roadmap');
+      }
+      
+      const result = await response.json();
+      return result.success ? result.data : null;
+    } catch (error) {
+      console.error('❌ Error fetching user roadmap:', error);
+      throw error;
+    }
+  }
+  
+  // Pipeline Health Check
+  async checkPipelineHealth(): Promise<boolean> {
+    try {
+      const response = await fetch(`${this.baseURL}/pipeline/health`);
+      const result = await response.json();
+      return result.success && result.data?.overall_status === 'healthy';
+    } catch (error) {
+      console.warn('⚠️ Pipeline health check failed:', error);
+      return false;
+    }
   }
 
   // ==================== NOTES APIs ====================
@@ -694,6 +889,7 @@ export const mockUserProfile: UserProfile = {
   weeklyActivity: '8.5h',
   joinedDate: '2024-08-15',
   lastActive: '2025-10-09',
+  roadmapCompleted: false,
   preferences: {
     theme: 'light',
     notifications: true,

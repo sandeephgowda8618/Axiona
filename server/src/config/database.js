@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/study-ai';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/axiona';
 
 const connectDB = async () => {
   try {
@@ -10,7 +10,7 @@ const connectDB = async () => {
       // useUnifiedTopology: true,
     });
 
-    console.log(`MongoDB Connected: ${conn.connection.host}`);
+    console.log(`MongoDB Connected: ${conn.connection.host} - Database: ${conn.connection.name}`);
     
     // Handle connection events
     mongoose.connection.on('error', (error) => {

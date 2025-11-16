@@ -31,29 +31,35 @@ export interface StudyMaterialSort {
 
 // Library Types
 export interface LibraryBook {
+  _id: string  // MongoDB ID
   id: string
   title: string
   author: string
-  isbn: string
-  publisher: string
-  edition: string
+  isbn?: string
+  publisher?: string
+  edition?: string
   subject: string
   category: string
-  year: number
-  pages: number
+  year?: number
+  pages?: number
   language: string
   rating: number
   reviewCount: number
   description: string
   coverImage: string
+  fileName: string
+  fileSize?: string  // Changed to string to handle "N/A" values from MongoDB
+  file_url?: string  // GitHub URL for PDFs
   downloadUrl?: string
   previewUrl?: string
-  fileSize?: string
   availability: 'available' | 'borrowed' | 'reserved'
   addedDate: Date
   downloadCount: number
   isFavorite: boolean
   tags: string[]
+  // Pipeline-specific fields for GridFS PDF viewing
+  pdfUrl?: string           // Direct PDF URL from pipeline
+  gridFSFileId?: string     // GridFS file ID for streaming
 }
 
 export interface LibraryFilters {

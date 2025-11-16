@@ -7,6 +7,73 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+Pipline/chromadb/
+mcp-rag-system/vector_db/
+# Large PDF files (should be stored in LFS or external storage)
+docs/library/*.pdf
+docs/library/
+**/library/*.pdf
+
+# StudyPES Materials - exclude all study materials (large files)
+StudyPES_material_retrival/materials/
+StudyPES_material_retrival/materials/**/*
+**/materials/*.pdf
+**/materials/*.ppt
+**/materials/*.pptx
+**/materials/*.doc
+**/materials/*.docx
+**/materials/*.xls
+**/materials/*.xlsx
+
+# RAG System PDF files - exclude downloaded reference books
+META_dataretreval/github_refrences/*.pdf
+META_dataretreval/github_refrences/
+mcp-rag-system/chromadb/
+mcp-rag-system/**/*.pdf
+
+###########################
+# Axiona – RAG / Pipeline #
+###########################
+
+# Chroma / vector DB indexes & binary artifacts
+Pipline/chromadb/
+Pipline/**/*.bin
+Pipline/**/*.pickle
+mcp-rag-system/chromadb/
+mcp-rag-system/vector_db/
+
+# Generated reports, test outputs, temporary JSONs
+Pipline/*test_results*.json
+Pipline/system_test_report_*.json
+Pipline/system_test_results*.json
+Pipline/database_status_report_*.json
+Pipline/final_test_output.txt
+Pipline/complete_roadmap_*.json
+Pipline/ultimate_roadmap_*.json
+Pipline/production_roadmap_*.json
+
+# Local data dumps & scraped corpora
+Pipline/Data/
+StudyPES_material_retrival/raw_StudyPES_data.txt
+StudyPES_material_retrival/StudyPES_data*.json
+server/StudyPES_data.json
+
+# Metadata library – large batch outputs
+META_dataretreval_libreary_refrences/batch_output/
+
+# Node / script temp data (safety, in case we later add big dumps)
+server/data/
+
+
+
+Pipline/chromadb/*.bin
+Pipline/chromadb/**/*.bin
+Pipline/Data/PES_materials/PES_slides/*.pdf
+Pipline/Data/PES_materials/PES_slides/**/*
+Pipline/Data/Reference_books/Reference_books_pdf/*.pdf
+Pipline/Data/Reference_books/Reference_books_pdf/**/*
+
+
 # Environment variables
 .env
 .env.local
@@ -210,6 +277,30 @@ storybook-static/
 *.sar
 *.class
 
+# Document files (large educational content)
+*.pdf
+*.ppt
+*.pptx
+*.doc
+*.docx
+*.xls
+*.xlsx
+*.pps
+*.ppsx
+
+# Video and audio files
+*.mp4
+*.avi
+*.mov
+*.wmv
+*.flv
+*.webm
+*.mkv
+*.mp3
+*.wav
+*.flac
+*.aac
+
 # Keep important files and directories
 !package-lock.json
 !yarn.lock
@@ -223,3 +314,15 @@ storybook-static/
 !docs/**/*.md
 !docs/**/*.yaml
 !docs/**/*.yml
+
+# Exception: Keep important documentation PDFs
+!documentation/**/*.pdf
+!README.pdf
+!LICENSE.pdf
+
+# Exception: Keep small image files in documentation
+!documentation/**/*.png
+!documentation/**/*.jpg
+!documentation/**/*.jpeg
+!documentation/**/*.gif
+!documentation/**/*.svg

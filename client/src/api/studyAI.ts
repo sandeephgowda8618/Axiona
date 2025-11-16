@@ -628,3 +628,114 @@ export const aiAPI = {
     return response.data
   }
 }
+
+// Books API
+export const booksAPI = {
+  getAllBooks: async (page = 1, limit = 20, search?: string, category?: string, subject?: string, author?: string, sortBy = 'recent') => {
+    try {
+      const params = new URLSearchParams({
+        page: page.toString(),
+        limit: limit.toString(),
+        sortBy,
+        ...(search && { search }),
+        ...(category && { category }),
+        ...(subject && { subject }),
+        ...(author && { author })
+      })
+      const response = await axios.get(`/books?${params}`)
+      return response.data
+    } catch (error) {
+      console.warn('Backend not available, returning mock books data')
+      return {
+        success: true,
+        data: [
+          {
+            _id: '1',
+            title: 'Machine Learning Yearning',
+            author: 'Andrew Ng',
+            subject: 'Machine Learning',
+            category: 'Machine Learning',
+            description: 'Practical advice for structuring machine learning projects.',
+            fileUrl: '/docs/library/sample-book.pdf',
+            coverImage: '/api/placeholder/300/400',
+            pages: 118,
+            year: 2018,
+            rating: 4.6,
+            reviewCount: 892,
+            downloadCount: 2134,
+            tags: ['ML Strategy', 'Andrew Ng', 'Best Practices']
+          },
+          {
+            _id: '2',
+            title: 'Hands-On Machine Learning',
+            author: 'Aurélien Géron',
+            subject: 'Machine Learning',
+            category: 'Machine Learning',
+            description: 'Practical machine learning with Scikit-Learn and TensorFlow.',
+            fileUrl: '/docs/library/sample-book2.pdf',
+            coverImage: '/api/placeholder/300/400',
+            pages: 851,
+            year: 2019,
+            rating: 4.8,
+            reviewCount: 445,
+            downloadCount: 1234,
+            tags: ['Scikit-Learn', 'TensorFlow', 'Practical ML']
+          }
+        ],
+        pagination: {
+          currentPage: 1,
+          totalPages: 1,
+          totalBooks: 2,
+          limit: 20,
+          hasNext: false,
+          hasPrev: false
+        }
+      }
+    }
+  },
+
+  getBookById: async (id: string) => {
+    const response = await axios.get(`/books/${id}`)
+    return response.data
+  },
+
+  getCategories: async () => {
+    const response = await axios.get('/books/categories/list')
+    return response.data
+  },
+
+  getSubjects: async () => {
+    const response = await axios.get('/books/subjects/list')
+    return response.data
+  },
+
+  getPopularBooks: async (limit = 10) => {
+    const response = await axios.get(`/books/stats/popular?limit=${limit}`)
+    return response.data
+  },
+
+  getRecentBooks: async (limit = 10) => {
+    const response = await axios.get(`/books/stats/recent?limit=${limit}`)
+    return response.data
+  },
+
+  getTopRatedBooks: async (limit = 10) => {
+    const response = await axios.get(`/books/stats/top-rated?limit=${limit}`)
+    return response.data
+  },
+
+  getBooksByCategory: async (category: string, page = 1, limit = 20, sortBy = 'recent') => {
+    const response = await axios.get(`/books/category/${category}?page=${page}&limit=${limit}&sortBy=${sortBy}`)
+    return response.data
+  },
+
+  downloadBook: async (id: string) => {
+    const response = await axios.post(`/books/${id}/download`)
+    return response.data
+  },
+
+  searchSuggestions: async (query: string) => {
+    const response = await axios.get(`/books/search/suggestions?q=${query}`)
+    return response.data
+  }
+}

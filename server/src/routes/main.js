@@ -3,11 +3,14 @@ const dataService = require('../services/dataService');
 const { Video } = require('../models/Video');
 const { PDF } = require('../models/PDF');
 const { User } = require('../models/User');
+const { StudyMaterial } = require('../models/StudyMaterial');
 const aiService = require('../services/aiService');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const notesRouter = require('./notes'); // Add notes router
 const meetingsRouter = require('./meetings'); // Add meetings router
+const booksRouter = require('./books'); // Add books router
+const roadmapsRouter = require('./roadmaps'); // Add roadmaps router
 
 const router = Router();
 
@@ -165,6 +168,45 @@ router.get('/users/profile', authenticateToken, async (req, res) => {
     res.status(500).json({ 
       success: false, 
       message: 'Failed to fetch profile' 
+    });
+  }
+});
+
+// USER PROFILE ROUTES - Add missing endpoints
+router.get('/users/me/saved', async (req, res) => {
+  try {
+    // For now, return empty array since we don't have user authentication
+    // In the future, implement proper user auth and saved content
+    res.json({
+      success: true,
+      data: [],
+      message: 'No saved videos found'
+    });
+  } catch (error) {
+    console.error('Error fetching saved videos:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch saved videos',
+      error: error.message
+    });
+  }
+});
+
+router.get('/users/me/liked', async (req, res) => {
+  try {
+    // For now, return empty array since we don't have user authentication
+    // In the future, implement proper user auth and liked content
+    res.json({
+      success: true,
+      data: [],
+      message: 'No liked videos found'
+    });
+  } catch (error) {
+    console.error('Error fetching liked videos:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch liked videos',
+      error: error.message
     });
   }
 });
@@ -528,6 +570,105 @@ router.get('/study-materials', async (req, res) => {
   }
 });
 
+// Get StudyPES materials organized by subject and unit
+router.get('/study-materials/studypes/subjects', async (req, res) => {
+  try {
+    console.log('📚 Fetching StudyPES materials from books collection...');
+    
+    // Query the books collection where materials have gridFSFileId
+    const mongoose = require('mongoose');
+    const Book = mongoose.model('Book');
+    const materials = await Book.find({
+      category: 'StudyPES'
+    }).lean();
+    console.log(`📊 Found ${materials.length} study materials`);
+    
+    if (materials.length === 0) {
+      return res.json({
+        subjects: {},
+        totalSubjects: 0,
+        totalMaterials: 0,
+        success: true,
+        message: 'No StudyPES materials found'
+      });
+    }
+    
+    // Organize by subject and unit
+    const subjectsData = {};
+    
+    materials.forEach(material => {
+      const subject = material.subject || 'General';
+      const unit = material.unit ? `Unit ${material.unit}` : 'General Materials';
+      
+      if (!subjectsData[subject]) {
+        subjectsData[subject] = {
+          name: subject,
+          units: {}
+        };
+      }
+      
+      if (!subjectsData[subject].units[unit]) {
+        subjectsData[subject].units[unit] = [];
+      }
+      
+      // Add material info with GridFS file ID
+      const materialInfo = {
+        id: material._id.toString(),
+        title: material.title || 'Untitled',
+        description: material.description || '',
+        url: material.url || material.pdfUrl || '',
+        pdfUrl: material.pdfUrl || material.url || '',
+        gridFSFileId: material.gridFSFileId ? material.gridFSFileId.toString() : null,
+        fileSize: material.fileSize || 'N/A',
+        pages: material.pages || 0,
+        author: material.author || 'StudyPES Materials',
+        semester: material.semester || 0,
+        year: material.year || '2024',
+        type: material.type || 'PDF',
+        difficulty: material.difficulty || 'Medium',
+        subject: material.subject,
+        unit: material.unit ? material.unit.toString() : '1'
+      };
+      
+      subjectsData[subject].units[unit].push(materialInfo);
+    });
+    
+    // Calculate total materials and sort
+    let totalMaterials = 0;
+    
+    for (const [subjectName, subjectData] of Object.entries(subjectsData)) {
+      const subjectMaterialCount = Object.values(subjectData.units).reduce((sum, materials) => sum + materials.length, 0);
+      totalMaterials += subjectMaterialCount;
+      subjectData.totalMaterials = subjectMaterialCount;
+      
+      // Sort materials within each unit by title
+      for (const unitName of Object.keys(subjectData.units)) {
+        subjectData.units[unitName].sort((a, b) => a.title.localeCompare(b.title));
+      }
+    }
+    
+    console.log(`✅ Organized ${Object.keys(subjectsData).length} subjects with ${totalMaterials} total materials`);
+    
+    res.json({
+      subjects: subjectsData,
+      totalSubjects: Object.keys(subjectsData).length,
+      totalMaterials: totalMaterials,
+      success: true,
+      message: `Retrieved ${Object.keys(subjectsData).length} subjects with ${totalMaterials} materials`
+    });
+    
+  } catch (error) {
+    console.error('❌ Error fetching StudyPES subjects:', error);
+    res.status(500).json({
+      subjects: {},
+      totalSubjects: 0,
+      totalMaterials: 0,
+      success: false,
+      error: error.message
+    });
+  }
+});
+
 // PDF/STUDY MATERIALS ROUTES
 
 // Get all subjects (domains) with PDF counts and metadata
@@ -628,9 +769,46 @@ router.get('/pdfs/subject/:domain', async (req, res) => {
 // Get specific PDF details
 router.get('/pdfs/:id', async (req, res) => {
   try {
-    const pdf = await PDF.findById(req.params.id)
+    let pdf = null;
+    
+    // First try to find in PDF collection
+    pdf = await PDF.findById(req.params.id)
       .populate('uploadedBy', 'fullName email')
       .lean();
+    
+    // If not found in PDF collection, try StudyMaterial collection
+    if (!pdf) {
+      const studyMaterial = await StudyMaterial.findById(req.params.id).lean();
+      
+      if (studyMaterial) {
+        // Transform StudyMaterial to match PDF interface
+        pdf = {
+          _id: studyMaterial._id,
+          topic: studyMaterial.title || studyMaterial.topic,
+          fileName: studyMaterial.fileName,
+          gridFSFileId: studyMaterial.gridFSFileId || studyMaterial._id.toString(),
+          fileUrl: studyMaterial.file_url || studyMaterial.url || studyMaterial.pdfUrl,
+          fileSize: studyMaterial.file_size || studyMaterial.fileSize || 0,
+          pages: studyMaterial.pages || 0,
+          author: studyMaterial.author,
+          domain: studyMaterial.subject,
+          year: studyMaterial.year,
+          class: studyMaterial.semester ? `Semester ${studyMaterial.semester}` : undefined,
+          description: studyMaterial.description,
+          publishedAt: studyMaterial.createdAt || new Date().toISOString(),
+          downloadCount: studyMaterial.downloads || 0,
+          approved: studyMaterial.approved || true,
+          uploadedBy: studyMaterial.uploadedBy,
+          createdAt: studyMaterial.createdAt || new Date().toISOString(),
+          formattedFileSize: studyMaterial.formattedFileSize || 'N/A',
+          // Add study material specific fields
+          semester: studyMaterial.semester,
+          unit: studyMaterial.unit,
+          level: studyMaterial.level,
+          tags: studyMaterial.tags || []
+        };
+      }
+    }
       
     if (!pdf) {
       return res.status(404).json({ 
@@ -640,7 +818,13 @@ router.get('/pdfs/:id', async (req, res) => {
     }
 
     // Increment view count (optional)
-    await PDF.findByIdAndUpdate(req.params.id, { $inc: { viewCount: 1 } });
+    if (pdf.gridFSFileId) {
+      // For StudyMaterial
+      await StudyMaterial.findByIdAndUpdate(req.params.id, { $inc: { views: 1 } });
+    } else {
+      // For PDF
+      await PDF.findByIdAndUpdate(req.params.id, { $inc: { viewCount: 1 } });
+    }
 
     res.json({
       success: true,
@@ -872,6 +1056,46 @@ function estimatePages(fileSize) {
 
 // HIGHLIGHT/ANNOTATION ROUTES
 
+// Get highlights for a PDF - Frontend expects this path
+router.get('/highlights/pdf/:pdfId', async (req, res) => {
+  try {
+    const { Highlight } = require('../models/Highlight');
+    const { pdfId } = req.params;
+    const { userId } = req.query;
+    
+    console.log('🔍 Highlights route hit with pdfId:', pdfId, 'userId:', userId);
+
+    // If no userId provided, return empty highlights (not an error)
+    if (!userId) {
+      return res.json({
+        success: true,
+        data: [],
+        message: 'No user ID provided, returning empty highlights'
+      });
+    }
+
+    const highlights = await Highlight.find({ 
+      pdfId, 
+      userId 
+    }).sort({ pageNumber: 1, createdAt: 1 });
+
+    console.log('📝 Found highlights:', highlights.length);
+    
+    res.json({
+      success: true,
+      data: highlights || [],
+      count: highlights ? highlights.length : 0
+    });
+  } catch (error) {
+    console.error('Get highlights error:', error);
+    res.status(500).json({ 
+      success: false,
+      error: 'Database error occurred while fetching highlights',
+      data: []
+    });
+  }
+});
+
 // Get highlights for a PDF
 router.get('/pdfs/:pdfId/highlights', async (req, res) => {
   try {
@@ -1082,5 +1306,48 @@ router.use('/notes', notesRouter);
 
 // Mount the meetings router
 router.use('/meetings', meetingsRouter);
+
+// Mount the books router
+router.use('/books', booksRouter);
+
+// Mount the roadmaps router
+router.use('/roadmaps', roadmapsRouter);
+
+// PDF PROXY ENDPOINT - Serve PDFs from GitHub URLs
+router.get('/docs/library/:filename', async (req, res) => {
+  try {
+    const { filename } = req.params;
+    
+    // Import Book model to get GitHub URL
+    const { Book } = require('../models/Book');
+    
+    // Find the book by filename
+    const book = await Book.findOne({ 
+      $or: [
+        { fileName: filename },
+        { title: filename.replace('.pdf', '').replace(/comp\((\d+)\)/, 'comp($1)') }
+      ]
+    });
+    
+    if (!book || !book.file_url || book.file_url === 'N/A') {
+      return res.status(404).json({
+        success: false,
+        message: 'PDF not found or no GitHub URL available',
+        hint: 'This book may not have a direct PDF URL'
+      });
+    }
+    
+    // Redirect to GitHub URL instead of trying to serve locally
+    res.redirect(book.file_url);
+    
+  } catch (error) {
+    console.error('Error serving PDF:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to serve PDF',
+      error: error.message
+    });
+  }
+});
 
 module.exports = router;

@@ -1,0 +1,28 @@
+# LangGraph Educational Roadmap System Requirements
+
+# Core LangGraph and LangChain
+langgraph>=0.2.0
+langchain>=0.1.0
+langchain-core>=0.1.0
+langchain-community>=0.0.10
+
+# Existing dependencies
+pymongo>=4.0.0
+chromadb>=0.4.0
+sentence-transformers>=2.2.0
+httpx>=0.25.0
+pydantic>=2.0.0
+python-dotenv>=1.0.0
+
+# Additional for statistics and analytics
+pandas>=2.0.0
+numpy>=1.24.0
+matplotlib>=3.7.0
+seaborn>=0.12.0
+
+# Async support
+asyncio
+aiofiles>=23.0.0
+
+# For better JSON handling and validation
+jsonschema>=4.0.0

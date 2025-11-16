@@ -2,8 +2,8 @@ import React from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import Layout from '../components/Layout'
 import ProtectedRoute from '../components/ProtectedRoute'
+import RoadmapCheckRoute from '../components/RoadmapCheckRoute'
 import LandingPage from '../pages/LandingPage'
-import TestLanding from '../pages/TestLanding'
 import LoginPage from '../pages/LoginPage'
 import AuthPage from '../pages/AuthPage'
 import ProfileDashboard from '../pages/ProfileDashboard'
@@ -17,9 +17,11 @@ import SettingsPage from '../pages/SettingsPage'
 import MyRack from '../pages/MyRack'
 import StudyBuddy from '../pages/StudyBuddy'
 import StudyMaterialsPES from '../pages/StudyMaterialsPES'
+import StudyPESSubjectViewer from '../pages/StudyPESSubjectViewer'
 import PDFViewer from '../pages/PDFViewer'
 import SubjectViewer from '../pages/SubjectViewer'
 import Library from '../pages/Library'
+import BookReader from '../pages/BookReader'
 import TutorialHub from '../pages/TutorialHub'
 import VideoPlayer from '../pages/VideoPlayer'
 import Workspace from '../pages/Workspace'
@@ -32,46 +34,179 @@ const AppRoutes: React.FC = () => {
     <Routes>
       {/* Public Routes - No Navigation */}
       <Route path="/" element={<LandingPage />} />
-      <Route path="/landing" element={<TestLanding />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/auth" element={<AuthPage />} />
       <Route path="/forgot-password" element={<ForgotPasswordPage />} />
       
-      {/* Protected Routes - With Navigation */}
-      <Route path="/dashboard" element={<ProtectedRoute><LandingPage /></ProtectedRoute>} />
-      <Route path="/profile" element={<ProtectedRoute><Layout><ProfileDashboard /></Layout></ProtectedRoute>} />
+      {/* Protected Routes - With Navigation AND Roadmap Check */}
+      <Route path="/dashboard" element={
+        <ProtectedRoute>
+          <RoadmapCheckRoute>
+            <LandingPage />
+          </RoadmapCheckRoute>
+        </ProtectedRoute>
+      } />
+      <Route path="/profile" element={
+        <ProtectedRoute>
+          <RoadmapCheckRoute>
+            <Layout><ProfileDashboard /></Layout>
+          </RoadmapCheckRoute>
+        </ProtectedRoute>
+      } />
       
       {/* Conference Routes */}
-      <Route path="/conference" element={<ProtectedRoute><Layout><ConferenceLobby /></Layout></ProtectedRoute>} />
-      <Route path="/conference/:roomId" element={<ProtectedRoute><Layout><ConferenceMeeting /></Layout></ProtectedRoute>} />
+      <Route path="/conference" element={
+        <ProtectedRoute>
+          <RoadmapCheckRoute>
+            <Layout><ConferenceLobby /></Layout>
+          </RoadmapCheckRoute>
+        </ProtectedRoute>
+      } />
+      <Route path="/conference/:roomId" element={
+        <ProtectedRoute>
+          <RoadmapCheckRoute>
+            <Layout><ConferenceMeeting /></Layout>
+          </RoadmapCheckRoute>
+        </ProtectedRoute>
+      } />
       
       {/* Quiz Routes */}
-      <Route path="/quiz" element={<ProtectedRoute><Layout><QuizSelection /></Layout></ProtectedRoute>} />
-      <Route path="/quiz/:quizId" element={<ProtectedRoute><Layout><QuizExam /></Layout></ProtectedRoute>} />
-      <Route path="/quiz/:quizId/secure" element={<ProtectedRoute><Layout><QuizExamSecure /></Layout></ProtectedRoute>} />
-      <Route path="/quiz/:quizId/results" element={<ProtectedRoute><Layout><QuizResults /></Layout></ProtectedRoute>} />
+      <Route path="/quiz" element={
+        <ProtectedRoute>
+          <RoadmapCheckRoute>
+            <Layout><QuizSelection /></Layout>
+          </RoadmapCheckRoute>
+        </ProtectedRoute>
+      } />
+      <Route path="/quiz/:quizId" element={
+        <ProtectedRoute>
+          <RoadmapCheckRoute>
+            <Layout><QuizExam /></Layout>
+          </RoadmapCheckRoute>
+        </ProtectedRoute>
+      } />
+      <Route path="/quiz/:quizId/secure" element={
+        <ProtectedRoute>
+          <RoadmapCheckRoute>
+            <Layout><QuizExamSecure /></Layout>
+          </RoadmapCheckRoute>
+        </ProtectedRoute>
+      } />
+      <Route path="/quiz/:quizId/results" element={
+        <ProtectedRoute>
+          <RoadmapCheckRoute>
+            <Layout><QuizResults /></Layout>
+          </RoadmapCheckRoute>
+        </ProtectedRoute>
+      } />
       
       {/* Study Material Routes */}
-      <Route path="/my-rack" element={<ProtectedRoute><Layout><MyRack /></Layout></ProtectedRoute>} />
-      <Route path="/study-materials" element={<ProtectedRoute><Layout><StudyMaterialsPES /></Layout></ProtectedRoute>} />
-      <Route path="/subject/:domain" element={<ProtectedRoute><Layout><SubjectViewer /></Layout></ProtectedRoute>} />
-      <Route path="/pdf/:pdfId" element={<ProtectedRoute><Layout><PDFViewer /></Layout></ProtectedRoute>} />
-      <Route path="/library" element={<ProtectedRoute><Layout><Library /></Layout></ProtectedRoute>} />
-      <Route path="/tutorial-hub" element={<ProtectedRoute><Layout><TutorialHub /></Layout></ProtectedRoute>} />
-      <Route path="/tutorial-player/:tutorialId" element={<ProtectedRoute><Layout><VideoPlayer /></Layout></ProtectedRoute>} />
-      <Route path="/video/:id" element={<ProtectedRoute><Layout><VideoPlayer /></Layout></ProtectedRoute>} />
+      <Route path="/my-rack" element={
+        <ProtectedRoute>
+          <RoadmapCheckRoute>
+            <Layout><MyRack /></Layout>
+          </RoadmapCheckRoute>
+        </ProtectedRoute>
+      } />
+      <Route path="/study-materials" element={
+        <ProtectedRoute>
+          <RoadmapCheckRoute>
+            <Layout><StudyMaterialsPES /></Layout>
+          </RoadmapCheckRoute>
+        </ProtectedRoute>
+      } />
+      <Route path="/studypes/:subjectName" element={
+        <ProtectedRoute>
+          <RoadmapCheckRoute>
+            <Layout><StudyPESSubjectViewer /></Layout>
+          </RoadmapCheckRoute>
+        </ProtectedRoute>
+      } />
+      <Route path="/subject/:domain" element={
+        <ProtectedRoute>
+          <RoadmapCheckRoute>
+            <Layout><SubjectViewer /></Layout>
+          </RoadmapCheckRoute>
+        </ProtectedRoute>
+      } />
+      <Route path="/pdf/:pdfId" element={
+        <ProtectedRoute>
+          <RoadmapCheckRoute>
+            <Layout><PDFViewer /></Layout>
+          </RoadmapCheckRoute>
+        </ProtectedRoute>
+      } />
+      <Route path="/library" element={
+        <ProtectedRoute>
+          <RoadmapCheckRoute>
+            <Layout><Library /></Layout>
+          </RoadmapCheckRoute>
+        </ProtectedRoute>
+      } />
+      <Route path="/library/reader/:bookId" element={
+        <ProtectedRoute>
+          <RoadmapCheckRoute>
+            <BookReader />
+          </RoadmapCheckRoute>
+        </ProtectedRoute>
+      } />
+      <Route path="/tutorial-hub" element={
+        <ProtectedRoute>
+          <RoadmapCheckRoute>
+            <Layout><TutorialHub /></Layout>
+          </RoadmapCheckRoute>
+        </ProtectedRoute>
+      } />
+      <Route path="/tutorial-player/:tutorialId" element={
+        <ProtectedRoute>
+          <RoadmapCheckRoute>
+            <Layout><VideoPlayer /></Layout>
+          </RoadmapCheckRoute>
+        </ProtectedRoute>
+      } />
+      <Route path="/video/:id" element={
+        <ProtectedRoute>
+          <RoadmapCheckRoute>
+            <Layout><VideoPlayer /></Layout>
+          </RoadmapCheckRoute>
+        </ProtectedRoute>
+      } />
       
       {/* AI Assistant */}
-      <Route path="/study-buddy" element={<ProtectedRoute><Layout><StudyBuddy /></Layout></ProtectedRoute>} />
+      <Route path="/study-buddy" element={
+        <ProtectedRoute>
+          <RoadmapCheckRoute>
+            <Layout><StudyBuddy /></Layout>
+          </RoadmapCheckRoute>
+        </ProtectedRoute>
+      } />
       
       {/* Workspace */}
-      <Route path="/workspace" element={<ProtectedRoute><Layout><Workspace /></Layout></ProtectedRoute>} />
+      <Route path="/workspace" element={
+        <ProtectedRoute>
+          <RoadmapCheckRoute>
+            <Layout><Workspace /></Layout>
+          </RoadmapCheckRoute>
+        </ProtectedRoute>
+      } />
       
       {/* Settings */}
-      <Route path="/settings" element={<ProtectedRoute><Layout><SettingsPage /></Layout></ProtectedRoute>} />
+      <Route path="/settings" element={
+        <ProtectedRoute>
+          <RoadmapCheckRoute>
+            <Layout><SettingsPage /></Layout>
+          </RoadmapCheckRoute>
+        </ProtectedRoute>
+      } />
       
       {/* Admin Routes */}
-      <Route path="/admin/*" element={<ProtectedRoute><Layout><AdminConsole /></Layout></ProtectedRoute>} />
+      <Route path="/admin/*" element={
+        <ProtectedRoute>
+          <RoadmapCheckRoute>
+            <Layout><AdminConsole /></Layout>
+          </RoadmapCheckRoute>
+        </ProtectedRoute>
+      } />
       
       {/* 404 Page */}
       <Route path="*" element={<Layout><NotFoundPage /></Layout>} />

@@ -25,6 +25,7 @@ interface NavigationItem {
   href: string
   icon: any
   description?: string
+  isTemporary?: boolean
 }
 
 const Navigation: React.FC = () => {
@@ -132,11 +133,16 @@ const Navigation: React.FC = () => {
                       isCurrentPage(item.href)
                         ? 'border-blue-500 text-blue-600'
                         : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                    }`}
+                    } ${item.isTemporary ? 'relative' : ''}`}
                     title={item.description}
                   >
-                    <item.icon className="h-4 w-4 mr-2" />
+                    <item.icon className={`h-4 w-4 mr-2 ${item.isTemporary ? 'text-orange-500' : ''}`} />
                     {item.name}
+                    {item.isTemporary && (
+                      <span className="ml-1 bg-orange-100 text-orange-800 text-xs px-1.5 py-0.5 rounded-full">
+                        TEMP
+                      </span>
+                    )}
                   </Link>
                 ))}
               </div>

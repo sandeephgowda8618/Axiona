@@ -22,7 +22,7 @@ const EditNoteModal: React.FC<EditNoteModalProps> = ({ isOpen, note, onClose, on
       setTitle(note.title);
       setContent(note.content);
       setTags(note.tags || []);
-      setIsPublic(note.isPublic);
+      setIsPublic(note.isPublic || false);
     } else {
       setTitle('');
       setContent('');
