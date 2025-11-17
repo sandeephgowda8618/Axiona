@@ -235,22 +235,22 @@ asyncio.run(generate_roadmap())
       const tempFile = path.join(this.pipelinePath, 'temp_roadmap.py');
       await fs.writeFile(tempFile, tempScript);
 
-      console.log(' Executing pipeline for roadmap generation...');
+      console.log('🔄 Executing pipeline for roadmap generation...');
       const result = await this.executePythonScript('temp_roadmap.py', this.timeout);
       
       // Clean up temp file
       await fs.unlink(tempFile).catch(() => {}); // Ignore cleanup errors
       
       if (result.error) {
-        console.error(` Pipeline roadmap generation failed: ${result.error}`);
+        console.error(`❌ Pipeline roadmap generation failed: ${result.error}`);
         throw new Error(`Pipeline error: ${result.error}`);
       }
       
-      console.log(' Pipeline roadmap generated successfully');
+      console.log('✅ Pipeline roadmap generated successfully');
       return result;
       
     } catch (error) {
-      console.error(' Roadmap generation failed:', error);
+      console.error('❌ Roadmap generation failed:', error);
       throw error;
     }
   }
@@ -331,7 +331,7 @@ asyncio.run(generate_roadmap())
           resolve(jsonResult);
           
         } catch (error) {
-          console.error(' Failed to parse pipeline output as JSON:', error);
+          console.error('❌ Failed to parse pipeline output as JSON:', error);
           console.log('Raw stdout:', stdout);
           reject(new Error(`Failed to parse pipeline output: ${error.message}`));
         }
@@ -415,9 +415,7 @@ except Exception as e:
         "Physics": "Master Physics Fundamentals",
         "Data Science": "Master Data Science and Analytics",
         "Web Development": "Master Web Development",
-        "Machine Learning": "Master Machine Learning and AI",
-        "Cybersecurity": "Master Cybersecurity",
-        "Mobile Development": "Master Mobile Development"
+        "Machine Learning": "Master Machine Learning and AI"
       };
       
       const learningGoal = learningGoalMapping[domain] || "Master Computer Science Fundamentals";
@@ -515,138 +513,6 @@ except Exception as e:
         pipeline: { status: 'error', message: 'Pipeline unreachable' },
         database: { status: 'unhealthy', message: error.message },
         overall_status: 'unhealthy'
-      };
-    }
-  }
-
-  /**
-   * Generate RAG-based response for workspace chat
-   */
-  async generateRAGResponse(question, pdfId, currentPage = 1, context = null) {
-    try {
-      console.log(`🤖 Generating RAG response for question: "${question}"`);
-      console.log(`📄 PDF ID: ${pdfId}, Page: ${currentPage}`);
-      
-      // Create a temporary script for RAG-based question answering
-      const tempScript = `
-import asyncio
-import sys
-import json
-sys.path.insert(0, '.')
-
-from complete_rag_system import EducationalAgentSystem
-
-async def generate_rag_response():
-    try:
-        print("✅ Initializing RAG system for workspace chat...")
-        
-        # Initialize the educational agent system
-        agent_system = EducationalAgentSystem()
-        await agent_system.initialize()
-        
-        # Use the new RAG chat agent that extracts actual PDF content
-        response = await agent_system.rag_chat_agent(
-            question="${question}",
-            pdf_id="${pdfId}" if "${pdfId}" else None,
-            current_page=${currentPage},
-            context="${context}" if "${context}" else None
-        )
-        
-        print(json.dumps(response, default=str))
-        
-    except Exception as e:
-        print(f"❌ Error in RAG response generation: {str(e)}")
-        error_result = {
-            "answer": "I'm sorry, I'm having trouble processing your question right now. Please try asking in a different way.",
-            "context": "${context}",
-            "sources": [],
-            "relevantPage": ${currentPage},
-            "pdfId": "${pdfId}",
-            "success": False,
-            "error": str(e)
-        }
-        print(json.dumps(error_result, default=str))
-
-asyncio.run(generate_rag_response())
-`;
-
-      const tempFile = path.join(this.pipelinePath, 'temp_rag_chat.py');
-      await fs.writeFile(tempFile, tempScript);
-
-      console.log('🔄 Executing RAG pipeline for chat response...');
-      const result = await this.executePythonScript('temp_rag_chat.py', 60000);
-      
-      // Clean up temp file
-      await fs.unlink(tempFile).catch(() => {});
-      
-      if (result.error) {
-        console.warn(`⚠️ RAG pipeline error: ${result.error}`);
-        return this.generateFallbackChatResponse(question, context, currentPage);
-      }
-      
-      console.log('✅ RAG response generated successfully');
-      return result;
-      
-    } catch (error) {
-      console.error('❌ RAG response generation failed:', error);
-      return this.generateFallbackChatResponse(question, context, currentPage);
-    }
-  }
-
-  /**
-   * Generate fallback chat response when RAG system is unavailable
-   */
-  generateFallbackChatResponse(question, context, currentPage) {
-    console.log('🔧 Generating fallback chat response');
-    
-    const questionLower = question.toLowerCase();
-    
-    // Context-aware responses
-    let contextualResponse = '';
-    if (context) {
-      contextualResponse = `Based on "${context}", `;
-    }
-    
-    // Generate appropriate response based on question type
-    if (questionLower.includes('explain') || questionLower.includes('what is')) {
-      return {
-        answer: `${contextualResponse}I can help explain concepts from your study material. Could you be more specific about which concept you'd like me to explain?`,
-        context: context,
-        sources: [],
-        relevantPage: currentPage,
-        success: true
-      };
-    } else if (questionLower.includes('how') || questionLower.includes('process')) {
-      return {
-        answer: `${contextualResponse}I can help you understand processes and procedures. What specific process would you like me to break down for you?`,
-        context: context,
-        sources: [],
-        relevantPage: currentPage,
-        success: true
-      };
-    } else if (questionLower.includes('example') || questionLower.includes('demonstrate')) {
-      return {
-        answer: `${contextualResponse}I can help provide examples and demonstrations. What topic would you like me to give examples for?`,
-        context: context,
-        sources: [],
-        relevantPage: currentPage,
-        success: true
-      };
-    } else if (questionLower.includes('summary') || questionLower.includes('summarize')) {
-      return {
-        answer: `${contextualResponse}I can help summarize key concepts from your material. Which section or topic would you like me to summarize?`,
-        context: context,
-        sources: [],
-        relevantPage: currentPage,
-        success: true
-      };
-    } else {
-      return {
-        answer: `${contextualResponse}I'm here to help you with your studies! You can ask me to explain concepts, provide examples, summarize content, or help you understand any topic from your study material.`,
-        context: context,
-        sources: [],
-        relevantPage: currentPage,
-        success: true
       };
     }
   }

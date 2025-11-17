@@ -48,9 +48,7 @@ const AppRoutes: React.FC = () => {
       } />
       <Route path="/profile" element={
         <ProtectedRoute>
-          <RoadmapCheckRoute>
-            <Layout><ProfileDashboard /></Layout>
-          </RoadmapCheckRoute>
+          <Layout><ProfileDashboard /></Layout>
         </ProtectedRoute>
       } />
       

@@ -148,12 +148,42 @@ export const videosAPI = {
     return response.data
   },
   
-  downloadVideo: async (id: string) => {
-    const response = await axios.post(`/videos/${id}/download`)
+  downloadVideo: async (id: string, options = { quality: '720p', format: 'mp4' }) => {
+    const response = await axios.post(`/videos/${id}/download`, options)
     return response.data
   },
-  watchVideo: async (id: string) => {
-    const response = await axios.post(`/videos/${id}/watch`)
+  watchVideo: async (id: string, watchData = { watchProgress: 0, watchDuration: 0 }) => {
+    const response = await axios.post(`/videos/${id}/watch`, watchData)
+    return response.data
+  },
+
+  // Get user's watch history
+  getWatchHistory: async (page = 1, limit = 20) => {
+    const response = await axios.get(`/videos/history?page=${page}&limit=${limit}`)
+    return response.data
+  },
+
+  // Get user's saved videos
+  getSavedVideos: async (page = 1, limit = 20) => {
+    const response = await axios.get(`/videos/saved?page=${page}&limit=${limit}`)
+    return response.data
+  },
+
+  // Get user's liked videos
+  getLikedVideos: async (page = 1, limit = 20) => {
+    const response = await axios.get(`/videos/liked?page=${page}&limit=${limit}`)
+    return response.data
+  },
+
+  // Get user's downloaded videos
+  getDownloadedVideos: async (page = 1, limit = 20) => {
+    const response = await axios.get(`/videos/downloaded?page=${page}&limit=${limit}`)
+    return response.data
+  },
+
+  // Get user's interaction status for a video
+  getVideoStatus: async (id: string) => {
+    const response = await axios.get(`/videos/${id}/status`)
     return response.data
   },
 

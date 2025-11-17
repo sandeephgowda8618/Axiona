@@ -1,468 +1,362 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import { 
-  Clock, 
-  CheckCircle, 
-  TrendingUp, 
-  Lock, 
-  ChevronDown, 
-  ChevronUp, 
-  Target, 
-  BookOpen, 
-  FileText, 
-  Star,
-  Calendar,
-  Award,
-  PlayCircle,
-  Lightbulb
-} from 'lucide-react'
+  BookOpenIcon, 
+  VideoCameraIcon, 
+  DocumentTextIcon,
+  ClockIcon,
+  CheckCircleIcon,
+  PlayCircleIcon
+} from '@heroicons/react/24/outline';
 
-interface RoadmapPhase {
-  phase_number: number
-  title: string
-  description: string
-  status?: 'completed' | 'in-progress' | 'locked' | 'available'
-  progress?: number
-  adjusted_duration?: string
-  milestones?: string[]
-  weekly_objectives?: string[]
-  pes_materials?: Array<{
-    title: string
-    pages: number
-    type: string
-    fileName?: string
-  }>
-  projects?: Array<{
-    title: string
-    description: string
-    difficulty: 'beginner' | 'intermediate' | 'advanced'
-  }>
-  skills_gained?: string[]
-  prerequisites?: string[]
-  estimated_hours?: number
-  week_number?: number
+interface Phase {
+  phase_id: number;
+  title: string;
+  concepts: string[];
+  difficulty: string;
+  estimated_duration_hours: number;
+  learning_objectives: string[];
+  resources: {
+    pes_materials: any[];
+    reference_books: any[];
+    videos: any;
+  };
+}
+
+interface WeekData {
+  week: number;
+  phase: string;
+  study_hours?: number;
+  project_hours?: number;
+  hours: number;
+  activities: string[];
+}
+
+interface ProjectTimeline {
+  week: number;
+  project_task: string;
+  estimated_hours: number;
+}
+
+interface Milestone {
+  week: number;
+  milestone: string;
 }
 
 interface RoadmapTimelineProps {
-  roadmapData: {
-    learning_goal: string
-    experience_level: string
-    hours_per_week: number
-    generated_roadmap: {
-      total_phases: number
-      phases: RoadmapPhase[]
-      resource_summary?: {
-        total_pes_materials: number
-        total_reference_books: number
-      }
-    }
-    created_at: string
-    completion_percentage?: number
-  }
-  onPhaseClick?: (phase: RoadmapPhase) => void
+  roadmap: {
+    learning_goal: string;
+    subject: string;
+    phases: Phase[];
+    learning_schedule: {
+      total_weeks: number;
+      hours_per_week: number;
+      weekly_plan: WeekData[];
+      milestones: Milestone[];
+      project_timeline: ProjectTimeline[];
+    };
+    analytics: {
+      total_phases: number;
+    };
+    user_profile?: {
+      skill_level: string;
+    };
+  };
 }
 
-const RoadmapTimeline: React.FC<RoadmapTimelineProps> = ({ 
-  roadmapData, 
-  onPhaseClick 
-}) => {
-  const [expandedPhases, setExpandedPhases] = useState<Set<number>>(new Set([1])) // Expand first phase by default
-  const [hoveredPhase, setHoveredPhase] = useState<number | null>(null)
+const RoadmapTimeline: React.FC<RoadmapTimelineProps> = ({ roadmap }) => {
+  const [hoveredWeek, setHoveredWeek] = useState<number | null>(null);
 
-  if (!roadmapData?.generated_roadmap?.phases) {
+  const getDifficultyColor = (difficulty: string) => {
+    switch (difficulty.toLowerCase()) {
+      case 'beginner':
+        return 'bg-green-50 border-green-200';
+      case 'intermediate':
+        return 'bg-blue-50 border-blue-200';
+      case 'advanced':
+        return 'bg-purple-50 border-purple-200';
+      default:
+        return 'bg-gray-50 border-gray-200';
+    }
+  };
+
+  const getPhaseFromWeek = (week: number): Phase | undefined => {
+    const weekData = roadmap.learning_schedule.weekly_plan.find(w => w.week === week);
+    if (!weekData) return undefined;
+    
+    // Handle both string and number phase values
+    let phaseId: number;
+    
+    if (typeof weekData.phase === 'number') {
+      phaseId = weekData.phase;
+    } else if (typeof weekData.phase === 'string') {
+      // Extract phase number from phase string (e.g., "Phase 1" -> 1)
+      const phaseMatch = weekData.phase.match(/Phase (\d+)/);
+      if (!phaseMatch) return undefined;
+      phaseId = parseInt(phaseMatch[1]);
+    } else {
+      return undefined;
+    }
+    
+    return roadmap.phases.find(p => p.phase_id === phaseId);
+  };
+
+  const getProjectTaskForWeek = (week: number): ProjectTimeline | undefined => {
+    return roadmap.learning_schedule.project_timeline?.find(pt => pt.week === week);
+  };
+
+  const getMilestoneForWeek = (week: number): Milestone | undefined => {
+    return roadmap.learning_schedule.milestones?.find(m => m.week === week);
+  };
+
+  const HoverPopup: React.FC<{ week: number }> = ({ week }) => {
+    const phase = getPhaseFromWeek(week);
+    const projectTask = getProjectTaskForWeek(week);
+    const milestone = getMilestoneForWeek(week);
+    
+    if (!phase) return null;
+
     return (
-      <div className="text-center py-8">
-        <FileText className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-        <p className="text-gray-600">No roadmap data available</p>
-      </div>
-    )
-  }
+      <div className="absolute z-10 w-96 bg-white rounded-lg shadow-xl border border-gray-200 p-6 -translate-x-1/2 left-1/2 top-full mt-2">
+        <div className="space-y-4">
+          <div className="border-b border-gray-200 pb-3">
+            <h3 className="font-semibold text-lg text-gray-900">{phase.title}</h3>
+            <p className="text-sm text-gray-500 capitalize">Difficulty: {phase.difficulty}</p>
+          </div>
 
-  const { generated_roadmap } = roadmapData
-
-  const getDifficultyColor = (phase: RoadmapPhase) => {
-    if (phase.phase_number <= 2) return 'bg-green-100 border-green-300 text-green-700'
-    if (phase.phase_number <= 4) return 'bg-yellow-100 border-yellow-300 text-yellow-700'
-    return 'bg-red-100 border-red-300 text-red-700'
-  }
-
-  const getStatusIcon = (phase: RoadmapPhase) => {
-    if (phase.status === 'completed' || (phase.progress && phase.progress >= 100)) {
-      return <CheckCircle className="h-5 w-5 text-green-600" />
-    } else if (phase.status === 'in-progress' || (phase.progress && phase.progress > 0)) {
-      return <TrendingUp className="h-5 w-5 text-blue-600" />
-    } else if (phase.phase_number === 1) {
-      return <PlayCircle className="h-5 w-5 text-blue-600" />
-    } else {
-      return <Clock className="h-5 w-5 text-gray-400" />
-    }
-  }
-
-  const getStatusColor = (phase: RoadmapPhase) => {
-    if (phase.status === 'completed' || (phase.progress && phase.progress >= 100)) {
-      return 'bg-green-500'
-    } else if (phase.status === 'in-progress' || (phase.progress && phase.progress > 0)) {
-      return 'bg-blue-500'
-    } else if (phase.phase_number === 1) {
-      return 'bg-blue-500'
-    } else {
-      return 'bg-gray-300'
-    }
-  }
-
-  const togglePhase = (phaseNumber: number) => {
-    const newExpanded = new Set(expandedPhases)
-    if (newExpanded.has(phaseNumber)) {
-      newExpanded.delete(phaseNumber)
-    } else {
-      newExpanded.add(phaseNumber)
-    }
-    setExpandedPhases(newExpanded)
-  }
-
-  const formatDuration = (duration?: string) => {
-    if (!duration) return 'TBD'
-    return duration.includes('week') ? duration : `${duration}`
-  }
-
-  const calculateWeekNumber = (phaseIndex: number) => {
-    return Math.floor(phaseIndex * 1.5) + 1 // Rough week calculation
-  }
-
-  return (
-    <div className="space-y-6">
-      {/* Roadmap Header Summary */}
-      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200">
-        <div className="flex items-start justify-between">
-          <div className="flex-1">
-            <h3 className="text-xl font-semibold text-gray-900 mb-2 flex items-center">
-              <Target className="h-6 w-6 text-blue-600 mr-2" />
-              {roadmapData.learning_goal}
-            </h3>
-            <p className="text-gray-600 text-sm mb-4">
-              Personalized learning path based on your {roadmapData.experience_level} level experience
-            </p>
-            
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="text-center">
-                <div className="text-2xl font-bold text-blue-600">
-                  {generated_roadmap.total_phases}
-                </div>
-                <div className="text-sm text-gray-600">Learning Phases</div>
+          {/* PES Materials */}
+          {phase.resources.pes_materials && phase.resources.pes_materials.length > 0 && (
+            <div>
+              <div className="flex items-center space-x-2 mb-2">
+                <DocumentTextIcon className="h-5 w-5 text-blue-600" />
+                <h4 className="font-medium text-gray-900">📘 PES Materials</h4>
               </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-green-600">
-                  {generated_roadmap.phases?.filter(p => p.status === 'completed').length || 0}
-                </div>
-                <div className="text-sm text-gray-600">Completed</div>
+              <ul className="space-y-1">
+                {phase.resources.pes_materials.slice(0, 3).map((material, idx) => (
+                  <li key={idx} className="text-sm text-gray-600 flex items-center space-x-2">
+                    <div className="w-1.5 h-1.5 bg-blue-400 rounded-full"></div>
+                    <span>{material.title}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Reference Books */}
+          {phase.resources.reference_books && phase.resources.reference_books.length > 0 && (
+            <div>
+              <div className="flex items-center space-x-2 mb-2">
+                <BookOpenIcon className="h-5 w-5 text-green-600" />
+                <h4 className="font-medium text-gray-900">📚 Reference Books</h4>
               </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-orange-600">
-                  {roadmapData.hours_per_week}h
-                </div>
-                <div className="text-sm text-gray-600">Weekly Hours</div>
+              <ul className="space-y-1">
+                {phase.resources.reference_books.slice(0, 2).map((book, idx) => (
+                  <li key={idx} className="text-sm text-gray-600 flex items-center space-x-2">
+                    <div className="w-1.5 h-1.5 bg-green-400 rounded-full"></div>
+                    <span>{book.title}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Video Resources */}
+          {phase.resources.videos && (
+            <div>
+              <div className="flex items-center space-x-2 mb-2">
+                <VideoCameraIcon className="h-5 w-5 text-red-600" />
+                <h4 className="font-medium text-gray-900">🎥 Video Playlists</h4>
               </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-purple-600">
-                  {generated_roadmap.resource_summary?.total_pes_materials || 0}
-                </div>
-                <div className="text-sm text-gray-600">Study Materials</div>
+              <ul className="space-y-1">
+                {phase.resources.videos.search_keywords_playlists?.slice(0, 2).map((keyword: string, idx: number) => (
+                  <li key={idx} className="text-sm text-gray-600 flex items-center space-x-2">
+                    <div className="w-1.5 h-1.5 bg-red-400 rounded-full"></div>
+                    <span>{keyword}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Learning Objectives */}
+          {phase.learning_objectives && phase.learning_objectives.length > 0 && (
+            <div>
+              <div className="flex items-center space-x-2 mb-2">
+                <CheckCircleIcon className="h-5 w-5 text-purple-600" />
+                <h4 className="font-medium text-gray-900">🎯 Learning Objectives</h4>
+              </div>
+              <ul className="space-y-1">
+                {phase.learning_objectives.slice(0, 3).map((objective, idx) => (
+                  <li key={idx} className="text-sm text-gray-600 flex items-center space-x-2">
+                    <div className="w-1.5 h-1.5 bg-purple-400 rounded-full"></div>
+                    <span>{objective}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Concepts */}
+          {phase.concepts && phase.concepts.length > 0 && (
+            <div>
+              <h4 className="font-medium text-gray-900 mb-2">📝 Concepts</h4>
+              <div className="flex flex-wrap gap-1">
+                {phase.concepts.slice(0, 5).map((concept, idx) => (
+                  <span key={idx} className="px-2 py-1 text-xs bg-gray-100 text-gray-700 rounded">
+                    {concept}
+                  </span>
+                ))}
               </div>
             </div>
-          </div>
-          
-          {roadmapData.completion_percentage !== undefined && (
-            <div className="ml-6">
-              <div className="text-right mb-2">
-                <span className="text-2xl font-bold text-green-600">
-                  {roadmapData.completion_percentage}%
-                </span>
-                <div className="text-sm text-gray-600">Complete</div>
+          )}
+
+          {/* Project Tasks */}
+          {projectTask && (
+            <div>
+              <h4 className="font-medium text-gray-900 mb-2">🗂 Project Tasks</h4>
+              <div className="text-sm text-gray-600">
+                <p>{projectTask.project_task}</p>
+                <p className="text-xs text-gray-500 mt-1">Estimated: {projectTask.estimated_hours}h</p>
               </div>
-              <div className="w-24 bg-gray-200 rounded-full h-3">
-                <div 
-                  className="bg-green-500 h-3 rounded-full transition-all duration-500" 
-                  style={{ width: `${roadmapData.completion_percentage}%` }}
-                ></div>
+            </div>
+          )}
+
+          {/* Milestones */}
+          {milestone && (
+            <div>
+              <h4 className="font-medium text-gray-900 mb-2">📊 Milestones</h4>
+              <div className="text-sm text-gray-600">
+                <p>{milestone.milestone}</p>
               </div>
             </div>
           )}
         </div>
       </div>
+    );
+  };
 
-      {/* Timeline Container */}
-      <div className="relative">
-        {/* Timeline Line */}
-        <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gray-200"></div>
-        
-        {/* Timeline Phases */}
-        <div className="space-y-6">
-          {generated_roadmap.phases.map((phase, index) => {
-            const isExpanded = expandedPhases.has(phase.phase_number)
-            const isAlternating = index % 2 === 1
-            const weekNumber = calculateWeekNumber(index)
+  const WeekCard: React.FC<{ week: WeekData; index: number }> = ({ week, index }) => {
+    const isLeft = index % 2 === 0;
+    const phase = getPhaseFromWeek(week.week);
+    const difficultyColor = getDifficultyColor(phase?.difficulty || 'beginner');
+    
+    return (
+      <div className={`relative ${isLeft ? 'pr-8' : 'pl-8'}`}>
+        <div
+          className={`relative ${
+            isLeft ? 'ml-auto text-right' : 'mr-auto text-left'
+          } max-w-sm`}
+          onMouseEnter={() => setHoveredWeek(week.week)}
+          onMouseLeave={() => setHoveredWeek(null)}
+        >
+          <div className={`p-4 rounded-lg border-2 transition-all duration-200 cursor-pointer hover:shadow-lg ${difficultyColor} hover:scale-105`}>
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="font-semibold text-gray-900">
+                Week {week.week} – {week.phase}
+              </h3>
+            </div>
             
-            return (
-              <div
-                key={phase.phase_number}
-                className={`relative flex items-start ${isAlternating ? 'flex-row-reverse' : ''}`}
-                onMouseEnter={() => setHoveredPhase(phase.phase_number)}
-                onMouseLeave={() => setHoveredPhase(null)}
-              >
-                {/* Timeline Node */}
-                <div className={`absolute ${isAlternating ? 'right-8' : 'left-8'} transform -translate-x-1/2 z-10`}>
-                  <div className={`w-4 h-4 rounded-full border-4 border-white ${getStatusColor(phase)} 
-                    ${hoveredPhase === phase.phase_number ? 'scale-125' : ''} 
-                    transition-all duration-200`}>
-                  </div>
-                </div>
+            <div className="text-sm text-gray-600 mb-3">
+              <span className="flex items-center space-x-1">
+                <ClockIcon className="h-4 w-4" />
+                <span>Study: {week.study_hours || week.hours || 5}h</span>
+                {week.project_hours !== undefined && (
+                  <>
+                    <span>·</span>
+                    <span>Project: {week.project_hours}h</span>
+                  </>
+                )}
+              </span>
+            </div>
 
-                {/* Phase Card */}
-                <div className={`flex-1 ${isAlternating ? 'pr-16' : 'pl-16'} max-w-2xl`}>
-                  <div className={`bg-white rounded-xl shadow-sm border-2 transition-all duration-300 cursor-pointer
-                    ${hoveredPhase === phase.phase_number ? 'shadow-lg border-blue-300 transform scale-[1.02]' : 'border-gray-200'}
-                    ${getDifficultyColor(phase)} bg-opacity-20`}>
-                    
-                    {/* Phase Header */}
-                    <div 
-                      className="p-6 cursor-pointer"
-                      onClick={() => togglePhase(phase.phase_number)}
-                    >
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1">
-                          <div className="flex items-center space-x-3 mb-2">
-                            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${getDifficultyColor(phase)}`}>
-                              {phase.phase_number}
-                            </div>
-                            <div className="flex items-center space-x-2 text-sm text-gray-600">
-                              <Calendar className="h-4 w-4" />
-                              <span>Week {weekNumber}</span>
-                              {phase.adjusted_duration && (
-                                <>
-                                  <span>•</span>
-                                  <Clock className="h-4 w-4" />
-                                  <span>{formatDuration(phase.adjusted_duration)}</span>
-                                </>
-                              )}
-                            </div>
-                          </div>
-                          
-                          <h4 className="text-lg font-semibold text-gray-900 mb-2">
-                            {phase.title}
-                          </h4>
-                          <p className="text-gray-600 text-sm mb-3">
-                            {phase.description}
-                          </p>
-                          
-                          {/* Progress Bar */}
-                          {phase.progress !== undefined && (
-                            <div className="mb-3">
-                              <div className="flex items-center justify-between text-xs text-gray-600 mb-1">
-                                <span>Progress</span>
-                                <span>{phase.progress}%</span>
-                              </div>
-                              <div className="w-full bg-gray-200 rounded-full h-2">
-                                <div 
-                                  className="bg-blue-500 h-2 rounded-full transition-all duration-500" 
-                                  style={{ width: `${phase.progress}%` }}
-                                ></div>
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                        
-                        <div className="flex items-center space-x-2 ml-4">
-                          {getStatusIcon(phase)}
-                          {isExpanded ? (
-                            <ChevronUp className="h-5 w-5 text-gray-400" />
-                          ) : (
-                            <ChevronDown className="h-5 w-5 text-gray-400" />
-                          )}
-                        </div>
-                      </div>
-                    </div>
+            <ul className="space-y-1">
+              {week.activities.slice(0, 3).map((activity, idx) => (
+                <li key={idx} className="text-sm text-gray-700 flex items-start space-x-2">
+                  <div className="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2 flex-shrink-0"></div>
+                  <span>{activity}</span>
+                </li>
+              ))}
+              {week.activities.length > 3 && (
+                <li className="text-xs text-gray-500">
+                  +{week.activities.length - 3} more activities
+                </li>
+              )}
+            </ul>
+          </div>
 
-                    {/* Expanded Content */}
-                    {isExpanded && (
-                      <div className="border-t border-gray-200 bg-white bg-opacity-50">
-                        <div className="p-6 space-y-4">
-                          
-                          {/* Weekly Objectives */}
-                          {phase.weekly_objectives && phase.weekly_objectives.length > 0 && (
-                            <div>
-                              <h5 className="flex items-center text-sm font-medium text-gray-900 mb-2">
-                                <Target className="h-4 w-4 mr-2 text-blue-600" />
-                                Weekly Objectives
-                              </h5>
-                              <ul className="space-y-1">
-                                {phase.weekly_objectives.map((objective, i) => (
-                                  <li key={i} className="text-sm text-gray-700 flex items-start">
-                                    <span className="text-blue-600 mr-2">•</span>
-                                    {objective}
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                          )}
+          {hoveredWeek === week.week && <HoverPopup week={week.week} />}
+        </div>
 
-                          {/* Milestones */}
-                          {phase.milestones && phase.milestones.length > 0 && (
-                            <div>
-                              <h5 className="flex items-center text-sm font-medium text-gray-900 mb-2">
-                                <Award className="h-4 w-4 mr-2 text-green-600" />
-                                Key Milestones
-                              </h5>
-                              <div className="flex flex-wrap gap-2">
-                                {phase.milestones.map((milestone, i) => (
-                                  <span key={i} className="text-xs bg-green-50 text-green-700 px-2 py-1 rounded-full border border-green-200">
-                                    {milestone}
-                                  </span>
-                                ))}
-                              </div>
-                            </div>
-                          )}
+        {/* Timeline dot */}
+        <div className="absolute top-6 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-white border-4 border-blue-600 rounded-full z-10"></div>
+      </div>
+    );
+  };
 
-                          {/* Study Materials */}
-                          {phase.pes_materials && phase.pes_materials.length > 0 && (
-                            <div>
-                              <h5 className="flex items-center text-sm font-medium text-gray-900 mb-2">
-                                <BookOpen className="h-4 w-4 mr-2 text-purple-600" />
-                                Study Materials
-                              </h5>
-                              <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                                {phase.pes_materials.map((material, i) => (
-                                  <div key={i} className="bg-purple-50 border border-purple-200 rounded-lg p-3">
-                                    <div className="flex items-start justify-between">
-                                      <div className="flex-1">
-                                        <h6 className="text-sm font-medium text-purple-900">{material.title}</h6>
-                                        <div className="flex items-center space-x-2 mt-1">
-                                          <FileText className="h-3 w-3 text-purple-600" />
-                                          <span className="text-xs text-purple-700">{material.pages} pages</span>
-                                          {material.type && (
-                                            <span className="text-xs bg-purple-100 text-purple-600 px-1 rounded">
-                                              {material.type}
-                                            </span>
-                                          )}
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                ))}
-                              </div>
-                            </div>
-                          )}
+  if (!roadmap || !roadmap.learning_schedule) {
+    return (
+      <div className="text-center py-8">
+        <p className="text-gray-500">No roadmap data available</p>
+      </div>
+    );
+  }
 
-                          {/* Projects */}
-                          {phase.projects && phase.projects.length > 0 && (
-                            <div>
-                              <h5 className="flex items-center text-sm font-medium text-gray-900 mb-2">
-                                <Lightbulb className="h-4 w-4 mr-2 text-orange-600" />
-                                Projects & Practice
-                              </h5>
-                              <div className="space-y-2">
-                                {phase.projects.map((project, i) => (
-                                  <div key={i} className="bg-orange-50 border border-orange-200 rounded-lg p-3">
-                                    <div className="flex items-start justify-between">
-                                      <div className="flex-1">
-                                        <h6 className="text-sm font-medium text-orange-900">{project.title}</h6>
-                                        <p className="text-xs text-orange-700 mt-1">{project.description}</p>
-                                      </div>
-                                      <span className={`text-xs px-2 py-1 rounded-full ${
-                                        project.difficulty === 'beginner' ? 'bg-green-100 text-green-600' :
-                                        project.difficulty === 'intermediate' ? 'bg-yellow-100 text-yellow-600' :
-                                        'bg-red-100 text-red-600'
-                                      }`}>
-                                        {project.difficulty}
-                                      </span>
-                                    </div>
-                                  </div>
-                                ))}
-                              </div>
-                            </div>
-                          )}
-
-                          {/* Skills Gained */}
-                          {phase.skills_gained && phase.skills_gained.length > 0 && (
-                            <div>
-                              <h5 className="flex items-center text-sm font-medium text-gray-900 mb-2">
-                                <Star className="h-4 w-4 mr-2 text-yellow-600" />
-                                Skills You'll Gain
-                              </h5>
-                              <div className="flex flex-wrap gap-2">
-                                {phase.skills_gained.map((skill, i) => (
-                                  <span key={i} className="text-xs bg-yellow-50 text-yellow-700 px-2 py-1 rounded-full border border-yellow-200">
-                                    {skill}
-                                  </span>
-                                ))}
-                              </div>
-                            </div>
-                          )}
-
-                          {/* Action Button */}
-                          <div className="pt-2">
-                            <button
-                              onClick={() => onPhaseClick?.(phase)}
-                              className={`w-full py-2 px-4 rounded-lg text-sm font-medium transition-colors ${
-                                phase.status === 'completed' ? 
-                                  'bg-green-100 text-green-700 hover:bg-green-200' :
-                                phase.status === 'in-progress' || phase.phase_number === 1 ?
-                                  'bg-blue-600 text-white hover:bg-blue-700' :
-                                  'bg-gray-100 text-gray-500 cursor-not-allowed'
-                              }`}
-                              disabled={phase.status === 'locked' || (phase.phase_number > 1 && !phase.status)}
-                            >
-                              {phase.status === 'completed' ? 'Review Phase' :
-                               phase.status === 'in-progress' || phase.phase_number === 1 ? 'Continue Learning' :
-                               'Locked - Complete Previous Phase'}
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-            )
-          })}
+  return (
+    <div className="space-y-6">
+      {/* Header Summary */}
+      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-6">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+            {roadmap.learning_goal}
+          </h2>
+          <div className="flex items-center justify-center space-x-4 text-sm text-gray-600">
+            <span>{roadmap.subject}</span>
+            <span>·</span>
+            <span>{roadmap.learning_schedule.total_weeks} Weeks</span>
+            <span>·</span>
+            <span>{roadmap.analytics.total_phases} Phases</span>
+            <span>·</span>
+            <span className="capitalize">{roadmap.user_profile?.skill_level || 'Beginner'}</span>
+          </div>
         </div>
       </div>
 
-      {/* Resource Summary Footer */}
-      {generated_roadmap.resource_summary && (
-        <div className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl p-6 border border-indigo-200">
-          <div className="flex items-center mb-3">
-            <Star className="h-5 w-5 text-indigo-600 mr-2" />
-            <h4 className="font-medium text-indigo-900">Enhanced with AI-Curated Resources</h4>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-            <div>
-              <div className="text-lg font-semibold text-indigo-600">
-                {generated_roadmap.resource_summary.total_pes_materials}
+      {/* Timeline */}
+      <div className="relative">
+        {/* Vertical line */}
+        <div className="absolute left-1/2 transform -translate-x-1/2 w-0.5 bg-blue-200 h-full"></div>
+
+        {/* Week cards */}
+        <div className="space-y-8">
+          {roadmap.learning_schedule.weekly_plan.map((week, index) => (
+            <WeekCard key={week.week} week={week} index={index} />
+          ))}
+        </div>
+      </div>
+
+      {/* Project Summary */}
+      {roadmap.learning_schedule.project_timeline && roadmap.learning_schedule.project_timeline.length > 0 && (
+        <div className="bg-gray-50 rounded-lg p-6 mt-8">
+          <h3 className="font-semibold text-gray-900 mb-4 flex items-center space-x-2">
+            <PlayCircleIcon className="h-5 w-5 text-blue-600" />
+            <span>Project Timeline</span>
+          </h3>
+          <div className="space-y-3">
+            {roadmap.learning_schedule.project_timeline.map((project, idx) => (
+              <div key={idx} className="flex items-center justify-between p-3 bg-white rounded-lg">
+                <div>
+                  <p className="font-medium text-gray-900">Week {project.week}</p>
+                  <p className="text-sm text-gray-600">{project.project_task}</p>
+                </div>
+                <span className="text-sm font-medium text-blue-600">
+                  {project.estimated_hours}h
+                </span>
               </div>
-              <div className="text-sm text-gray-600">PES Materials</div>
-            </div>
-            <div>
-              <div className="text-lg font-semibold text-purple-600">
-                {generated_roadmap.resource_summary.total_reference_books}
-              </div>
-              <div className="text-sm text-gray-600">Reference Books</div>
-            </div>
-            <div>
-              <div className="text-lg font-semibold text-orange-600">
-                {generated_roadmap.phases.reduce((acc, phase) => acc + (phase.pes_materials?.length || 0), 0)}
-              </div>
-              <div className="text-sm text-gray-600">Study Resources</div>
-            </div>
-            <div>
-              <div className="text-lg font-semibold text-green-600">
-                {generated_roadmap.phases.reduce((acc, phase) => acc + (phase.projects?.length || 0), 0)}
-              </div>
-              <div className="text-sm text-gray-600">Practice Projects</div>
-            </div>
+            ))}
           </div>
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default RoadmapTimeline
+export default RoadmapTimeline;

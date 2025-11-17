@@ -42,6 +42,7 @@ import { apiService, PDFMaterial, Highlight } from '../services/api';
 import { useAuth, mockUser } from '../contexts/AuthContext';
 import { useNotesContext } from '../contexts/NotesContext';
 import FloatingWorkspaceButton from '../components/FloatingWorkspaceButton';
+import FloatingNotesWidget from '../components/FloatingNotesWidget';
 
 interface SubjectViewerProps {
   domain: string;
@@ -990,6 +991,18 @@ const SubjectViewer: React.FC = () => {
             progress: selectedPdf.pages ? (currentPage / selectedPdf.pages) * 100 : 0
           }}
           isVisible={true}
+        />
+      )}
+
+      {/* Floating Notes Widget */}
+      {selectedPdf && (
+        <FloatingNotesWidget
+          context={{
+            type: 'pdf',
+            id: selectedPdf._id,
+            title: selectedPdf.topic,
+            pageNumber: currentPage
+          }}
         />
       )}
     </div>

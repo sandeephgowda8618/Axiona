@@ -395,7 +395,74 @@ router.get('/files/:gridfsId', async (req, res) => {
 
 // ===== ROADMAP AND INTERVIEW ENDPOINTS =====
 
-// Get interview questions for roadmap generation
+// Generate dynamic interview questions based on domain and experience level
+router.post('/generate-interview-questions', async (req, res) => {
+  try {
+    const { domain, experience_level } = req.body;
+    
+    if (!domain || !experience_level) {
+      return res.status(400).json({
+        success: false,
+        message: 'Domain and experience level are required',
+        error: 'Missing required parameters'
+      });
+    }
+    
+    console.log(`🔄 Generating interview questions for: ${domain} (${experience_level})`);
+    
+    const questions = await pipelineService.generateInterviewQuestions(domain, experience_level);
+    
+    res.json({
+      success: true,
+      questions: questions,
+      domain: domain,
+      experience_level: experience_level,
+      total_questions: questions.length
+    });
+    
+  } catch (error) {
+    console.error('❌ Error generating interview questions:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to generate interview questions',
+      error: error.message,
+      questions: []
+    });
+  }
+});
+
+// Generate interview questions based on domain and experience level
+router.post('/generate-interview-questions', async (req, res) => {
+  try {
+    const { domain, experience_level } = req.body;
+    
+    console.log(`🎯 Generating interview questions for: ${domain} (${experience_level})`);
+    
+    if (!domain || !experience_level) {
+      return res.status(400).json({
+        success: false,
+        message: 'Domain and experience level are required'
+      });
+    }
+    
+    const questions = await pipelineService.generateInterviewQuestions(domain, experience_level);
+    
+    res.json({
+      success: true,
+      data: questions
+    });
+    
+  } catch (error) {
+    console.error('❌ Error generating interview questions:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to generate interview questions',
+      error: error.message
+    });
+  }
+});
+
+// Get interview questions for roadmap generation (legacy endpoint)
 router.get('/roadmap/questions', async (req, res) => {
   try {
     console.log('🔄 Fetching interview questions from pipeline...');
@@ -420,18 +487,26 @@ router.get('/roadmap/questions', async (req, res) => {
 // Generate roadmap based on user answers
 router.post('/roadmap/generate', async (req, res) => {
   try {
-    const { userId, userAnswers } = req.body;
+    const { userId, userAnswers, domain, experience_level } = req.body;
     
-    if (!userId || !userAnswers) {
+    if (!userId) {
       return res.status(400).json({
         success: false,
-        message: 'User ID and answers are required'
+        message: 'User ID is required'
       });
     }
     
     console.log(`🔄 Generating roadmap for user: ${userId}`);
+    console.log(`📝 Domain: ${domain}, Experience: ${experience_level}`);
+    console.log(`📊 User answers:`, userAnswers);
     
-    const roadmap = await pipelineService.generateRoadmapFromAnswers(userId, userAnswers);
+    // Use the enhanced generateRoadmapFromAnswers function
+    const roadmap = await pipelineService.generateRoadmapFromAnswers(
+      userId,
+      userAnswers || [], 
+      domain,
+      experience_level
+    );
     
     res.json({
       success: true,
@@ -555,5 +630,472 @@ router.get('/database/status', async (req, res) => {
     });
   }
 });
+
+// ===== NOTES ENDPOINTS =====
+
+// Get notes for a user
+router.get('/notes/user/:userId', async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const {
+      page = 1,
+      limit = 20,
+      search,
+      context, // 'pes_material', 'workspace', 'general'
+      sortBy = 'updatedAt',
+      sortOrder = 'desc'
+    } = req.query;
+
+    console.log(`📋 Fetching notes for user: ${userId}, context: ${context || 'all'}`);
+
+    const options = {
+      page: parseInt(page),
+      limit: parseInt(limit),
+      search,
+      context,
+      sortBy,
+      sortOrder: sortOrder === 'desc' ? -1 : 1
+    };
+
+    const result = await pipelineDatabase.getNotesByUserId(userId, options);
+    
+    console.log(`✅ Found ${result.notes.length} notes for user ${userId}`);
+    
+    res.json({
+      success: true,
+      data: result.notes,
+      pagination: result.pagination
+    });
+
+  } catch (error) {
+    console.error('❌ Error fetching user notes:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch notes',
+      error: error.message
+    });
+  }
+});
+
+// Create a new note
+router.post('/notes', async (req, res) => {
+  try {
+    const {
+      userId,
+      title,
+      content,
+      context = 'general', // 'pes_material', 'workspace', 'general'
+      referenceId = null, // ID of PES material, PDF, etc.
+      referenceType = null, // 'pes_material', 'pdf', 'document'
+      referenceTitle = null,
+      pageNumber = null,
+      tags = []
+    } = req.body;
+
+    // Validation
+    if (!userId || !title || !content) {
+      return res.status(400).json({
+        success: false,
+        message: 'Missing required fields: userId, title, content'
+      });
+    }
+
+    const noteData = {
+      userId,
+      title: title.trim(),
+      content: content.trim(),
+      context,
+      referenceId,
+      referenceType,
+      referenceTitle,
+      pageNumber,
+      tags: Array.isArray(tags) ? tags.filter(tag => tag.trim()) : []
+    };
+
+    console.log(`📝 Creating note for user ${userId}: ${title}`);
+
+    const noteId = await pipelineDatabase.saveNote(noteData);
+    
+    const savedNote = await pipelineDatabase.getNoteById(noteId);
+
+    res.status(201).json({
+      success: true,
+      data: savedNote,
+      message: 'Note created successfully'
+    });
+
+  } catch (error) {
+    console.error('❌ Error creating note:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to create note',
+      error: error.message
+    });
+  }
+});
+
+// Update a note
+router.put('/notes/:noteId', async (req, res) => {
+  try {
+    const { noteId } = req.params;
+    const {
+      title,
+      content,
+      tags,
+      pageNumber
+    } = req.body;
+
+    const updateData = {};
+    if (title !== undefined) updateData.title = title.trim();
+    if (content !== undefined) updateData.content = content.trim();
+    if (tags !== undefined) updateData.tags = Array.isArray(tags) ? tags.filter(tag => tag.trim()) : [];
+    if (pageNumber !== undefined) updateData.pageNumber = pageNumber;
+
+    console.log(`✏️ Updating note ${noteId}`);
+
+    const updated = await pipelineDatabase.updateNote(noteId, updateData);
+
+    if (!updated) {
+      return res.status(404).json({
+        success: false,
+        message: 'Note not found'
+      });
+    }
+
+    const updatedNote = await pipelineDatabase.getNoteById(noteId);
+
+    res.json({
+      success: true,
+      data: updatedNote,
+      message: 'Note updated successfully'
+    });
+
+  } catch (error) {
+    console.error('❌ Error updating note:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to update note',
+      error: error.message
+    });
+  }
+});
+
+// Delete a note
+router.delete('/notes/:noteId', async (req, res) => {
+  try {
+    const { noteId } = req.params;
+
+    console.log(`🗑️ Deleting note ${noteId}`);
+
+    const deleted = await pipelineDatabase.deleteNote(noteId);
+
+    if (!deleted) {
+      return res.status(404).json({
+        success: false,
+        message: 'Note not found'
+      });
+    }
+
+    res.json({
+      success: true,
+      message: 'Note deleted successfully'
+    });
+
+  } catch (error) {
+    console.error('❌ Error deleting note:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to delete note',
+      error: error.message
+    });
+  }
+});
+
+// Get notes for a specific reference (PES material, PDF, etc.)
+router.get('/notes/reference/:referenceType/:referenceId', async (req, res) => {
+  try {
+    const { referenceType, referenceId } = req.params;
+    const { userId } = req.query;
+
+    console.log(`📋 Fetching notes for ${referenceType}: ${referenceId}`);
+
+    const notes = await pipelineDatabase.getNotesByReference(referenceId, referenceType, userId);
+
+    res.json({
+      success: true,
+      data: notes
+    });
+
+  } catch (error) {
+    console.error('❌ Error fetching reference notes:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch notes',
+      error: error.message
+    });
+  }
+});
+
+// Get user notes statistics
+router.get('/notes/stats/:userId', async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    console.log(`📊 Fetching notes stats for user: ${userId}`);
+
+    const stats = await pipelineDatabase.getNotesStats(userId);
+
+    res.json({
+      success: true,
+      data: stats
+    });
+
+  } catch (error) {
+    console.error('❌ Error fetching notes stats:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch notes statistics',
+      error: error.message
+    });
+  }
+});
+
+// ===== RAG CHAT ENDPOINTS =====
+
+// RAG-based chat for workspace - answers questions about specific PDFs
+router.post('/workspace/chat', async (req, res) => {
+  try {
+    const { 
+      question, 
+      pdfId, 
+      currentPage, 
+      context 
+    } = req.body;
+
+    console.log('🤖 RAG Chat Request:', { question, pdfId, currentPage, context });
+
+    // Validate required fields
+    if (!question?.trim()) {
+      return res.status(400).json({
+        success: false,
+        message: 'Question is required'
+      });
+    }
+
+    // Call RAG service through pipeline integration
+    const chatResponse = await pipelineService.generateRAGResponse(
+      question,
+      pdfId,
+      currentPage,
+      context
+    );
+
+    res.json({
+      success: true,
+      data: {
+        response: chatResponse.answer,
+        context: chatResponse.context || context,
+        sources: chatResponse.sources || [],
+        relevantPage: chatResponse.relevantPage || currentPage,
+        timestamp: new Date().toISOString()
+      }
+    });
+
+  } catch (error) {
+    console.error('❌ Error in RAG chat:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to generate response',
+      error: error.message
+    });
+  }
+});
+
+// Get conversation history for a specific PDF context
+router.get('/workspace/chat/history/:pdfId', async (req, res) => {
+  try {
+    const { pdfId } = req.params;
+    const { userId } = req.query;
+
+    console.log('📚 Fetching chat history for PDF:', pdfId);
+
+    const history = await pipelineDatabase.getChatHistory(pdfId, userId);
+    
+    res.json({
+      success: true,
+      data: history || []
+    });
+
+  } catch (error) {
+    console.error('❌ Error fetching chat history:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch chat history',
+      error: error.message
+    });
+  }
+});
+
+// Save chat conversation to database
+router.post('/workspace/chat/save', async (req, res) => {
+  try {
+    const { 
+      pdfId, 
+      userId, 
+      question, 
+      answer, 
+      currentPage, 
+      context 
+    } = req.body;
+
+    console.log('💾 Saving chat conversation for PDF:', pdfId);
+
+    const savedChat = await pipelineDatabase.saveChatHistory({
+      pdfId,
+      userId,
+      question,
+      answer,
+      currentPage,
+      context,
+      timestamp: new Date().toISOString()
+    });
+    
+    res.json({
+      success: true,
+      data: savedChat
+    });
+
+  } catch (error) {
+    console.error('❌ Error saving chat history:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to save chat history',
+      error: error.message
+    });
+  }
+});
+
+// ===== SAVED MATERIALS ENDPOINTS =====
+
+// Save a material (PES or reference book)
+router.post('/saved-materials', async (req, res) => {
+  try {
+    const {
+      userId,
+      materialId,
+      materialType,
+      title,
+      subject,
+      unit,
+      fileName,
+      gridFSFileId,
+      description,
+      author,
+      pages
+    } = req.body;
+
+    console.log('💾 Saving material for user:', userId, 'Material:', title);
+
+    if (!userId || !materialId || !materialType || !title) {
+      return res.status(400).json({
+        success: false,
+        message: 'Missing required fields: userId, materialId, materialType, title'
+      });
+    }
+
+    const savedMaterial = await pipelineDatabase.saveMaterial({
+      userId,
+      materialId,
+      materialType, // 'pes_material' or 'reference_book'
+      title,
+      subject,
+      unit,
+      fileName,
+      gridFSFileId,
+      description,
+      author,
+      pages,
+      savedAt: new Date()
+    });
+
+    res.json({
+      success: true,
+      data: savedMaterial,
+      message: 'Material saved successfully'
+    });
+
+  } catch (error) {
+    console.error('❌ Error saving material:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to save material',
+      error: error.message
+    });
+  }
+});
+
+// Remove saved material
+router.delete('/saved-materials/:materialId', async (req, res) => {
+  try {
+    const { materialId } = req.params;
+    const { userId } = req.query;
+
+    console.log('🗑️ Removing saved material:', materialId, 'for user:', userId);
+
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        message: 'Missing userId parameter'
+      });
+    }
+
+    await pipelineDatabase.unsaveMaterial(materialId, userId);
+
+    res.json({
+      success: true,
+      message: 'Material removed from saved files'
+    });
+
+  } catch (error) {
+    console.error('❌ Error removing saved material:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to remove saved material',
+      error: error.message
+    });
+  }
+});
+
+// Get saved materials for a user
+router.get('/saved-materials/user/:userId', async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { page = 1, limit = 20, materialType } = req.query;
+
+    console.log('📋 Fetching saved materials for user:', userId);
+
+    const savedMaterials = await pipelineDatabase.getSavedMaterials(userId, {
+      page: parseInt(page),
+      limit: parseInt(limit),
+      materialType
+    });
+
+    res.json({
+      success: true,
+      data: savedMaterials,
+      message: `Found ${savedMaterials.length} saved materials`
+    });
+
+  } catch (error) {
+    console.error('❌ Error fetching saved materials:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch saved materials',
+      error: error.message
+    });
+  }
+});
+
+// ===== EXISTING ENDPOINTS =====
 
 module.exports = router;

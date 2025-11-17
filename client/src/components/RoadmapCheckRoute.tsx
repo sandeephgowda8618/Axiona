@@ -1,6 +1,5 @@
 import React from 'react'
 import { useAuth } from '../contexts/AuthContext'
-// @ts-ignore - JSX file import
 import SimpleRoadmapWizard from './SimpleRoadmapWizard'
 
 interface RoadmapCheckRouteProps {
@@ -19,9 +18,11 @@ const RoadmapCheckRoute: React.FC<RoadmapCheckRouteProps> = ({ children }) => {
   if (user && !user.roadmapCompleted) {
     return (
       <SimpleRoadmapWizard
-        userId={user.id}
-        onRoadmapGenerated={() => updateRoadmapCompleted(true)}
-        onSkip={() => updateRoadmapCompleted(true)} // Allow users to skip for now
+        onComplete={(roadmapData: any) => {
+          console.log('✅ Roadmap completed in RoadmapCheckRoute:', roadmapData);
+          updateRoadmapCompleted(true);
+        }}
+        onCancel={() => updateRoadmapCompleted(true)} // Allow users to skip for now
       />
     )
   }

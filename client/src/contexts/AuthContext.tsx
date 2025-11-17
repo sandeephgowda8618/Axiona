@@ -54,8 +54,43 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const githubProvider = new GithubAuthProvider()
 
   // Convert Firebase User to UserProfile
-  const createUserProfile = (firebaseUser: User): UserProfile => {
+  const createUserProfile = async (firebaseUser: User): Promise<UserProfile> => {
     const fallbackName = firebaseUser.email?.split('@')[0] || 'User'
+    
+    let roadmapCompleted = false;
+    
+    // First check localStorage for saved state
+    const savedRoadmapStatus = localStorage.getItem(`roadmap_completed_${firebaseUser.uid}`)
+    if (savedRoadmapStatus !== null) {
+      roadmapCompleted = JSON.parse(savedRoadmapStatus)
+      console.log('📋 Found saved roadmap status in localStorage:', roadmapCompleted)
+    }
+    
+    // Then check if user has existing roadmap in backend
+    try {
+      const token = await firebaseUser.getIdToken();
+      const response = await fetch('/api/users/me', {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (response.ok) {
+        const userData = await response.json();
+        const backendRoadmapStatus = !!userData.currentRoadmapId; // User has roadmap if they have currentRoadmapId
+        
+        // If backend says roadmap exists, override localStorage
+        if (backendRoadmapStatus && !roadmapCompleted) {
+          roadmapCompleted = true
+          localStorage.setItem(`roadmap_completed_${firebaseUser.uid}`, JSON.stringify(true))
+          console.log('📋 Backend roadmap found, updating localStorage')
+        }
+      }
+    } catch (error) {
+      console.warn('Could not fetch user roadmap data:', error);
+      // Use localStorage value if backend check fails
+    }
     
     return {
       id: firebaseUser.uid,
@@ -69,7 +104,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       weeklyActivity: '0h',
       joinedDate: firebaseUser.metadata.creationTime || new Date().toISOString(),
       lastActive: new Date().toISOString(),
-      roadmapCompleted: false, // New users need to complete roadmap
+      roadmapCompleted, // Set based on backend data
       preferences: {
         theme: 'light',
         notifications: true,
@@ -86,7 +121,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       if (firebaseUser) {
         // User is signed in
         setFirebaseUser(firebaseUser)
-        const userProfile = createUserProfile(firebaseUser)
+        const userProfile = await createUserProfile(firebaseUser)
         setUser(userProfile)
         
         // Get the ID token
@@ -176,8 +211,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     if (user) {
       const updatedUser = { ...user, roadmapCompleted: completed }
       setUser(updatedUser)
+      
+      // Save to localStorage for persistence
+      localStorage.setItem(`roadmap_completed_${user.id}`, JSON.stringify(completed))
+      
       // In a real app, you would also update this on your backend/database
       // await apiService.updateUserRoadmapStatus(user.id, completed)
+      console.log('✅ Updated roadmap completion status to:', completed)
     }
   }
 

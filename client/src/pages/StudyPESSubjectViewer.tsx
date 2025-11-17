@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
+import { useProgress } from '../contexts/ProgressContext';
+import { apiService, StudyPESMaterial } from '../services/api';
 import { 
   BookOpen, 
   Download, 
@@ -50,9 +53,7 @@ import { Viewer } from '@react-pdf-viewer/core';
 import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import '@react-pdf-viewer/default-layout/lib/styles/index.css';
-
-import { apiService, StudyPESMaterial } from '../services/api';
-import { useAuth } from '../contexts/AuthContext';
+import FloatingWorkspaceButton from '../components/FloatingWorkspaceButton';
 
 interface HighlightArea {
   id: string;
@@ -73,6 +74,7 @@ const StudyPESSubjectViewer: React.FC = () => {
   const { subjectName } = useParams<{ subjectName: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { trackMaterialActivity, currentWeek } = useProgress();
   
   // State management
   const [materials, setMaterials] = useState<StudyPESMaterial[]>([]);
@@ -82,6 +84,7 @@ const StudyPESSubjectViewer: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [completedMaterials, setCompletedMaterials] = useState<Set<string>>(new Set());
+  const [savedMaterials, setSavedMaterials] = useState<Set<string>>(new Set());
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [selectedUnit, setSelectedUnit] = useState<string>('all');
@@ -146,6 +149,21 @@ const StudyPESSubjectViewer: React.FC = () => {
     }
   };
 
+  // Function to track material access for progress
+  const trackMaterialAccess = (material: StudyPESMaterial) => {
+    const materialType = getFileExtension(material.fileName || '') === 'pdf' ? 'pdf' : 'reference'
+    
+    const activity = {
+      type: materialType as 'pdf' | 'reference' | 'video' | 'slide',
+      id: material.gridFSFileId || `${material.title}_${Date.now()}`,
+      title: material.title,
+      timestamp: Date.now()
+    }
+
+    console.log(`📚 Tracking material access: ${material.title} for Week ${currentWeek}`)
+    trackMaterialActivity(activity, currentWeek)
+  }
+
   // Function to download file
   const handleFileDownload = (material: StudyPESMaterial) => {
     if (!material.gridFSFileId) {
@@ -192,7 +210,9 @@ const StudyPESSubjectViewer: React.FC = () => {
           // Flatten all materials from all units
           const allMaterials: StudyPESMaterial[] = [];
           Object.values(subjectData.units).forEach(unitMaterials => {
-            allMaterials.push(...unitMaterials);
+            if (Array.isArray(unitMaterials)) {
+              allMaterials.push(...unitMaterials as StudyPESMaterial[]);
+            }
           });
           
           setMaterials(allMaterials);
@@ -277,7 +297,8 @@ const StudyPESSubjectViewer: React.FC = () => {
         userId: user.id,
         pageNumber: currentPage,
         tags: [selectedMaterial.subject || 'StudyPES'],
-        isPublic: false
+        isPublic: false,
+        context: 'pes_material' as const
       };
 
       // Use the notes context to create note
@@ -353,6 +374,68 @@ const StudyPESSubjectViewer: React.FC = () => {
       setSelectedMaterial(null);
     }
   }, [filteredMaterials]);
+
+  // Save/Unsave material functionality
+  const handleSaveMaterial = async (material: StudyPESMaterial) => {
+    if (!user) {
+      alert('Please sign in to save materials');
+      return;
+    }
+
+    try {
+      const isSaved = savedMaterials.has(material.id);
+      
+      if (isSaved) {
+        // Unsave material
+        await apiService.unsaveMaterial(material.id, user.id);
+        setSavedMaterials(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(material.id);
+          return newSet;
+        });
+        alert('Material removed from saved files');
+      } else {
+        // Save material
+        const savedFileData = {
+          userId: user.id,
+          materialId: material.id,
+          materialType: 'pes_material',
+          title: material.title,
+          subject: material.subject,
+          unit: material.unit,
+          fileName: material.fileName,
+          gridFSFileId: material.gridFSFileId,
+          description: material.description,
+          author: material.author,
+          pages: material.pages
+        };
+        
+        await apiService.saveMaterial(savedFileData);
+        setSavedMaterials(prev => new Set(prev).add(material.id));
+        alert('Material saved to My Rack!');
+      }
+    } catch (error) {
+      console.error('❌ Error saving/unsaving material:', error);
+      alert('Failed to save material. Please try again.');
+    }
+  };
+
+  // Load saved materials on component mount
+  useEffect(() => {
+    const loadSavedMaterials = async () => {
+      if (!user) return;
+      
+      try {
+        const savedFiles = await apiService.getSavedMaterials(user.id);
+        const savedIds = new Set(savedFiles.map((file: any) => file.materialId) as string[]);
+        setSavedMaterials(savedIds);
+      } catch (error) {
+        console.error('❌ Error loading saved materials:', error);
+      }
+    };
+    
+    loadSavedMaterials();
+  }, [user]);
 
   if (loading) {
     return (
@@ -443,7 +526,10 @@ const StudyPESSubjectViewer: React.FC = () => {
                   ? 'bg-blue-50 border-l-4 border-l-blue-500 shadow-sm'
                   : 'hover:bg-gray-50 hover:shadow-sm'
               }`}
-              onClick={() => setSelectedMaterial(material)}
+              onClick={() => {
+                setSelectedMaterial(material)
+                trackMaterialAccess(material)
+              }}
             >
               <div className="flex items-start justify-between">
                 <div className="flex items-start space-x-3 flex-1">
@@ -626,16 +712,6 @@ const StudyPESSubjectViewer: React.FC = () => {
 
                   {/* Right Side - Secondary Actions */}
                   <div className="flex items-center gap-3">
-                    {/* Workspace Button */}
-                    <button
-                      onClick={() => navigate('/workspace')}
-                      className="flex items-center px-3 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
-                    >
-                      <Briefcase className="w-4 h-4 mr-2" />
-                      Workspace
-                      <ExternalLink className="w-3 h-3 ml-1" />
-                    </button>
-
                     {/* Share Button */}
                     <button
                       onClick={() => {
@@ -648,16 +724,17 @@ const StudyPESSubjectViewer: React.FC = () => {
                       Share
                     </button>
 
-                    {/* Bookmark Button */}
+                    {/* Save Button */}
                     <button
-                      onClick={() => {
-                        // Add bookmark functionality here
-                        alert('Bookmarked!');
-                      }}
-                      className="flex items-center px-3 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+                      onClick={() => handleSaveMaterial(selectedMaterial)}
+                      className={`flex items-center px-3 py-2 rounded-lg transition-colors ${
+                        savedMaterials.has(selectedMaterial.id)
+                          ? 'bg-green-600 text-white hover:bg-green-700'
+                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      }`}
                     >
-                      <Bookmark className="w-4 h-4 mr-2" />
-                      Bookmark
+                      <Save className="w-4 h-4 mr-2" />
+                      {savedMaterials.has(selectedMaterial.id) ? 'Saved' : 'Save'}
                     </button>
 
                     {/* Settings/More Options */}
@@ -815,6 +892,25 @@ const StudyPESSubjectViewer: React.FC = () => {
           <CheckCircle className="w-5 h-5" />
           Note saved successfully!
         </div>
+      )}
+
+      {/* Floating Workspace Button */}
+      {selectedMaterial && (
+        <FloatingWorkspaceButton
+          content={{
+            id: selectedMaterial.id,
+            title: selectedMaterial.title,
+            type: 'material' as const,
+            url: selectedMaterial.gridFSFileId ? `http://localhost:5050/api/pipeline/files/${selectedMaterial.gridFSFileId}` : undefined,
+            pdfData: selectedMaterial.gridFSFileId ? {
+              fileUrl: `http://localhost:5050/api/pipeline/files/${selectedMaterial.gridFSFileId}`,
+              fileName: selectedMaterial.fileName,
+              pages: selectedMaterial.pages
+            } : undefined,
+            currentPage: currentPage,
+            progress: Math.round((Array.from(completedMaterials).filter(id => filteredMaterials.some(m => m.id === id)).length / filteredMaterials.length) * 100) || 0
+          }}
+        />
       )}
     </div>
   );

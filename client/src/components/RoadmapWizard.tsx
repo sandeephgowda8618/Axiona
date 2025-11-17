@@ -1,533 +1,574 @@
-import React, { useState, useEffect } from 'react'
-import { X, ChevronRight, BookOpen, Brain, Target, Clock, Star, CheckCircle, AlertCircle } from 'lucide-react'
-import { apiService } from '../services/api'
+import React, { useState, useEffect } from 'react';
+import { ChevronRightIcon, ChevronLeftIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { generateRoadmap } from '../services/api';
+import { 
+  FiCpu, 
+  FiMonitor, 
+  FiCode, 
+  FiDatabase,
+  FiTrendingUp,
+  FiSettings,
+  FiTarget,
+  FiLayers,
+  FiActivity,
+  FiZap
+} from 'react-icons/fi';
+import {
+  SiPython,
+  SiJavascript,
+  SiReact,
+  SiElectron
+} from 'react-icons/si';
+
+interface Question {
+  question_id: string;
+  question_text: string;
+  question_type: 'multiple_choice' | 'open_ended' | 'rating_scale';
+  options?: string[];
+  scale?: { min: number; max: number; labels: string[] };
+}
 
 interface RoadmapWizardProps {
-  isOpen: boolean
-  onClose: () => void
-  onComplete: (roadmapData: any) => void
-  userId: string
+  isOpen: boolean;
+  onClose: () => void;
+  onComplete: (roadmap: any) => void;
 }
 
-interface DomainOption {
-  id: string
-  name: string
-  description: string
-  icon: string
-}
-
-interface ExperienceLevel {
-  id: string
-  name: string
-  description: string
-  hoursPerWeek: number
-}
-
-interface InterviewQuestion {
-  question_id: string
-  question_text: string
-  question_type: 'open_ended' | 'multiple_choice' | 'rating_scale'
-  options?: string[]
-  category?: string
-  required?: boolean
-}
-
-const DOMAIN_OPTIONS: DomainOption[] = [
+// Subject configuration with icons and descriptions
+const subjectConfig = [
   {
-    id: 'electronics',
-    name: 'Electronics & Communication',
-    description: 'ECE, Signals, Digital Electronics, Communication Systems',
-    icon: '📡'
-  },
-  {
-    id: 'computer_science',
     name: 'Computer Science',
-    description: 'Programming, Data Structures, Algorithms, Software Development',
-    icon: '💻'
+    icon: FiCode,
+    color: 'text-blue-600',
+    bgColor: 'bg-blue-50',
+    borderColor: 'border-blue-500',
+    description: 'Programming, Data Structures, Algorithms, Software Development'
   },
   {
-    id: 'electrical',
-    name: 'Electrical Engineering',
-    description: 'Power Systems, Control Systems, Electrical Machines',
-    icon: '⚡'
-  },
-  {
-    id: 'mechanical',
-    name: 'Mechanical Engineering',
-    description: 'Thermodynamics, Fluid Mechanics, Machine Design',
-    icon: '⚙️'
-  },
-  {
-    id: 'civil',
-    name: 'Civil Engineering',
-    description: 'Structural Engineering, Transportation, Geotechnical',
-    icon: '🏗️'
-  },
-  {
-    id: 'mathematics',
     name: 'Mathematics',
-    description: 'Calculus, Linear Algebra, Statistics, Applied Math',
-    icon: '🔢'
-  }
-]
-
-const EXPERIENCE_LEVELS: ExperienceLevel[] = [
-  {
-    id: 'beginner',
-    name: 'Beginner',
-    description: 'New to this field, need foundational knowledge',
-    hoursPerWeek: 5
+    icon: FiTrendingUp,
+    color: 'text-green-600',
+    bgColor: 'bg-green-50',
+    borderColor: 'border-green-500',
+    description: 'Calculus, Linear Algebra, Statistics, Applied Mathematics'
   },
   {
-    id: 'intermediate',
-    name: 'Intermediate',
-    description: 'Some experience, ready for advanced topics',
-    hoursPerWeek: 8
+    name: 'Physics',
+    icon: FiZap,
+    color: 'text-purple-600',
+    bgColor: 'bg-purple-50',
+    borderColor: 'border-purple-500',
+    description: 'Mechanics, Electromagnetism, Quantum Physics'
   },
   {
-    id: 'advanced',
-    name: 'Advanced',
-    description: 'Strong foundation, looking for specialization',
-    hoursPerWeek: 12
+    name: 'Electronics',
+    icon: FiCpu,
+    color: 'text-orange-600',
+    bgColor: 'bg-orange-50',
+    borderColor: 'border-orange-500',
+    description: 'Circuits, Digital Systems, Communication'
+  },
+  {
+    name: 'Mechanical',
+    icon: FiSettings,
+    color: 'text-gray-600',
+    bgColor: 'bg-gray-50',
+    borderColor: 'border-gray-500',
+    description: 'Thermodynamics, Fluid Mechanics, Machine Design'
+  },
+  {
+    name: 'Civil',
+    icon: FiLayers,
+    color: 'text-red-600',
+    bgColor: 'bg-red-50',
+    borderColor: 'border-red-500',
+    description: 'Structures, Materials, Transportation'
+  },
+  {
+    name: 'Chemistry',
+    icon: FiActivity,
+    color: 'text-pink-600',
+    bgColor: 'bg-pink-50',
+    borderColor: 'border-pink-500',
+    description: 'Organic, Inorganic, Physical Chemistry'
+  },
+  {
+    name: 'Electrical',
+    icon: FiZap,
+    color: 'text-yellow-600',
+    bgColor: 'bg-yellow-50',
+    borderColor: 'border-yellow-500',
+    description: 'Power Systems, Control Systems, Electrical Machines'
   }
-]
+];
 
-const RoadmapWizard: React.FC<RoadmapWizardProps> = ({
-  isOpen,
-  onClose,
-  onComplete,
-  userId
-}) => {
-  const [currentStep, setCurrentStep] = useState<'domain' | 'experience' | 'questions' | 'generating' | 'complete'>('domain')
-  const [selectedDomain, setSelectedDomain] = useState<string>('')
-  const [selectedExperience, setSelectedExperience] = useState<string>('')
-  const [interviewQuestions, setInterviewQuestions] = useState<InterviewQuestion[]>([])
-  const [userAnswers, setUserAnswers] = useState<Record<string, any>>({})
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [generatedRoadmap, setGeneratedRoadmap] = useState<any>(null)
+const RoadmapWizard: React.FC<RoadmapWizardProps> = ({ isOpen, onClose, onComplete }) => {
+  const [currentStep, setCurrentStep] = useState(0);
+  const [selectedDomain, setSelectedDomain] = useState('');
+  const [experienceLevel, setExperienceLevel] = useState('');
+  const [questions, setQuestions] = useState<Question[]>([]);
+  const [answers, setAnswers] = useState<Record<string, any>>({});
+  const [isLoading, setIsLoading] = useState(false);
+  const [isGeneratingQuestions, setIsGeneratingQuestions] = useState(false);
+
+  const steps = ['Domain', 'Experience', 'Assessment', 'Generate'];
+
+  const experienceLevels = [
+    { id: 'beginner', label: 'Beginner', description: 'Just starting out' },
+    { id: 'intermediate', label: 'Intermediate', description: 'Some experience' },
+    { id: 'advanced', label: 'Advanced', description: 'Experienced learner' }
+  ];
 
   useEffect(() => {
-    if (isOpen) {
-      setCurrentStep('domain')
-      setSelectedDomain('')
-      setSelectedExperience('')
-      setInterviewQuestions([])
-      setUserAnswers({})
-      setError(null)
-      setGeneratedRoadmap(null)
+    if (currentStep === 2 && selectedDomain && experienceLevel && questions.length === 0) {
+      fetchQuestions();
     }
-  }, [isOpen])
+  }, [currentStep, selectedDomain, experienceLevel]);
 
-  const handleDomainSelect = async (domainId: string) => {
-    setSelectedDomain(domainId)
-  }
-
-  const handleExperienceSelect = async (experienceId: string) => {
-    setSelectedExperience(experienceId)
-  }
-
-  const proceedToQuestions = async () => {
-    if (!selectedDomain || !selectedExperience) {
-      setError('Please select both domain and experience level')
-      return
-    }
-
-    setLoading(true)
-    setError(null)
-    
+  const fetchQuestions = async () => {
     try {
-      // Fetch interview questions based on domain and experience
-      const questions = await apiService.getInterviewQuestions()
-      console.log('📋 Fetched interview questions:', questions)
-      
-      // Filter questions based on selected domain (if needed)
-      setInterviewQuestions(questions.slice(0, 5)) // Limit to 5 questions for demo
-      setCurrentStep('questions')
-    } catch (err) {
-      console.error('❌ Error fetching questions:', err)
-      setError('Failed to load interview questions')
-    } finally {
-      setLoading(false)
-    }
-  }
+      setIsGeneratingQuestions(true);
+      const response = await fetch('/api/pipeline/generate-interview-questions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          domain: selectedDomain, 
+          experience_level: experienceLevel 
+        })
+      });
 
-  const handleAnswerChange = (questionId: string, answer: any) => {
-    setUserAnswers(prev => ({
-      ...prev,
-      [questionId]: answer
-    }))
-  }
-
-  const generateRoadmap = async () => {
-    setLoading(true)
-    setCurrentStep('generating')
-    setError(null)
-
-    try {
-      const selectedDomainData = DOMAIN_OPTIONS.find(d => d.id === selectedDomain)
-      const selectedExperienceData = EXPERIENCE_LEVELS.find(e => e.id === selectedExperience)
-
-      // Prepare roadmap generation data
-      const roadmapRequest = {
-        userId,
-        domain: selectedDomain,
-        domainName: selectedDomainData?.name,
-        experienceLevel: selectedExperience,
-        hoursPerWeek: selectedExperienceData?.hoursPerWeek,
-        userAnswers: Object.entries(userAnswers).map(([questionId, answer]) => ({
-          questionId,
-          answer,
-          question: interviewQuestions.find(q => q.question_id === questionId)?.question_text
-        }))
+      if (!response.ok) {
+        throw new Error(`Failed to fetch questions: ${response.statusText}`);
       }
 
-      console.log('🚀 Generating roadmap with data:', roadmapRequest)
+      const data = await response.json();
+      console.log('Fetched questions:', data);
       
-      const roadmapData = await apiService.generateRoadmap(userId, roadmapRequest.userAnswers)
-      console.log('✅ Roadmap generated:', roadmapData)
-      
-      setGeneratedRoadmap(roadmapData)
-      setCurrentStep('complete')
-      
-      // Call parent completion handler
-      onComplete(roadmapData)
-      
-    } catch (err) {
-      console.error('❌ Error generating roadmap:', err)
-      setError('Failed to generate roadmap. Please try again.')
-      setCurrentStep('questions')
+      if (data.questions && Array.isArray(data.questions)) {
+        setQuestions(data.questions);
+      } else {
+        console.error('Invalid questions format received:', data);
+        // Fallback to generate sample domain-specific questions
+        setQuestions(generateSampleQuestions(selectedDomain, experienceLevel));
+      }
+    } catch (error) {
+      console.error('Error fetching questions:', error);
+      // Fallback to sample questions
+      setQuestions(generateSampleQuestions(selectedDomain, experienceLevel));
     } finally {
-      setLoading(false)
+      setIsGeneratingQuestions(false);
     }
-  }
+  };
+
+  const generateSampleQuestions = (domain: string, level: string): Question[] => {
+    const baseQuestions: Question[] = [];
+    
+    // Domain-specific questions
+    if (domain === 'Computer Science') {
+      baseQuestions.push(
+        {
+          question_id: 'cs-001',
+          question_text: 'What programming languages are you familiar with?',
+          question_type: 'multiple_choice',
+          options: ['Python', 'JavaScript', 'Java', 'C++', 'None yet']
+        },
+        {
+          question_id: 'cs-002',
+          question_text: 'Which area interests you most?',
+          question_type: 'multiple_choice',
+          options: ['Web Development', 'Data Science', 'Mobile Apps', 'AI/ML', 'Cybersecurity']
+        },
+        {
+          question_id: 'cs-003',
+          question_text: 'How comfortable are you with debugging code?',
+          question_type: 'rating_scale',
+          scale: { min: 1, max: 5, labels: ['Not at all', 'Very comfortable'] }
+        }
+      );
+    } else if (domain === 'Mathematics') {
+      baseQuestions.push(
+        {
+          question_id: 'math-001',
+          question_text: 'Which math areas do you want to focus on?',
+          question_type: 'multiple_choice',
+          options: ['Calculus', 'Linear Algebra', 'Statistics', 'Discrete Math', 'Applied Math']
+        },
+        {
+          question_id: 'math-002',
+          question_text: 'Do you prefer theoretical proofs or practical applications?',
+          question_type: 'multiple_choice',
+          options: ['Theoretical proofs', 'Practical applications', 'Both equally']
+        }
+      );
+    } else if (domain === 'Physics') {
+      baseQuestions.push(
+        {
+          question_id: 'phy-001',
+          question_text: 'Which physics area interests you most?',
+          question_type: 'multiple_choice',
+          options: ['Classical Mechanics', 'Electromagnetism', 'Quantum Physics', 'Thermodynamics']
+        },
+        {
+          question_id: 'phy-002',
+          question_text: 'How comfortable are you with mathematical equations in physics?',
+          question_type: 'rating_scale',
+          scale: { min: 1, max: 5, labels: ['Not comfortable', 'Very comfortable'] }
+        }
+      );
+    }
+    
+    // Add common questions
+    baseQuestions.push(
+      {
+        question_id: 'common-001',
+        question_text: 'How many hours per week can you dedicate to studying?',
+        question_type: 'multiple_choice',
+        options: ['1-3 hours', '4-6 hours', '7-10 hours', 'More than 10 hours']
+      },
+      {
+        question_id: 'common-002',
+        question_text: 'What is your preferred learning style?',
+        question_type: 'multiple_choice',
+        options: ['Videos and tutorials', 'Reading and research', 'Hands-on practice', 'Group discussions']
+      }
+    );
+
+    return baseQuestions;
+  };
+
+  const handleNext = () => {
+    if (currentStep < steps.length - 1) {
+      setCurrentStep(currentStep + 1);
+    }
+  };
+
+  const handleBack = () => {
+    if (currentStep > 0) {
+      setCurrentStep(currentStep - 1);
+    }
+  };
+
+  const handleDomainSelect = (domain: string) => {
+    setSelectedDomain(domain);
+    // Reset questions when domain changes
+    setQuestions([]);
+    setAnswers({});
+  };
+
+  const handleExperienceSelect = (level: string) => {
+    setExperienceLevel(level);
+    // Reset questions when experience level changes
+    setQuestions([]);
+    setAnswers({});
+  };
+
+  const handleAnswerChange = (questionId: string, answer: any) => {
+    setAnswers(prev => ({
+      ...prev,
+      [questionId]: answer
+    }));
+  };
+
+  const handleGenerateRoadmap = async () => {
+    try {
+      setIsLoading(true);
+      
+      const roadmapData = {
+        domain: selectedDomain,
+        experience_level: experienceLevel,
+        interview_responses: answers
+      };
+
+      console.log('Generating roadmap with data:', roadmapData);
+      
+      const roadmap = await generateRoadmap(roadmapData);
+      console.log('Generated roadmap:', roadmap);
+      
+      onComplete(roadmap);
+    } catch (error) {
+      console.error('Error generating roadmap:', error);
+      alert('Failed to generate roadmap. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const renderDomainStep = () => (
     <div className="space-y-6">
       <div className="text-center">
-        <h3 className="text-xl font-semibold text-gray-900 mb-2">
-          Choose Your Learning Domain
-        </h3>
-        <p className="text-gray-600">
-          Select the subject area you want to focus on for your personalized learning roadmap
-        </p>
+        <h3 className="text-lg font-medium text-gray-900 mb-2">Choose Your Domain</h3>
+        <p className="text-sm text-gray-600">Select the subject you want to focus on</p>
       </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-96 overflow-y-auto">
-        {DOMAIN_OPTIONS.map((domain) => (
-          <button
-            key={domain.id}
-            onClick={() => handleDomainSelect(domain.id)}
-            className={`p-4 rounded-lg border-2 text-left transition-all duration-200 hover:shadow-md ${
-              selectedDomain === domain.id
-                ? 'border-blue-500 bg-blue-50 ring-2 ring-blue-200'
-                : 'border-gray-200 bg-white hover:border-gray-300'
-            }`}
-          >
-            <div className="flex items-start space-x-3">
-              <span className="text-2xl" role="img" aria-label={domain.name}>
-                {domain.icon}
-              </span>
-              <div>
-                <h4 className="font-medium text-gray-900">{domain.name}</h4>
-                <p className="text-sm text-gray-600 mt-1">{domain.description}</p>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {subjectConfig.map((subject) => {
+          const IconComponent = subject.icon;
+          const isSelected = selectedDomain === subject.name;
+          
+          return (
+            <button
+              key={subject.name}
+              onClick={() => handleDomainSelect(subject.name)}
+              className={`p-6 rounded-xl border-2 text-left transition-all duration-200 hover:shadow-lg ${
+                isSelected
+                  ? `${subject.borderColor} ${subject.bgColor} ring-2 ring-offset-2 ring-offset-white ring-blue-500`
+                  : 'border-gray-200 hover:border-gray-300 hover:shadow-md bg-white'
+              }`}
+            >
+              <div className="flex items-start space-x-4">
+                <div className={`p-3 rounded-lg ${isSelected ? subject.bgColor : 'bg-gray-100'}`}>
+                  <IconComponent 
+                    className={`w-6 h-6 ${isSelected ? subject.color : 'text-gray-600'}`} 
+                  />
+                </div>
+                <div className="flex-1">
+                  <h4 className={`font-medium mb-1 ${isSelected ? subject.color : 'text-gray-900'}`}>
+                    {subject.name}
+                  </h4>
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    {subject.description}
+                  </p>
+                </div>
               </div>
-            </div>
-          </button>
-        ))}
-      </div>
-
-      <div className="flex justify-end">
-        <button
-          onClick={() => setCurrentStep('experience')}
-          disabled={!selectedDomain}
-          className={`px-6 py-2 rounded-lg font-medium transition-colors ${
-            selectedDomain
-              ? 'bg-blue-600 text-white hover:bg-blue-700'
-              : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-          }`}
-        >
-          Next: Experience Level
-        </button>
+            </button>
+          );
+        })}
       </div>
     </div>
-  )
+  );
 
   const renderExperienceStep = () => (
     <div className="space-y-6">
       <div className="text-center">
-        <h3 className="text-xl font-semibold text-gray-900 mb-2">
-          What's Your Experience Level?
-        </h3>
-        <p className="text-gray-600">
-          This helps us customize the difficulty and pace of your learning path
-        </p>
+        <h3 className="text-lg font-medium text-gray-900 mb-2">Your Experience Level</h3>
+        <p className="text-sm text-gray-600">This helps us customize your learning path</p>
       </div>
-
+      
       <div className="space-y-3">
-        {EXPERIENCE_LEVELS.map((level) => (
+        {experienceLevels.map((level) => (
           <button
             key={level.id}
             onClick={() => handleExperienceSelect(level.id)}
             className={`w-full p-4 rounded-lg border-2 text-left transition-all duration-200 hover:shadow-md ${
-              selectedExperience === level.id
-                ? 'border-blue-500 bg-blue-50 ring-2 ring-blue-200'
-                : 'border-gray-200 bg-white hover:border-gray-300'
+              experienceLevel === level.id
+                ? 'border-blue-500 bg-blue-50'
+                : 'border-gray-200 hover:border-gray-300'
             }`}
           >
-            <div className="flex items-center justify-between">
-              <div>
-                <h4 className="font-medium text-gray-900">{level.name}</h4>
-                <p className="text-sm text-gray-600 mt-1">{level.description}</p>
-              </div>
-              <div className="text-right">
-                <div className="text-sm font-medium text-blue-600">
-                  {level.hoursPerWeek}h/week
-                </div>
-                <div className="text-xs text-gray-500">Recommended</div>
-              </div>
-            </div>
+            <div className="font-medium text-gray-900">{level.label}</div>
+            <div className="text-sm text-gray-600">{level.description}</div>
           </button>
         ))}
       </div>
-
-      <div className="flex justify-between">
-        <button
-          onClick={() => setCurrentStep('domain')}
-          className="px-6 py-2 rounded-lg font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 transition-colors"
-        >
-          Back
-        </button>
-        <button
-          onClick={proceedToQuestions}
-          disabled={!selectedExperience || loading}
-          className={`px-6 py-2 rounded-lg font-medium transition-colors flex items-center ${
-            selectedExperience && !loading
-              ? 'bg-blue-600 text-white hover:bg-blue-700'
-              : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-          }`}
-        >
-          {loading ? (
-            <>
-              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-              Loading...
-            </>
-          ) : (
-            'Next: Quick Assessment'
-          )}
-        </button>
-      </div>
     </div>
-  )
+  );
 
-  const renderQuestionsStep = () => (
+  const renderQuestionInput = (question: Question) => {
+    const questionId = question.question_id;
+    
+    switch (question.question_type) {
+      case 'multiple_choice':
+        return (
+          <div className="space-y-2">
+            {question.options?.map((option, index) => (
+              <label key={index} className="flex items-center space-x-3 cursor-pointer">
+                <input
+                  type="radio"
+                  name={questionId}
+                  value={option}
+                  checked={answers[questionId] === option}
+                  onChange={(e) => handleAnswerChange(questionId, e.target.value)}
+                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
+                />
+                <span className="text-sm text-gray-700">{option}</span>
+              </label>
+            ))}
+          </div>
+        );
+      
+      case 'rating_scale':
+        const scale = question.scale || { min: 1, max: 5, labels: ['Very Low', 'Low', 'Medium', 'High', 'Very High'] };
+        return (
+          <div className="space-y-3">
+            <div className="flex justify-between text-xs text-gray-500">
+              <span>{scale.labels[0]}</span>
+              <span>{scale.labels[scale.labels.length - 1]}</span>
+            </div>
+            <div className="flex space-x-2">
+              {Array.from({ length: scale.max - scale.min + 1 }, (_, i) => scale.min + i).map((value) => (
+                <button
+                  key={value}
+                  onClick={() => handleAnswerChange(questionId, value)}
+                  className={`w-8 h-8 rounded-full border-2 text-sm font-medium transition-all duration-200 ${
+                    answers[questionId] === value
+                      ? 'border-blue-500 bg-blue-500 text-white'
+                      : 'border-gray-300 hover:border-blue-400'
+                  }`}
+                >
+                  {value}
+                </button>
+              ))}
+            </div>
+          </div>
+        );
+      
+      case 'open_ended':
+      default:
+        return (
+          <textarea
+            value={answers[questionId] || ''}
+            onChange={(e) => handleAnswerChange(questionId, e.target.value)}
+            rows={3}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            placeholder="Type your answer here..."
+          />
+        );
+    }
+  };
+
+  const renderAssessmentStep = () => (
     <div className="space-y-6">
       <div className="text-center">
-        <h3 className="text-xl font-semibold text-gray-900 mb-2">
-          Quick Learning Assessment
-        </h3>
-        <p className="text-gray-600">
-          Help us personalize your roadmap with a few quick questions
-        </p>
+        <h3 className="text-lg font-medium text-gray-900 mb-2">Assessment Questions</h3>
+        <p className="text-sm text-gray-600">Help us understand your current knowledge and goals</p>
       </div>
-
-      <div className="max-h-96 overflow-y-auto space-y-4">
-        {interviewQuestions.map((question, index) => {
-          const questionId = question.question_id;
-          const questionType = question.question_type;
-          
-          return (
-            <div key={questionId} className="bg-gray-50 rounded-lg p-4">
+      
+      {isGeneratingQuestions ? (
+        <div className="text-center py-8">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-4"></div>
+          <p className="text-sm text-gray-600">Generating personalized questions...</p>
+        </div>
+      ) : questions.length === 0 ? (
+        <div className="text-center py-8">
+          <p className="text-sm text-gray-600">No questions available. Please try again.</p>
+        </div>
+      ) : (
+        <div className="space-y-6">
+          {questions.map((question, index) => (
+            <div key={question.question_id} className="bg-gray-50 p-4 rounded-lg">
               <h4 className="font-medium text-gray-900 mb-3">
                 {index + 1}. {question.question_text}
               </h4>
-
-              {questionType === 'multiple_choice' && question.options && (
-                <div className="space-y-2">
-                  {question.options.map((option, optionIndex) => (
-                    <label key={`${questionId}-${optionIndex}`} className="flex items-center">
-                      <input
-                        type="radio"
-                        name={questionId}
-                        value={option}
-                        onChange={(e) => handleAnswerChange(questionId, e.target.value)}
-                        className="mr-2"
-                      />
-                      <span className="text-sm text-gray-700">{option}</span>
-                    </label>
-                  ))}
-                </div>
-              )}
-
-              {(questionType === 'open_ended' || !questionType) && (
-                <textarea
-                  placeholder="Your answer..."
-                  rows={3}
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
-                  onChange={(e) => handleAnswerChange(questionId, e.target.value)}
-                />
-              )}
-
-              {questionType === 'rating_scale' && (
-                <div className="flex items-center space-x-4">
-                  <span className="text-sm text-gray-600">1</span>
-                  <input
-                    type="range"
-                    min="1"
-                    max="10"
-                    defaultValue="5"
-                    className="flex-1"
-                    onChange={(e) => handleAnswerChange(questionId, parseInt(e.target.value))}
-                  />
-                  <span className="text-sm text-gray-600">10</span>
-                  <span className="text-sm font-medium text-gray-700 min-w-8">
-                    {userAnswers[questionId] || 5}
-                  </span>
-                </div>
-              )}
+              {renderQuestionInput(question)}
             </div>
-          );
-        })}
-      </div>
-
-      <div className="flex justify-between">
-        <button
-          onClick={() => setCurrentStep('experience')}
-          className="px-6 py-2 rounded-lg font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 transition-colors"
-        >
-          Back
-        </button>
-        <button
-          onClick={generateRoadmap}
-          disabled={loading || Object.keys(userAnswers).length === 0}
-          className={`px-6 py-2 rounded-lg font-medium transition-colors flex items-center ${
-            !loading && Object.keys(userAnswers).length > 0
-              ? 'bg-green-600 text-white hover:bg-green-700'
-              : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-          }`}
-        >
-          <Target className="h-4 w-4 mr-2" />
-          Generate My Roadmap
-        </button>
-      </div>
-    </div>
-  )
-
-  const renderGeneratingStep = () => (
-    <div className="text-center space-y-6 py-8">
-      <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-blue-600 mx-auto"></div>
-      <div>
-        <h3 className="text-xl font-semibold text-gray-900 mb-2">
-          Creating Your Learning Roadmap
-        </h3>
-        <p className="text-gray-600">
-          Our AI is analyzing your preferences and generating a personalized learning path...
-        </p>
-      </div>
-      <div className="bg-blue-50 rounded-lg p-4">
-        <div className="flex items-center justify-center space-x-2 text-blue-700 text-sm">
-          <Brain className="h-4 w-4" />
-          <span>Matching with PES curriculum and study materials</span>
-        </div>
-      </div>
-    </div>
-  )
-
-  const renderCompleteStep = () => (
-    <div className="text-center space-y-6">
-      <CheckCircle className="h-16 w-16 text-green-600 mx-auto" />
-      <div>
-        <h3 className="text-xl font-semibold text-gray-900 mb-2">
-          Roadmap Created Successfully!
-        </h3>
-        <p className="text-gray-600">
-          Your personalized learning roadmap is ready. You can now view it in your dashboard.
-        </p>
-      </div>
-      {generatedRoadmap && (
-        <div className="bg-green-50 rounded-lg p-4 text-left">
-          <h4 className="font-medium text-green-900 mb-2">Your Learning Path Summary:</h4>
-          <div className="space-y-1 text-sm text-green-800">
-            <div>🎯 Goal: {generatedRoadmap.learning_goal}</div>
-            <div>📚 Phases: {generatedRoadmap.generated_roadmap?.total_phases || 'Multiple'}</div>
-            <div>⏱️ Weekly Commitment: {generatedRoadmap.hours_per_week}h</div>
-            <div>📈 Level: {generatedRoadmap.experience_level}</div>
-          </div>
+          ))}
         </div>
       )}
+    </div>
+  );
+
+  const renderGenerateStep = () => (
+    <div className="space-y-6 text-center">
+      <div>
+        <h3 className="text-lg font-medium text-gray-900 mb-2">Ready to Generate Your Roadmap</h3>
+        <p className="text-sm text-gray-600">
+          Based on your selections, we'll create a personalized learning roadmap for {selectedDomain}
+        </p>
+      </div>
+      
+      <div className="bg-gray-50 p-4 rounded-lg text-left">
+        <h4 className="font-medium text-gray-900 mb-2">Summary:</h4>
+        <ul className="text-sm text-gray-600 space-y-1">
+          <li><span className="font-medium">Domain:</span> {selectedDomain}</li>
+          <li><span className="font-medium">Experience:</span> {experienceLevel}</li>
+          <li><span className="font-medium">Questions answered:</span> {Object.keys(answers).length}</li>
+        </ul>
+      </div>
+      
       <button
-        onClick={onClose}
-        className="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition-colors"
+        onClick={handleGenerateRoadmap}
+        disabled={isLoading}
+        className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
       >
-        View My Dashboard
+        {isLoading ? (
+          <div className="flex items-center justify-center">
+            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+            Generating Roadmap...
+          </div>
+        ) : (
+          'Generate My Learning Roadmap'
+        )}
       </button>
     </div>
-  )
+  );
 
-  if (!isOpen) return null
+  const canProceed = () => {
+    switch (currentStep) {
+      case 0: return selectedDomain !== '';
+      case 1: return experienceLevel !== '';
+      case 2: return questions.length > 0 && Object.keys(answers).length >= Math.floor(questions.length / 2);
+      default: return true;
+    }
+  };
+
+  if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-hidden">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+      <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+        {/* Header */}
         <div className="flex items-center justify-between p-6 border-b">
-          <div className="flex items-center space-x-2">
-            <BookOpen className="h-6 w-6 text-blue-600" />
-            <h2 className="text-lg font-semibold text-gray-900">
-              Learning Roadmap Setup
-            </h2>
-          </div>
-          {currentStep !== 'generating' && (
-            <button
-              onClick={onClose}
-              className="text-gray-400 hover:text-gray-600 transition-colors"
-            >
-              <X className="h-6 w-6" />
-            </button>
-          )}
-        </div>
-
-        <div className="p-6">
-          {error && (
-            <div className="mb-6 bg-red-50 border border-red-200 rounded-lg p-4 flex items-center space-x-2">
-              <AlertCircle className="h-5 w-5 text-red-600" />
-              <span className="text-red-800 text-sm">{error}</span>
-            </div>
-          )}
-
-          {currentStep === 'domain' && renderDomainStep()}
-          {currentStep === 'experience' && renderExperienceStep()}
-          {currentStep === 'questions' && renderQuestionsStep()}
-          {currentStep === 'generating' && renderGeneratingStep()}
-          {currentStep === 'complete' && renderCompleteStep()}
-        </div>
-
-        {/* Progress Indicator */}
-        {currentStep !== 'generating' && currentStep !== 'complete' && (
-          <div className="border-t bg-gray-50 px-6 py-4">
-            <div className="flex items-center justify-between text-sm text-gray-600">
-              <span>
-                Step {currentStep === 'domain' ? 1 : currentStep === 'experience' ? 2 : 3} of 3
-              </span>
-              <div className="flex space-x-2">
-                {['domain', 'experience', 'questions'].map((step, index) => (
+          <div>
+            <h2 className="text-xl font-semibold text-gray-900">Create Your Learning Roadmap</h2>
+            <div className="flex items-center mt-2">
+              {steps.map((step, index) => (
+                <div key={step} className="flex items-center">
                   <div
-                    key={step}
-                    className={`w-2 h-2 rounded-full ${
-                      (currentStep === 'domain' && index === 0) ||
-                      (currentStep === 'experience' && index <= 1) ||
-                      (currentStep === 'questions' && index <= 2)
-                        ? 'bg-blue-600'
-                        : 'bg-gray-300'
+                    className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
+                      index <= currentStep
+                        ? 'bg-blue-600 text-white'
+                        : 'bg-gray-200 text-gray-600'
                     }`}
-                  />
-                ))}
-              </div>
+                  >
+                    {index + 1}
+                  </div>
+                  <span className={`ml-2 text-sm ${index <= currentStep ? 'text-blue-600' : 'text-gray-500'}`}>
+                    {step}
+                  </span>
+                  {index < steps.length - 1 && (
+                    <ChevronRightIcon className="w-4 h-4 mx-2 text-gray-400" />
+                  )}
+                </div>
+              ))}
             </div>
+          </div>
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
+            <XMarkIcon className="w-6 h-6" />
+          </button>
+        </div>
+
+        {/* Content */}
+        <div className="p-6">
+          {currentStep === 0 && renderDomainStep()}
+          {currentStep === 1 && renderExperienceStep()}
+          {currentStep === 2 && renderAssessmentStep()}
+          {currentStep === 3 && renderGenerateStep()}
+        </div>
+
+        {/* Footer */}
+        {currentStep < 3 && (
+          <div className="flex items-center justify-between p-6 border-t">
+            <button
+              onClick={handleBack}
+              disabled={currentStep === 0}
+              className="flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <ChevronLeftIcon className="w-4 h-4 mr-2" />
+              Back
+            </button>
+            <button
+              onClick={handleNext}
+              disabled={!canProceed()}
+              className="flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Next
+              <ChevronRightIcon className="w-4 h-4 ml-2" />
+            </button>
           </div>
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default RoadmapWizard
+export default RoadmapWizard;

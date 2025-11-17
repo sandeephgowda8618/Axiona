@@ -134,97 +134,135 @@ export interface Highlight {
 }
 
 export interface Note {
-  _id: string
-  title: string
-  content: string
-  pdfId: string
-  userId: string
-  pdfTitle: string
-  pageNumber?: number
-  tags: string[]
-  isPublic?: boolean
-  lastViewedAt: string
-  createdAt: string
-  updatedAt: string
-  pdfId_populated?: PDFMaterial
-  userId_populated?: UserProfile
+  _id: string;
+  title: string;
+  content: string;
+  context: 'pes_material' | 'workspace' | 'general';
+  referenceId?: string;
+  referenceType?: string;
+  referenceTitle?: string;
+  pageNumber?: number;
+  tags: string[];
+  userId: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface CreateNoteRequest {
-  title: string
-  content: string
-  pdfId: string
-  userId: string
-  pageNumber?: number
-  tags?: string[]
-  isPublic?: boolean
+  userId: string;
+  title: string;
+  content: string;
+  context: 'pes_material' | 'workspace' | 'general';
+  referenceId?: string;
+  referenceType?: string;
+  referenceTitle?: string;
+  pageNumber?: number;
+  tags?: string[];
+}
+
+export interface NotesResponse {
+  success: boolean;
+  data: Note[];
+  pagination?: {
+    currentPage: number;
+    totalPages: number;
+    totalItems: number;
+    hasNextPage: boolean;
+    hasPrevPage: boolean;
+  };
+}
+
+export interface NotesStats {
+  total: number;
+  pes_materials: number;
+  workspace: number;
+  general: number;
 }
 
 export interface UpdateNoteRequest {
-  title?: string
-  content?: string
-  tags?: string[]
-  isPublic?: boolean
-}
-
-export interface PaginatedResponse<T> {
-  success: boolean
-  data: T[]
-  pagination: {
-    currentPage: number
-    totalPages: number
-    totalItems: number
-    hasNextPage: boolean
-    hasPrevPage: boolean
-  }
-  message?: string
+  title?: string;
+  content?: string;
+  tags?: string[];
+  pageNumber?: number;
 }
 
 export interface Subject {
-  domain: string
-  title: string
-  pdfCount: number
-  totalPages: number
-  totalDownloads: number
-  averagePages: number
-  topicCount: number
-  thumbnailUrl: string
-  lastUpdated: string
-  description: string
-}
-
-// StudyPES Material Interfaces
-export interface StudyPESMaterial {
-  id: string
-  title: string
-  description: string
-  url: string
-  pdfUrl: string
-  fileSize: string
-  pages: number
-  author: string
-  semester: number
-  year: string
-  type: string
-  difficulty: string
-  subject: string
-  unit: string
-  gridFSFileId?: string
-  fileName?: string
-}
-
-export interface StudyPESSubject {
-  name: string
-  units: Record<string, StudyPESMaterial[]>
-  totalMaterials: number
+  id: string;
+  name: string;
+  description: string;
+  materialsCount: number;
+  [key: string]: any; // Allow additional properties
 }
 
 export interface StudyPESSubjectsResponse {
-  subjects: Record<string, StudyPESSubject>
-  totalSubjects: number
-  totalMaterials: number
-  success: boolean
-  message: string
+  success: boolean;
+  subjects: Record<string, any>;
+  totalSubjects?: number;
+  totalMaterials?: number;
+  message?: string;
+}
+
+export interface PaginatedResponse<T> {
+  success: boolean;
+  data: T[];
+  pagination: {
+    currentPage: number;
+    totalPages: number;
+    totalItems: number;
+    hasNextPage: boolean;
+    hasPrevPage: boolean;
+  };
+}
+
+// RAG Chat interfaces for workspace AI assistance
+export interface RAGChatResponse {
+  response: string;
+  context?: string;
+  sources?: string[];
+  relevantPage?: number;
+  timestamp: string;
+}
+
+export interface ChatHistoryItem {
+  id: string;
+  pdfId: string;
+  userId: string;
+  question: string;
+  answer: string;
+  currentPage: number;
+  context?: string;
+  timestamp: string;
+  createdAt: string;
+}
+
+export interface SaveChatRequest {
+  pdfId: string;
+  userId: string;
+  question: string;
+  answer: string;
+  currentPage: number;
+  context?: string;
+}
+
+// StudyPES Material interface for PES study materials
+export interface StudyPESMaterial {
+  id: string
+  title: string
+  fileName: string
+  gridFSFileId: string
+  fileUrl?: string
+  fileSize?: number
+  pages: number
+  author?: string
+  subject?: string
+  semester?: number
+  unit?: string
+  level?: string
+  description?: string
+  tags?: string[]
+  createdAt?: string
+  lastUpdated?: string
+  downloadCount?: number
 }
 
 // API Service Class
@@ -462,6 +500,8 @@ class ApiService {
   private getMockSubjects(): Subject[] {
     return [
       {
+        id: 'computer-science',
+        name: 'Computer Science',
         domain: 'computer-science',
         title: 'Computer Science',
         pdfCount: 45,
@@ -469,11 +509,14 @@ class ApiService {
         totalDownloads: 2350,
         averagePages: 28,
         topicCount: 12,
+        materialsCount: 45,
         thumbnailUrl: '/api/placeholder/300/200',
         lastUpdated: '2024-01-15',
         description: 'Comprehensive collection of computer science materials including algorithms, data structures, and programming concepts.'
       },
       {
+        id: 'mathematics',
+        name: 'Mathematics',
         domain: 'mathematics',
         title: 'Mathematics',
         pdfCount: 38,
@@ -481,11 +524,14 @@ class ApiService {
         totalDownloads: 1840,
         averagePages: 26,
         topicCount: 10,
+        materialsCount: 38,
         thumbnailUrl: '/api/placeholder/300/200',
         lastUpdated: '2024-01-12',
         description: 'Mathematical foundations covering calculus, linear algebra, discrete mathematics, and statistical analysis.'
       },
       {
+        id: 'physics',
+        name: 'Physics',
         domain: 'physics',
         title: 'Physics',
         pdfCount: 32,
@@ -493,11 +539,14 @@ class ApiService {
         totalDownloads: 1290,
         averagePages: 23,
         topicCount: 8,
+        materialsCount: 32,
         thumbnailUrl: '/api/placeholder/300/200',
         lastUpdated: '2024-01-10',
         description: 'Physics concepts from classical mechanics to quantum physics and thermodynamics.'
       },
       {
+        id: 'chemistry',
+        name: 'Chemistry',
         domain: 'chemistry',
         title: 'Chemistry',
         pdfCount: 28,
@@ -505,11 +554,14 @@ class ApiService {
         totalDownloads: 1120,
         averagePages: 23,
         topicCount: 7,
+        materialsCount: 28,
         thumbnailUrl: '/api/placeholder/300/200',
         lastUpdated: '2024-01-08',
         description: 'Organic, inorganic, and physical chemistry materials with lab procedures and theory.'
       },
       {
+        id: 'electronics',
+        name: 'Electronics Engineering',
         domain: 'electronics',
         title: 'Electronics Engineering',
         pdfCount: 35,
@@ -517,11 +569,14 @@ class ApiService {
         totalDownloads: 1670,
         averagePages: 26,
         topicCount: 9,
+        materialsCount: 35,
         thumbnailUrl: '/api/placeholder/300/200',
         lastUpdated: '2024-01-14',
         description: 'Circuit analysis, digital electronics, microprocessors, and communication systems.'
       },
       {
+        id: 'mechanical',
+        name: 'Mechanical Engineering',
         domain: 'mechanical',
         title: 'Mechanical Engineering',
         pdfCount: 30,
@@ -529,6 +584,7 @@ class ApiService {
         totalDownloads: 1450,
         averagePages: 27,
         topicCount: 8,
+        materialsCount: 30,
         thumbnailUrl: '/api/placeholder/300/200',
         lastUpdated: '2024-01-11',
         description: 'Thermodynamics, fluid mechanics, manufacturing processes, and machine design.'
@@ -720,11 +776,16 @@ class ApiService {
   // ==================== PIPELINE APIs ====================
   
   // Interview Questions
-  async getInterviewQuestions(): Promise<any[]> {
+  async getInterviewQuestions(domain?: string, experienceLevel?: string): Promise<any[]> {
     try {
       console.log('🎯 Fetching interview questions from pipeline...');
-      const response = await fetch(`${this.baseURL}/pipeline/roadmap/questions`, {
-        headers: this.getHeaders()
+      const response = await fetch(`${this.baseURL}/pipeline/generate-interview-questions`, {
+        method: 'POST',
+        headers: this.getHeaders(),
+        body: JSON.stringify({
+          domain: domain || 'Computer Science',
+          experience_level: experienceLevel || 'beginner'
+        })
       });
       
       if (!response.ok) {
@@ -732,7 +793,7 @@ class ApiService {
       }
       
       const result = await response.json();
-      return result.success ? result.data : [];
+      return result.success ? result.questions : [];
     } catch (error) {
       console.error('❌ Error fetching interview questions:', error);
       throw error;
@@ -740,13 +801,15 @@ class ApiService {
   }
   
   // Roadmap Generation
-  async generateRoadmap(userId: string, userAnswers: any[]): Promise<any> {
+  async generateRoadmap(userId: string, roadmapData: any): Promise<any> {
     try {
       console.log('🚀 Generating roadmap for user:', userId);
+      console.log('📝 Roadmap data:', roadmapData);
+      
       const response = await fetch(`${this.baseURL}/pipeline/roadmap/generate`, {
         method: 'POST',
         headers: this.getHeaders(),
-        body: JSON.stringify({ userId, userAnswers })
+        body: JSON.stringify(roadmapData)
       });
       
       if (!response.ok) {
@@ -798,84 +861,268 @@ class ApiService {
 
   // ==================== NOTES APIs ====================
   
+  // Create a new note
   async createNote(noteData: CreateNoteRequest): Promise<Note> {
-    console.log('🌐 API: Creating note with data:', noteData);
-    console.log('🔗 API: Using URL:', `${this.baseURL}/notes`);
-    console.log('🔑 API: Using headers:', this.getHeaders());
+    console.log('📝 Creating note:', noteData.title);
     
-    const response = await fetch(`${this.baseURL}/notes`, {
+    const response = await fetch(`${this.baseURL}/pipeline/notes`, {
       method: 'POST',
       headers: this.getHeaders(),
       body: JSON.stringify(noteData)
-    })
-    
-    console.log('📡 API: Response status:', response.status);
-    console.log('📡 API: Response ok:', response.ok);
-    
+    });
+
     if (!response.ok) {
-      const errorData = await response.text();
-      console.error('❌ API: Error response:', errorData);
-      try {
-        const errorJson = JSON.parse(errorData);
-        throw new Error(errorJson.message || 'Failed to create note')
-      } catch (parseError) {
-        throw new Error(`Failed to create note: ${errorData}`)
-      }
+      throw new Error('Failed to create note');
     }
-    
-    const data = await response.json()
-    console.log('✅ API: Success response:', data);
-    return data.data
+
+    const data = await response.json();
+    return data.data;
   }
 
-  async getUserNotes(userId: string): Promise<Note[]> {
-    console.log('🔍 API: Fetching notes for user:', userId);
-    const response = await fetch(`${this.baseURL}/notes/user/${userId}`, {
-      method: 'GET',
+  // Get notes for a user
+  async getUserNotes(
+    userId: string,
+    options: {
+      page?: number;
+      limit?: number;
+      search?: string;
+      context?: string;
+      sortBy?: string;
+      sortOrder?: string;
+    } = {}
+  ): Promise<NotesResponse> {
+    console.log('📋 Fetching notes for user:', userId);
+    
+    const params = new URLSearchParams();
+    if (options.page) params.append('page', options.page.toString());
+    if (options.limit) params.append('limit', options.limit.toString());
+    if (options.search) params.append('search', options.search);
+    if (options.context) params.append('context', options.context);
+    if (options.sortBy) params.append('sortBy', options.sortBy);
+    if (options.sortOrder) params.append('sortOrder', options.sortOrder);
+
+    const response = await fetch(`${this.baseURL}/pipeline/notes/user/${userId}?${params}`, {
       headers: this.getHeaders()
-    })
-    
-    console.log('📡 API: Response status:', response.status, response.statusText);
-    
+    });
+
     if (!response.ok) {
-      throw new Error('Failed to fetch user notes')
+      throw new Error('Failed to fetch notes');
     }
-    
-    const data = await response.json()
-    console.log('📋 API: Received data:', data);
-    console.log('📋 API: Notes count:', data.data?.length || 0);
-    return data.data
+
+    return response.json();
   }
 
+  // Get notes by reference (PES material, PDF, etc.)
+  async getNotesByReference(
+    referenceType: string,
+    referenceId: string,
+    userId?: string
+  ): Promise<Note[]> {
+    console.log(`📋 Fetching notes for ${referenceType}: ${referenceId}`);
+    
+    const params = new URLSearchParams();
+    if (userId) params.append('userId', userId);
+
+    const response = await fetch(
+      `${this.baseURL}/pipeline/notes/reference/${referenceType}/${referenceId}?${params}`,
+      { headers: this.getHeaders() }
+    );
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch reference notes');
+    }
+
+    const data = await response.json();
+    return data.data;
+  }
+
+  // Update a note
   async updateNote(noteId: string, updateData: UpdateNoteRequest): Promise<Note> {
-    const response = await fetch(`${this.baseURL}/notes/${noteId}`, {
+    console.log('✏️ Updating note:', noteId);
+    
+    const response = await fetch(`${this.baseURL}/pipeline/notes/${noteId}`, {
       method: 'PUT',
       headers: this.getHeaders(),
       body: JSON.stringify(updateData)
-    })
-    
+    });
+
     if (!response.ok) {
-      throw new Error('Failed to update note')
+      throw new Error('Failed to update note');
     }
-    
-    const data = await response.json()
-    return data.data
+
+    const data = await response.json();
+    return data.data;
   }
 
+  // Delete a note
   async deleteNote(noteId: string): Promise<void> {
-    const response = await fetch(`${this.baseURL}/notes/${noteId}`, {
+    console.log('🗑️ Deleting note:', noteId);
+    
+    const response = await fetch(`${this.baseURL}/pipeline/notes/${noteId}`, {
       method: 'DELETE',
       headers: this.getHeaders()
-    })
-    
+    });
+
     if (!response.ok) {
-      throw new Error('Failed to delete note')
+      throw new Error('Failed to delete note');
     }
+  }
+
+  // Get notes statistics for a user
+  async getNotesStats(userId: string): Promise<NotesStats> {
+    console.log('📊 Fetching notes stats for user:', userId);
+    
+    const response = await fetch(`${this.baseURL}/pipeline/notes/stats/${userId}`, {
+      headers: this.getHeaders()
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch notes statistics')
+    }
+
+    const data = await response.json();
+    return data.data;
+  }
+
+  // ===== RAG CHAT API METHODS =====
+
+  // Send a question to RAG system and get AI response
+  async sendRAGChatMessage(question: string, pdfId?: string, currentPage?: number, context?: string): Promise<RAGChatResponse> {
+    console.log('🤖 Sending RAG chat message:', { question, pdfId, currentPage, context });
+    
+    const response = await fetch(`${this.baseURL}/pipeline/workspace/chat`, {
+      method: 'POST',
+      headers: this.getHeaders(),
+      body: JSON.stringify({
+        question: question.trim(),
+        pdfId: pdfId || null,
+        currentPage: currentPage || 1,
+        context: context || null
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to get AI response');
+    }
+
+    const data = await response.json();
+    return data.data;
+  }
+
+  // Get chat history for a specific PDF
+  async getChatHistory(pdfId: string, userId?: string): Promise<ChatHistoryItem[]> {
+    console.log('📚 Fetching chat history for PDF:', pdfId);
+    
+    const queryParams = userId ? `?userId=${encodeURIComponent(userId)}` : '';
+    const response = await fetch(`${this.baseURL}/pipeline/workspace/chat/history/${encodeURIComponent(pdfId)}${queryParams}`, {
+      headers: this.getHeaders()
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch chat history');
+    }
+
+    const data = await response.json();
+    return data.data;
+  }
+
+  // Save chat conversation to database
+  async saveChatHistory(chatData: SaveChatRequest): Promise<ChatHistoryItem> {
+    console.log('💾 Saving chat history:', chatData);
+    
+    const response = await fetch(`${this.baseURL}/pipeline/workspace/chat/save`, {
+      method: 'POST',
+      headers: this.getHeaders(),
+      body: JSON.stringify(chatData)
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to save chat history');
+    }
+
+    const data = await response.json();
+    return data.data;
+  }
+
+  // ===== SAVED MATERIALS API METHODS =====
+
+  // Save a material (PES or reference book)
+  async saveMaterial(materialData: any): Promise<any> {
+    console.log('💾 Saving material:', materialData.title);
+    
+    const response = await fetch(`${this.baseURL}/pipeline/saved-materials`, {
+      method: 'POST',
+      headers: this.getHeaders(),
+      body: JSON.stringify(materialData)
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to save material');
+    }
+
+    const data = await response.json();
+    return data.data;
+  }
+
+  // Unsave a material
+  async unsaveMaterial(materialId: string, userId: string): Promise<void> {
+    console.log('🗑️ Unsaving material:', materialId);
+    
+    const response = await fetch(`${this.baseURL}/pipeline/saved-materials/${materialId}?userId=${userId}`, {
+      method: 'DELETE',
+      headers: this.getHeaders()
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to unsave material');
+    }
+  }
+
+  // Get saved materials for a user
+  async getSavedMaterials(userId: string): Promise<any[]> {
+    console.log('📋 Fetching saved materials for user:', userId);
+    
+    const response = await fetch(`${this.baseURL}/pipeline/saved-materials/user/${userId}`, {
+      headers: this.getHeaders()
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch saved materials');
+    }
+
+    const data = await response.json();
+    return data.data;
   }
 }
 
 // Export singleton instance
 export const apiService = new ApiService()
+
+// Convenience function exports
+export const generateRoadmap = (roadmapData: any) => {
+  // Format roadmap data properly for backend according to pipeline expectations
+  const formattedAnswers = [];
+  
+  if (roadmapData.interview_responses) {
+    for (const [questionId, answer] of Object.entries(roadmapData.interview_responses)) {
+      formattedAnswers.push({
+        questionId: questionId,
+        question_id: questionId,  // Pipeline expects this field
+        answer: answer
+      });
+    }
+  }
+  
+  const requestData = {
+    userId: 'current-user',
+    domain: roadmapData.domain,
+    experience_level: roadmapData.experience_level,
+    userAnswers: formattedAnswers
+  };
+  
+  return apiService.generateRoadmap('current-user', requestData);
+}
+export const getUserRoadmap = (userId?: string) => apiService.getUserRoadmap(userId || 'current-user')
 
 // Mock data for development
 export const mockUserProfile: UserProfile = {

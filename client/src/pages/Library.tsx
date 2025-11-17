@@ -12,10 +12,12 @@ import {
 import { useNavigate } from 'react-router-dom'
 import FloatingWorkspaceButton from '../components/FloatingWorkspaceButton'
 import { LibraryBook } from '../types/library'
+import { useProgress } from '../contexts/ProgressContext'
 import axios from '../api/axios'
 
 const Library: React.FC = () => {
   const navigate = useNavigate()
+  const { trackMaterialActivity, currentWeek } = useProgress()
   const [books, setBooks] = useState<LibraryBook[]>([])
   const [filteredBooks, setFilteredBooks] = useState<LibraryBook[]>([])
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
@@ -129,6 +131,17 @@ const Library: React.FC = () => {
       pdfUrl: book.pdfUrl,
       gridFSFileId: book.gridFSFileId
     })
+
+    // Track this PDF as a material activity for the current week
+    trackMaterialActivity({
+      type: 'pdf',
+      id: book._id || book.gridFSFileId || `book_${Date.now()}`,
+      title: getDisplayTitle(book),
+      timestamp: Date.now(),
+      pages: book.pages || undefined
+    }, currentWeek)
+
+    console.log(`📈 Tracked PDF opening: "${getDisplayTitle(book)}" for week ${currentWeek}`)
     
     // Use the pipeline GridFS endpoint with full URL for PDF viewing
     let pdfUrl = book.pdfUrl

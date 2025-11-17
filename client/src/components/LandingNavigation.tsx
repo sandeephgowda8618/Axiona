@@ -1,15 +1,25 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 
 const LandingNavigation: React.FC = () => {
   const { user, isAuthenticated, logout } = useAuth()
+  const navigate = useNavigate()
 
   const handleLogout = async () => {
     try {
       await logout()
     } catch (error) {
       console.error('Logout failed:', error)
+    }
+  }
+
+  const handleNavigation = (path: string, name: string) => {
+    console.log(`Navigating to: ${name} (${path})`)
+    try {
+      navigate(path)
+    } catch (error) {
+      console.error(`Navigation failed to ${path}:`, error)
     }
   }
 
@@ -27,25 +37,43 @@ const LandingNavigation: React.FC = () => {
 
           {/* Navigation Links */}
           <nav className="hidden md:flex items-center space-x-8">
-            <Link to="/tutorial-hub" className="nav-link text-gray-300 hover:text-white transition-colors">
+            <button 
+              onClick={() => handleNavigation('/tutorial-hub', 'Tutorial Hub')}
+              className="nav-link text-gray-300 hover:text-white transition-colors cursor-pointer"
+            >
               Tutorial Hub
-            </Link>
-            <Link to="/study-materials" className="nav-link text-gray-300 hover:text-white transition-colors">
+            </button>
+            <button 
+              onClick={() => handleNavigation('/study-materials', 'StudyPES')}
+              className="nav-link text-gray-300 hover:text-white transition-colors cursor-pointer"
+            >
               StudyPES
-            </Link>
-            <Link to="/conference" className="nav-link text-gray-300 hover:text-white transition-colors">
+            </button>
+            <button 
+              onClick={() => handleNavigation('/conference', 'Conference')}
+              className="nav-link text-gray-300 hover:text-white transition-colors cursor-pointer"
+            >
               Conference
-            </Link>
-            <Link to="/library" className="nav-link text-gray-300 hover:text-white transition-colors">
+            </button>
+            <button 
+              onClick={() => handleNavigation('/library', 'Library')}
+              className="nav-link text-gray-300 hover:text-white transition-colors cursor-pointer"
+            >
               Library
-            </Link>
-            <Link to="/my-rack" className="nav-link text-gray-300 hover:text-white transition-colors">
+            </button>
+            <button 
+              onClick={() => handleNavigation('/my-rack', 'My Rack')}
+              className="nav-link text-gray-300 hover:text-white transition-colors cursor-pointer"
+            >
               My Rack
-            </Link>
+            </button>
             {isAuthenticated && (
-              <Link to="/profile" className="nav-link text-gray-300 hover:text-white transition-colors">
+              <button 
+                onClick={() => handleNavigation('/profile', 'Profile')}
+                className="nav-link text-gray-300 hover:text-white transition-colors cursor-pointer"
+              >
                 Profile
-              </Link>
+              </button>
             )}
           </nav>
 

@@ -497,6 +497,418 @@ class PipelineDatabaseService {
   async getDatabaseStatus() {
     return await this.healthCheck();
   }
+
+  // ===== NOTES METHODS =====
+  
+  async saveNote(noteData) {
+    await this.connect();
+    
+    const note = {
+      ...noteData,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+    
+    const result = await this.db.collection('notes').insertOne(note);
+    return result.insertedId;
+  }
+
+  async getNotesByUserId(userId, options = {}) {
+    await this.connect();
+    
+    const {
+      page = 1,
+      limit = 20,
+      search = null,
+      context = null, // 'pes_material', 'workspace', 'general'
+      sortBy = 'updatedAt',
+      sortOrder = -1
+    } = options;
+    
+    let query = { userId };
+    
+    // Add context filter
+    if (context) {
+      query.context = context;
+    }
+    
+    // Add search functionality
+    if (search) {
+      query.$or = [
+        { title: { $regex: search, $options: 'i' } },
+        { content: { $regex: search, $options: 'i' } },
+        { tags: { $in: [new RegExp(search, 'i')] } }
+      ];
+    }
+    
+    const notes = await this.db.collection('notes')
+      .find(query)
+      .sort({ [sortBy]: sortOrder })
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .toArray();
+    
+    const total = await this.db.collection('notes').countDocuments(query);
+    
+    return {
+      notes,
+      pagination: {
+        currentPage: page,
+        totalPages: Math.ceil(total / limit),
+        totalItems: total,
+        hasNextPage: page < Math.ceil(total / limit),
+        hasPrevPage: page > 1
+      }
+    };
+  }
+
+  async getNoteById(noteId) {
+    await this.connect();
+    
+    const note = await this.db.collection('notes').findOne({ 
+      _id: new ObjectId(noteId) 
+    });
+    
+    return note;
+  }
+
+  async updateNote(noteId, updateData) {
+    await this.connect();
+    
+    const update = {
+      ...updateData,
+      updatedAt: new Date().toISOString()
+    };
+    
+    const result = await this.db.collection('notes').updateOne(
+      { _id: new ObjectId(noteId) },
+      { $set: update }
+    );
+    
+    return result.matchedCount > 0;
+  }
+
+  async deleteNote(noteId) {
+    await this.connect();
+    
+    const result = await this.db.collection('notes').deleteOne({ 
+      _id: new ObjectId(noteId) 
+    });
+    
+    return result.deletedCount > 0;
+  }
+
+  async getNotesByReference(referenceId, referenceType, userId = null) {
+    await this.connect();
+    
+    let query = {
+      referenceId: referenceId,
+      referenceType: referenceType
+    };
+    
+    if (userId) {
+      query.userId = userId;
+    }
+    
+    const notes = await this.db.collection('notes')
+      .find(query)
+      .sort({ updatedAt: -1 })
+      .toArray();
+    
+    return notes;
+  }
+
+  async getNotesStats(userId) {
+    await this.connect();
+    
+    const stats = await this.db.collection('notes').aggregate([
+      { $match: { userId: userId } },
+      {
+        $group: {
+          _id: '$context',
+          count: { $sum: 1 }
+        }
+      }
+    ]).toArray();
+    
+    // Get total count
+    const totalNotes = await this.db.collection('notes').countDocuments({ userId });
+    
+    // Format stats
+    const formattedStats = {
+      total: totalNotes,
+      pes_materials: 0,
+      workspace: 0,
+      general: 0,
+      ...stats.reduce((acc, stat) => {
+        acc[stat._id || 'general'] = stat.count;
+        return acc;
+      }, {})
+    };
+    
+    return formattedStats;
+  }
+
+  // ===== CHAT HISTORY METHODS =====
+
+  /**
+   * Save chat conversation to database
+   */
+  async saveChatHistory(chatData) {
+    try {
+      await this.connect();
+      
+      const chatRecord = {
+        ...chatData,
+        _id: new ObjectId(),
+        createdAt: new Date(),
+        updatedAt: new Date()
+      };
+      
+      const result = await this.db.collection('chat_history').insertOne(chatRecord);
+      console.log('💾 Chat conversation saved:', result.insertedId);
+      
+      return {
+        id: result.insertedId.toString(),
+        ...chatRecord
+      };
+      
+    } catch (error) {
+      console.error('❌ Error saving chat history:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Get chat history for a specific PDF and user
+   */
+  async getChatHistory(pdfId, userId = null) {
+    try {
+      await this.connect();
+      
+      const query = { pdfId };
+      if (userId) {
+        query.userId = userId;
+      }
+      
+      const chatHistory = await this.db.collection('chat_history')
+        .find(query)
+        .sort({ createdAt: 1 }) // Chronological order
+        .limit(50) // Limit to last 50 messages
+        .toArray();
+      
+      return chatHistory.map(chat => ({
+        id: chat._id.toString(),
+        pdfId: chat.pdfId,
+        userId: chat.userId,
+        question: chat.question,
+        answer: chat.answer,
+        currentPage: chat.currentPage,
+        context: chat.context,
+        timestamp: chat.timestamp,
+        createdAt: chat.createdAt
+      }));
+      
+    } catch (error) {
+      console.error('❌ Error fetching chat history:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Delete old chat history (cleanup)
+   */
+  async cleanupChatHistory(daysOld = 30) {
+    try {
+      await this.connect();
+      
+      const cutoffDate = new Date();
+      cutoffDate.setDate(cutoffDate.getDate() - daysOld);
+      
+      const result = await this.db.collection('chat_history').deleteMany({
+        createdAt: { $lt: cutoffDate }
+      });
+      
+      console.log(`🗑️ Cleaned up ${result.deletedCount} old chat records`);
+      return result.deletedCount;
+      
+    } catch (error) {
+      console.error('❌ Error cleaning up chat history:', error);
+      throw error;
+    }
+  }
+
+  // ===== SAVED MATERIALS METHODS =====
+
+  /**
+   * Save a material for a user
+   */
+  async saveMaterial(materialData) {
+    try {
+      await this.connect();
+
+      // Check if material is already saved by this user
+      const existingSave = await this.db.collection('saved_materials').findOne({
+        userId: materialData.userId,
+        materialId: materialData.materialId
+      });
+
+      if (existingSave) {
+        console.log('⚠️ Material already saved by user');
+        return existingSave;
+      }
+
+      const savedMaterial = {
+        ...materialData,
+        _id: new ObjectId(),
+        savedAt: new Date(),
+        createdAt: new Date(),
+        updatedAt: new Date()
+      };
+
+      const result = await this.db.collection('saved_materials').insertOne(savedMaterial);
+      savedMaterial._id = result.insertedId;
+
+      console.log(`✅ Material saved: ${materialData.title} for user ${materialData.userId}`);
+      return savedMaterial;
+
+    } catch (error) {
+      console.error('❌ Error saving material:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Remove a saved material for a user
+   */
+  async unsaveMaterial(materialId, userId) {
+    try {
+      await this.connect();
+
+      const result = await this.db.collection('saved_materials').deleteOne({
+        materialId: materialId,
+        userId: userId
+      });
+
+      console.log(`🗑️ Removed saved material ${materialId} for user ${userId}`);
+      return result.deletedCount > 0;
+
+    } catch (error) {
+      console.error('❌ Error removing saved material:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Get all saved materials for a user
+   */
+  async getSavedMaterials(userId, options = {}) {
+    try {
+      await this.connect();
+
+      const {
+        page = 1,
+        limit = 20,
+        materialType = null
+      } = options;
+
+      const query = { userId };
+      if (materialType) {
+        query.materialType = materialType;
+      }
+
+      const skip = (page - 1) * limit;
+
+      const savedMaterials = await this.db.collection('saved_materials')
+        .find(query)
+        .sort({ savedAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .toArray();
+
+      console.log(`📋 Found ${savedMaterials.length} saved materials for user ${userId}`);
+      return savedMaterials;
+
+    } catch (error) {
+      console.error('❌ Error fetching saved materials:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Check if a material is saved by a user
+   */
+  async isMaterialSaved(materialId, userId) {
+    try {
+      await this.connect();
+
+      const savedMaterial = await this.db.collection('saved_materials').findOne({
+        materialId: materialId,
+        userId: userId
+      });
+
+      return !!savedMaterial;
+
+    } catch (error) {
+      console.error('❌ Error checking if material is saved:', error);
+      return false;
+    }
+  }
+
+  // ===== CLEANUP METHODS =====
+
+  /**
+   * Cleanup old or unused data (materials, notes, etc.)
+   */
+  async cleanupData() {
+    try {
+      await this.connect();
+      
+      const cutoffDate = new Date();
+      cutoffDate.setFullYear(cutoffDate.getFullYear() - 1); // 1 year ago
+      
+      // Delete old PES materials not updated in the last year
+      const pesCleanupResult = await this.db.collection('pes_materials').deleteMany({
+        last_updated: { $lt: cutoffDate }
+      });
+      console.log(`🗑️ Deleted ${pesCleanupResult.deletedCount} old PES materials`);
+      
+      // Delete old reference books not updated in the last year
+      const booksCleanupResult = await this.db.collection('reference_books').deleteMany({
+        last_updated: { $lt: cutoffDate }
+      });
+      console.log(`🗑️ Deleted ${booksCleanupResult.deletedCount} old reference books`);
+      
+      // Delete old roadmaps not updated in the last year
+      const roadmapsCleanupResult = await this.db.collection('roadmaps').deleteMany({
+        last_updated: { $lt: cutoffDate }
+      });
+      console.log(`🗑️ Deleted ${roadmapsCleanupResult.deletedCount} old roadmaps`);
+      
+      // Delete old notes not updated in the last year
+      const notesCleanupResult = await this.db.collection('notes').deleteMany({
+        updatedAt: { $lt: cutoffDate }
+      });
+      console.log(`🗑️ Deleted ${notesCleanupResult.deletedCount} old notes`);
+      
+      // Delete old chat history older than 30 days
+      const chatCleanupResult = await this.db.collection('chat_history').deleteMany({
+        createdAt: { $lt: new Date(Date.now() - 30*24*60*60*1000) }
+      });
+      console.log(`🗑️ Deleted ${chatCleanupResult.deletedCount} old chat records`);
+      
+      return {
+        pes_materials_deleted: pesCleanupResult.deletedCount,
+        reference_books_deleted: booksCleanupResult.deletedCount,
+        roadmaps_deleted: roadmapsCleanupResult.deletedCount,
+        notes_deleted: notesCleanupResult.deletedCount,
+        chat_records_deleted: chatCleanupResult.deletedCount
+      };
+    } catch (error) {
+      console.error('❌ Error during data cleanup:', error);
+      throw error;
+    }
+  }
 }
 
 // Export singleton instance

@@ -1,18 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import { useWorkspace } from '../contexts/WorkspaceContext'
+import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import '../styles/landing.css'
 
 const LandingPage: React.FC = () => {
-  const { openWorkspace } = useWorkspace()
   const { user, isAuthenticated, logout } = useAuth()
+  const navigate = useNavigate()
   const [currentSlide, setCurrentSlide] = useState(0)
-  const [isScrolled, setIsScrolled] = useState(false)
-
-  const handleOpenWorkspace = () => {
-    openWorkspace('notes')
-  }
 
   const handleLogout = async () => {
     try {
@@ -29,21 +23,21 @@ const LandingPage: React.FC = () => {
       subtitle: isAuthenticated ? "Continue your learning journey with personalized study tools and track your progress." : "Transform your learning with intelligent study tools, real-time collaboration, and personalized progress tracking.",
       primaryButton: "Start Learning",
       secondaryButton: isAuthenticated ? "View Progress" : "Watch Demo",
-      image: "/api/placeholder/540/360"
+      image: "/our_Learning_Analytics.png"
     },
     {
       title: isAuthenticated ? "Join Your Study Groups" : "Collaborate in Real-Time",
       subtitle: isAuthenticated ? "Connect with your study groups and continue collaborative learning sessions." : "Join study rooms, share screens, and learn together with peers through our integrated conference system.",
       primaryButton: "Join Conference",
       secondaryButton: "Learn More",
-      image: "/api/placeholder/540/360"
+      image: "/Your_study_group.png"
     },
     {
       title: isAuthenticated ? "Your Learning Analytics" : "Track Your Progress",
       subtitle: isAuthenticated ? "Review your learning achievements and see detailed progress analytics." : "Monitor learning streaks, complete roadmaps, and export your progress with comprehensive analytics.",
       primaryButton: "View Analytics",
       secondaryButton: "See Features",
-      image: "/api/placeholder/540/360"
+      image: "/Learning_Overview.png"
     }
   ]
 
@@ -52,42 +46,42 @@ const LandingPage: React.FC = () => {
     {
       title: "Tutorial Hub",
       description: "Watch curated YouTube playlists & reference PDFs tailored to your learning needs. Access premium educational content organized by subject and difficulty level.",
-      image: "/api/placeholder/540/220",
+      image: "/Tutorial_Hub.png",
       link: "/tutorial-hub",
       alignment: "left"
     },
     {
       title: "StudyPES",
       description: "College notes by class/year/subject – zero spam, maximum quality content. Collaborative note-taking with highlighting and search capabilities.",
-      image: "/api/placeholder/540/220",
+      image: "/StudyPES.png",
       link: "/study-materials",
       alignment: "right"
     },
     {
       title: "Conference Rooms",
       description: "Password-protected study rooms – no install required, just join and collaborate. Screen sharing, whiteboard, and real-time chat included.",
-      image: "/api/placeholder/540/220",
+      image: "/Your_study_group.png",
       link: "/conference",
       alignment: "left"
     },
     {
       title: "AI Workspace",
       description: "AI tutor + notes pad that auto-saves while you learn, keeping everything organized. Context-aware assistance for your studies.",
-      image: "/api/placeholder/540/220",
+      image: "/AI_Workspace.png",
       link: "/workspace",
       alignment: "right"
     },
     {
       title: "Smart Assistant",
       description: "Ask, quiz, summarise – context-aware to your page and learning progress. Generate practice questions from your study materials.",
-      image: "/api/placeholder/540/220",
+      image: "/Smart_Assistant.png",
       link: "/study-buddy",
       alignment: "left"
     },
     {
       title: "Profile Analytics",
       description: "Track courses, streaks, roadmap – export any time and own your learning data. Comprehensive insights into your learning patterns.",
-      image: "/api/placeholder/540/220",
+      image: "/Profile_Analytics.png",
       link: "/profile",
       alignment: "right"
     }
@@ -100,15 +94,6 @@ const LandingPage: React.FC = () => {
     }, 5000)
     return () => clearInterval(interval)
   }, [heroSlides.length])
-
-  // Handle scroll for floating button animation
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 100)
-    }
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
 
   return (
     <div className="min-h-screen">
@@ -265,6 +250,16 @@ const LandingPage: React.FC = () => {
               <h2 className="text-2xl font-bold text-gray-800 mb-2">Your Learning Overview</h2>
               <p className="text-gray-600">Track your progress and achievements</p>
             </div>
+            
+            {/* Analytics Image */}
+            <div className="text-center mb-8">
+              <img 
+                src="/our_Learning_Analytics.png" 
+                alt="Learning Analytics Dashboard"
+                className="mx-auto max-w-2xl w-full h-auto rounded-lg shadow-lg"
+              />
+            </div>
+            
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
               <div className="bg-white rounded-lg p-6 text-center shadow-sm">
                 <div className="text-3xl font-bold text-blue-600 mb-2">12</div>
@@ -324,19 +319,12 @@ const LandingPage: React.FC = () => {
 
                 {/* Visual mockup */}
                 <div className="visual">
-                  <div className={`visual-mockup ${
-                    index === 0 ? 'visual-progress' :
-                    index === 1 ? 'visual-tutorial' :
-                    index === 2 ? 'visual-studyPES' :
-                    index === 3 ? 'visual-conference' :
-                    index === 4 ? 'visual-workspace' :
-                    index === 5 ? 'visual-ai' :
-                    'visual-profile'
-                  }`}>
-                    {/* Visual content will be added via CSS or icons */}
-                    <div className="mockup-placeholder">
-                      {feature.title}
-                    </div>
+                  <div className="visual-mockup">
+                    <img 
+                      src={feature.image} 
+                      alt={feature.title}
+                      className="w-full h-full object-cover rounded-lg shadow-lg"
+                    />
                   </div>
                 </div>
               </Link>
@@ -436,18 +424,6 @@ const LandingPage: React.FC = () => {
           </div>
         </div>
       </footer>
-
-      {/* Floating Workspace Button */}
-      <button
-        onClick={handleOpenWorkspace}
-        className="floating-workspace-button"
-        title="Open Workspace"
-      >
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-        </svg>
-        Open Workspace
-      </button>
     </div>
   )
 }

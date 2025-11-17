@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import '../styles/workspace-charts.css'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../contexts/AuthContext'
+import { useProgress } from '../contexts/ProgressContext'
+import { apiService } from '../services/api'
 import { 
   Play,
   Pause,
@@ -72,6 +75,8 @@ interface ChatMessage {
 
 const Workspace: React.FC = () => {
   const navigate = useNavigate()
+  const { user } = useAuth()
+  const { trackWorkspaceOpen } = useProgress()
   const [context, setContext] = useState<WorkspaceContext | null>(null)
   const [notes, setNotes] = useState<Note[]>([])
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([])
@@ -125,6 +130,19 @@ const Workspace: React.FC = () => {
           notes: [],
           openedAt: parsedContent.transferredAt
         });
+
+        // 🚀 Track workspace open for progress
+        if (parsedContent.id && parsedContent.title) {
+          const materialType = parsedContent.type === 'pdf' ? 'pdf' : 
+                              parsedContent.type === 'video' ? 'video' : 
+                              'reference';
+          
+          trackWorkspaceOpen(
+            parsedContent.id, 
+            parsedContent.title, 
+            materialType as 'pdf' | 'reference' | 'video' | 'slide'
+          );
+        }
         
         if (parsedContent.currentPage) {
           setCurrentPage(parsedContent.currentPage);
@@ -188,18 +206,98 @@ const Workspace: React.FC = () => {
     }
   }, [])
 
-  const handleAddNote = () => {
-    if (newNote.trim()) {
-      const note: Note = {
-        id: Date.now().toString(),
-        content: newNote,
-        timestamp: context?.type === 'video' ? currentTime : undefined,
-        page: context?.type === 'pdf' ? currentPage : undefined,
-        createdAt: new Date(),
-        type: 'text'
+  // Load notes from backend when context changes
+  useEffect(() => {
+    if (user?.id && context) {
+      loadWorkspaceNotes();
+    }
+  }, [user?.id, context]);
+
+  const loadWorkspaceNotes = async () => {
+    if (!user?.id) return;
+
+    try {
+      const referenceId = context?.content?.id || context?.content?.gridFSFileId || 'workspace-general';
+      const referenceType = context?.type || 'workspace';
+      
+      const url = `http://localhost:5050/api/pipeline/notes/reference/${referenceType}/${referenceId}?userId=${user.id}`;
+      
+      const response = await fetch(url);
+      const data = await response.json();
+      
+      if (data.success && data.data) {
+        // Convert backend notes to local note format
+        const convertedNotes: Note[] = data.data.map((backendNote: any) => ({
+          id: backendNote._id,
+          content: `${backendNote.title ? backendNote.title + ': ' : ''}${backendNote.content}`,
+          timestamp: context?.type === 'video' ? backendNote.pageNumber : undefined,
+          page: (context?.type === 'pdf' || context?.type === 'material' || context?.type === 'book') ? backendNote.pageNumber : undefined,
+          createdAt: new Date(backendNote.createdAt),
+          type: 'text'
+        }));
+        setNotes(convertedNotes);
       }
-      setNotes([...notes, note])
-      setNewNote('')
+    } catch (error) {
+      console.error('Error loading workspace notes:', error);
+    }
+  };
+
+  const handleAddNote = async () => {
+    if (!newNote.trim() || !user?.id) {
+      if (!user?.id) {
+        alert('Please sign in to save notes');
+      }
+      return;
+    }
+
+    try {
+      const referenceId = context?.content?.id || context?.content?.gridFSFileId || 'workspace-general';
+      const referenceType = context?.type || 'workspace';
+      const referenceTitle = context?.content?.title || 'Workspace Content';
+      
+      const noteData = {
+        userId: user.id,
+        title: `${referenceTitle} - Page ${context?.type === 'pdf' ? currentPage : context?.type === 'video' ? Math.floor(currentTime / 60) + 'm' : 'Note'}`,
+        content: newNote.trim(),
+        context: 'workspace',
+        referenceId,
+        referenceType,
+        referenceTitle,
+        pageNumber: context?.type === 'video' ? currentTime : currentPage,
+        tags: []
+      };
+
+      const response = await fetch('http://localhost:5050/api/pipeline/notes', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(noteData)
+      });
+
+      const data = await response.json();
+      
+      if (data.success) {
+        // Add note to local state
+        const note: Note = {
+          id: data.data._id,
+          content: newNote,
+          timestamp: context?.type === 'video' ? currentTime : undefined,
+          page: (context?.type === 'pdf' || context?.type === 'material' || context?.type === 'book') ? currentPage : undefined,
+          createdAt: new Date(),
+          type: 'text'
+        };
+        setNotes([...notes, note]);
+        setNewNote('');
+        
+        console.log('✅ Note saved successfully');
+      } else {
+        console.error('Failed to save note:', data.message);
+        alert('Failed to save note. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error saving note:', error);
+      alert('Error saving note. Please try again.');
     }
   }
 
@@ -214,19 +312,73 @@ const Workspace: React.FC = () => {
       }
       
       setChatMessages(prev => [...prev, userMessage])
+      const currentQuestion = newMessage;
       setNewMessage('')
 
-      // Simulate AI response
-      setTimeout(() => {
+      try {
+        // Get PDF context information
+        const pdfId = context?.content?.id || context?.content?.gridFSFileId || null;
+        const contextInfo = context?.content?.title || context?.content?.fileName || 'Workspace Content';
+        
+        console.log('🤖 Sending RAG chat request:', {
+          question: currentQuestion,
+          pdfId,
+          currentPage,
+          context: contextInfo
+        });
+
+        // Call the RAG API
+        const ragResponse = await apiService.sendRAGChatMessage(
+          currentQuestion,
+          pdfId,
+          currentPage,
+          contextInfo
+        );
+
+        console.log('✅ RAG response received:', ragResponse);
+
+        // Create AI response message
         const aiResponse: ChatMessage = {
           id: (Date.now() + 1).toString(),
           type: 'assistant',
-          content: generateAIResponse(newMessage, context),
+          content: ragResponse.response,
+          timestamp: new Date(),
+          context: ragResponse.context || contextInfo
+        };
+
+        setChatMessages(prev => [...prev, aiResponse]);
+
+        // Optionally save the conversation to database
+        if (pdfId) {
+          try {
+            await apiService.saveChatHistory({
+              pdfId,
+              userId: 'current-user', // Replace with actual user ID when auth is implemented
+              question: currentQuestion,
+              answer: ragResponse.response,
+              currentPage: ragResponse.relevantPage || currentPage,
+              context: contextInfo
+            });
+            console.log('💾 Chat conversation saved to database');
+          } catch (saveError) {
+            console.warn('⚠️ Could not save chat history:', saveError);
+          }
+        }
+
+      } catch (error) {
+        console.error('❌ Error getting AI response:', error);
+        
+        // Fallback to simple response on error
+        const fallbackResponse: ChatMessage = {
+          id: (Date.now() + 1).toString(),
+          type: 'assistant',
+          content: "I'm sorry, I'm having trouble processing your question right now. Please try again in a moment.",
           timestamp: new Date(),
           context: context?.content?.title || 'general'
-        }
-        setChatMessages(prev => [...prev, aiResponse])
-      }, 1000)
+        };
+        
+        setChatMessages(prev => [...prev, fallbackResponse]);
+      }
     }
   }
 

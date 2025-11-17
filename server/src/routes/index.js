@@ -2,6 +2,7 @@ const { Router } = require('express');
 const mainRoutes = require('./main');
 const studypesRoutes = require('./studypesRoutes');
 const pipelineRoutes = require('./pipelineRoutes');
+const videosRoutes = require('./videos');
 
 const router = Router();
 
@@ -16,6 +17,8 @@ router.get('/', (req, res) => {
       health: '/api/health',
       auth: '/api/auth',
       videos: '/api/videos',
+      videoActions: '/api/videos/:id/(like|save|download|watch)',
+      userVideos: '/api/videos/(history|saved|liked|downloaded)',
       quizzes: '/api/quizzes',
       studyMaterials: '/api/study-materials',
       studypesMaterials: '/api/studypes',
@@ -41,6 +44,9 @@ router.use('/studypes', studypesRoutes);
 
 // Use Pipeline routes
 router.use('/pipeline', pipelineRoutes);
+
+// Use video interaction routes (put before main routes to avoid conflicts)
+router.use('/videos', videosRoutes);
 
 // Use the main routes which include all endpoints
 router.use('/', mainRoutes);

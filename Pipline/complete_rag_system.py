@@ -627,6 +627,206 @@ OUTPUT:
         
         return await self._call_agent_with_prompt("time_planner", prompt, context)
 
+    # === NEW: RAG CHAT AGENT ===
+    async def rag_chat_agent(self, question: str, pdf_id: Optional[str] = None, current_page: int = 1, context: Optional[str] = None) -> Dict[str, Any]:
+        """
+        RAG Chat Agent - Answer questions using actual PDF content
+        Retrieves PDF content from GridFS and provides context-aware responses
+        """
+        try:
+            pdf_content = ""
+            pdf_metadata = {}
+            actual_gridfs_id = None
+            
+            # Strategy 1: Try to resolve PDF ID to actual GridFS ID
+            if pdf_id:
+                logger.info(f"📄 Resolving PDF ID {pdf_id} to GridFS...")
+                
+                try:
+                    # First try to find PDF by the ID itself (might be a reference ID)
+                    pdf_info = await self.rag_service.db_manager.find_pdf_by_context(pdf_id)
+                    
+                    if pdf_info and pdf_info.get('gridfs_id'):
+                        actual_gridfs_id = pdf_info['gridfs_id']
+                        logger.info(f"✅ Resolved {pdf_id} to GridFS ID: {actual_gridfs_id}")
+                        
+                        # Extract content using the real GridFS ID
+                        start_page = max(1, current_page - 1)
+                        num_pages = 3
+                        
+                        pdf_result = await self.rag_service.db_manager.get_pdf_content_by_gridfs_id(
+                            actual_gridfs_id, start_page, num_pages
+                        )
+                        
+                        if pdf_result.get('text'):
+                            pdf_content = pdf_result['text']
+                            pdf_metadata = {
+                                'filename': pdf_info.get('title', pdf_result.get('filename', 'Unknown')),
+                                'subject': pdf_info.get('subject', 'Unknown'),
+                                'type': pdf_info.get('type', 'unknown'),
+                                'unit': pdf_info.get('unit'),
+                                'total_pages': pdf_result.get('total_pages', 0),
+                                'pages_extracted': pdf_result.get('pages_extracted', []),
+                                'file_id': actual_gridfs_id
+                            }
+                            logger.info(f"✅ Extracted {len(pdf_content)} characters from pages {pdf_result.get('pages_extracted', [])}")
+                        else:
+                            logger.warning(f"⚠️ Could not extract content from GridFS {actual_gridfs_id}: {pdf_result.get('error', 'Unknown error')}")
+                    else:
+                        logger.warning(f"⚠️ Could not resolve PDF ID {pdf_id} to GridFS ID")
+                        
+                except Exception as e:
+                    logger.error(f"Error resolving PDF {pdf_id}: {e}")
+            
+            # Strategy 2: If we have context but no content yet, try to find PDF by context
+            if not pdf_content and context:
+                logger.info(f"🔍 Searching for PDF by context: {context}")
+                try:
+                    pdf_info = await self.rag_service.db_manager.find_pdf_by_context(context)
+                    
+                    if pdf_info and pdf_info.get('gridfs_id'):
+                        pdf_result = await self.rag_service.db_manager.get_pdf_content_by_gridfs_id(
+                            pdf_info['gridfs_id'], current_page, 3
+                        )
+                        
+                        if pdf_result.get('text'):
+                            pdf_content = pdf_result['text']
+                            pdf_metadata = {
+                                'filename': pdf_info.get('title', 'Unknown'),
+                                'subject': pdf_info.get('subject', 'Unknown'),
+                                'type': pdf_info.get('type', 'unknown'),
+                                'total_pages': pdf_result.get('total_pages', 0),
+                                'pages_extracted': pdf_result.get('pages_extracted', []),
+                                'file_id': pdf_info['gridfs_id']
+                            }
+                            logger.info(f"✅ Found and extracted PDF content for context: {context}")
+                        else:
+                            logger.warning(f"⚠️ Found PDF but could not extract content for context: {context}")
+                    else:
+                        logger.warning(f"⚠️ No PDF found for context: {context}")
+                except Exception as e:
+                    logger.error(f"Error searching by context {context}: {e}")
+            
+            # Generate response based on available content
+            if pdf_content:
+                # Create context-aware prompt with actual PDF content
+                prompt = f"""You are an expert educational assistant specialized in "{pdf_metadata.get('subject', 'study material')}". 
+
+A student is studying "{pdf_metadata.get('filename', 'study material')}" and asked: "{question}"
+
+DOCUMENT INFO:
+- Subject: {pdf_metadata.get('subject', 'Unknown')}
+- Current Page: {current_page}
+- Available Pages: {pdf_metadata.get('pages_extracted', [])}
+
+PDF CONTENT:
+{pdf_content[:4000]}{'...' if len(pdf_content) > 4000 else ''}
+
+INSTRUCTIONS:
+- Answer based ONLY on the provided PDF content
+- For specific terms (like "limit registers", "roll in/roll out"), find exact definitions from the text
+- Quote relevant passages directly
+- Provide page references
+- If not found in content, say so clearly but acknowledge the document context
+
+Return ONLY JSON:
+{{
+  "answer": "Detailed answer based on PDF content",
+  "relevant_quotes": ["Direct quotes from PDF"],
+  "page_references": [page numbers],
+  "confidence": "high|medium|low",
+  "found_in_content": true
+}}"""
+                
+                context_data = {
+                    "question": question,
+                    "pdf_metadata": pdf_metadata,
+                    "content_length": len(pdf_content),
+                    "current_page": current_page
+                }
+                
+                result = await self._call_agent_with_prompt("rag_chat", prompt, context_data)
+                
+                # Enhance result with metadata
+                result.update({
+                    "context": context or pdf_metadata.get('filename', 'Unknown'),
+                    "sources": [pdf_metadata.get('filename', f"PDF {pdf_id}")],
+                    "relevantPage": current_page,
+                    "pdfId": pdf_id,
+                    "success": True,
+                    "content_based": True,
+                    "pages_analyzed": pdf_metadata.get('pages_extracted', [])
+                })
+                
+                return result
+                
+            else:
+                # No PDF content available - provide context-aware helpful response
+                subject_context = ""
+                if context:
+                    if "Operating System" in context or "Memory" in context:
+                        subject_context = "Operating Systems and Memory Management"
+                    elif "Computer Science" in context:
+                        subject_context = "Computer Science"
+                    elif "Math" in context:
+                        subject_context = "Mathematics"
+                    else:
+                        subject_context = context
+                
+                prompt = f"""You are a helpful study assistant specializing in {subject_context if subject_context else 'educational content'}. 
+
+STUDENT QUESTION: {question}
+STUDY CONTEXT: {context or 'General study session'}
+CURRENT PAGE: {current_page}
+
+The student is studying {subject_context or 'educational material'} but I don't have access to the specific document content right now.
+
+Based on the question and context, provide a helpful educational response that:
+1. Acknowledges what they're studying
+2. Provides relevant general information about the topic if possible
+3. Suggests how to find more specific information in their study materials
+4. For specific terms (like "limit registers", "roll in/roll out"), provide general definitions from {subject_context if subject_context else 'computer science'} knowledge
+
+Return ONLY JSON:
+{{
+  "answer": "Helpful educational response based on the topic and context",
+  "general_info": "Relevant background information",
+  "suggestions": ["How to find more specific information"],
+  "found_in_content": false
+}}"""
+                
+                context_data = {
+                    "question": question,
+                    "no_content_reason": "No PDF content available"
+                }
+                
+                result = await self._call_agent_with_prompt("rag_chat_general", prompt, context_data)
+                
+                # Enhance result with metadata
+                result.update({
+                    "context": context or "No document loaded",
+                    "sources": [],
+                    "relevantPage": current_page,
+                    "pdfId": pdf_id,
+                    "success": True,
+                    "content_based": False
+                })
+                
+                return result
+                
+        except Exception as e:
+            logger.error(f"❌ RAG chat agent failed: {e}")
+            return {
+                "answer": f"I'm sorry, I encountered an error while processing your question: {str(e)}",
+                "context": context or "Error",
+                "sources": [],
+                "relevantPage": current_page,
+                "pdfId": pdf_id,
+                "success": False,
+                "error": str(e),
+                "content_based": False
+            }
+
 async def generate_complete_educational_roadmap(
     learning_goal: str,
     subject: str,

@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
+import { useNotesContext } from '../contexts/NotesContext';
+import { apiService } from '../services/api';
 import { 
   BookOpen, 
   Download, 
   ArrowLeft,
   StickyNote,
-  Highlighter,
+  Save,
   ExternalLink,
   X
 } from 'lucide-react';
@@ -25,9 +28,6 @@ import '@react-pdf-viewer/search/lib/styles/index.css';
 import '../styles/pdf-viewer.css';
 import FloatingWorkspaceButton from '../components/FloatingWorkspaceButton';
 import Layout from '../components/Layout';
-import { useAuth } from '../contexts/AuthContext';
-import { useNotesContext } from '../contexts/NotesContext';
-import { apiService } from '../services/api';
 
 import { LibraryBook } from '../types/library';
 
@@ -59,6 +59,7 @@ const BookReader: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
+  const [isBookSaved, setIsBookSaved] = useState(false);
   
   // Annotation and notes state
   const [isAnnotationMode, setIsAnnotationMode] = useState(false);
@@ -196,13 +197,15 @@ const BookReader: React.FC = () => {
       });
 
       const noteData = {
+        userId: currentUser.id,
         title: noteTitle || `Notes - ${book.title} (Page ${currentPage})`,
         content: noteText,
-        pdfId: book._id,
-        userId: currentUser.id,
+        context: 'general' as const,
+        referenceId: book._id,
+        referenceType: 'reference_book',
+        referenceTitle: book.title,
         pageNumber: currentPage,
-        tags: [book.subject || 'Library'],
-        isPublic: false
+        tags: [book.subject || 'Library']
       };
 
       const savedNote = await apiService.createNote(noteData);
@@ -222,6 +225,61 @@ const BookReader: React.FC = () => {
     } catch (err) {
       console.error('❌ Error saving note:', err);
       alert('Failed to save note. Please try again.');
+    }
+  };
+
+  // Check if book is saved and handle save/unsave
+  useEffect(() => {
+    const checkIfBookSaved = async () => {
+      if (!currentUser || !book) return;
+      
+      try {
+        const savedBooks = await apiService.getSavedMaterials(currentUser.id);
+        const isAlreadySaved = savedBooks.some((savedBook: any) => savedBook.materialId === book._id);
+        setIsBookSaved(isAlreadySaved);
+      } catch (error) {
+        console.error('❌ Error checking if book is saved:', error);
+      }
+    };
+
+    checkIfBookSaved();
+  }, [currentUser, book]);
+
+  // Save/Unsave book functionality
+  const handleSaveBook = async () => {
+    if (!currentUser || !book) {
+      alert('Please sign in to save books');
+      return;
+    }
+
+    try {
+      if (isBookSaved) {
+        // Unsave book
+        await apiService.unsaveMaterial(book._id, currentUser.id);
+        setIsBookSaved(false);
+        alert('Book removed from saved files');
+      } else {
+        // Save book
+        const savedBookData = {
+          userId: currentUser.id,
+          materialId: book._id,
+          materialType: 'reference_book',
+          title: book.title,
+          subject: book.subject,
+          fileName: book.fileName,
+          gridFSFileId: book.gridFSFileId,
+          description: book.description,
+          author: book.author,
+          pages: book.pages
+        };
+        
+        await apiService.saveMaterial(savedBookData);
+        setIsBookSaved(true);
+        alert('Book saved to My Rack!');
+      }
+    } catch (error) {
+      console.error('❌ Error saving/unsaving book:', error);
+      alert('Failed to save book. Please try again.');
     }
   };
 
@@ -292,18 +350,18 @@ const BookReader: React.FC = () => {
         <div className="flex items-center gap-4">
           {/* Control Panel - matching SubjectViewer */}
           <div className="flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-lg border">
-            {/* Annotation Mode Toggle */}
+            {/* Save Book Button */}
             <button
-              onClick={() => setIsAnnotationMode(!isAnnotationMode)}
+              onClick={handleSaveBook}
               className={`flex items-center px-3 py-2 rounded-md text-sm font-medium transition-all ${
-                isAnnotationMode
-                  ? 'bg-blue-100 text-blue-700 border border-blue-200 shadow-sm'
+                isBookSaved
+                  ? 'bg-green-100 text-green-700 border border-green-200 shadow-sm'
                   : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'
               }`}
-              title="Toggle Annotation Mode"
+              title={isBookSaved ? "Remove from saved files" : "Save to My Rack"}
             >
-              <Highlighter className="w-4 h-4 mr-2" />
-              Annotate
+              <Save className="w-4 h-4 mr-2" />
+              {isBookSaved ? 'Saved' : 'Save'}
             </button>
 
             {/* Notes Button */}
@@ -362,6 +420,20 @@ const BookReader: React.FC = () => {
             >
               <Download className="w-4 h-4 mr-2" />
               Download
+            </button>
+
+            {/* Save/Unsave Book Button */}
+            <button
+              onClick={handleSaveBook}
+              className={`flex items-center px-3 py-2 text-sm font-medium rounded-md transition-all ${
+                isBookSaved
+                  ? 'bg-red-600 text-white border border-red-600 hover:bg-red-700'
+                  : 'bg-blue-600 text-white border border-blue-600 hover:bg-blue-700'
+              }`}
+              title={isBookSaved ? 'Remove from Saved' : 'Save to My Rack'}
+            >
+              <Save className="w-4 h-4 mr-2" />
+              {isBookSaved ? 'Saved' : 'Save Book'}
             </button>
           </div>
         </div>

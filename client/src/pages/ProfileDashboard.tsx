@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { CheckCircle, Lock, TrendingUp, Calendar, FileText, Clock, Star, ChevronRight, Plus, RefreshCw } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
+import { useProgress } from '../contexts/ProgressContext'
 import { apiService } from '../services/api'
-import RoadmapWizard from '../components/RoadmapWizard'
-import RoadmapTimeline from '../components/RoadmapTimeline'
+import SimpleRoadmapWizard from '../components/SimpleRoadmapWizard'
+import VerticalProgressStepper from '../components/VerticalProgressStepper'
 
 interface LearningRoadmapItem {
   id: string
@@ -18,7 +19,8 @@ interface LearningRoadmapItem {
 const ProfileDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'overview' | 'settings'>('overview')
   const navigate = useNavigate()
-  const { user } = useAuth()
+  const { user, updateRoadmapCompleted } = useAuth()
+  const { initializeWeeks, updateWeekMaterialRequirement } = useProgress()
   
   // Pipeline roadmap state
   const [pipelineRoadmap, setPipelineRoadmap] = useState<any>(null)
@@ -28,6 +30,85 @@ const ProfileDashboard: React.FC = () => {
   // Roadmap wizard state
   const [showRoadmapWizard, setShowRoadmapWizard] = useState(false)
   const [hasCheckedRoadmap, setHasCheckedRoadmap] = useState(false)
+
+  // Initialize progress tracking
+  useEffect(() => {
+    initializeWeeks(8) // Initialize 8-week roadmap
+    
+    // Set dynamic material requirements for each week
+    weekData.forEach(week => {
+      const totalMaterials = week.materials.videos + week.materials.pdfs + week.materials.references + week.materials.slides
+      updateWeekMaterialRequirement(week.week, totalMaterials)
+    })
+  }, [initializeWeeks, updateWeekMaterialRequirement])
+
+  // Week data for the roadmap stepper
+  const weekData = [
+    {
+      week: 1,
+      phase: "Week 1 - 1",
+      studyHours: 7,
+      projectHours: 3,
+      activities: ["Read Unit 1", "Watch videos"],
+      materials: { videos: 3, pdfs: 2, references: 2, slides: 1 }
+    },
+    {
+      week: 2,
+      phase: "Week 2 - 1", 
+      studyHours: 7,
+      projectHours: 3,
+      activities: ["Practice HTML", "Work on project"],
+      materials: { videos: 2, pdfs: 3, references: 1, slides: 2 }
+    },
+    {
+      week: 3,
+      phase: "Week 3 - 2",
+      studyHours: 9,
+      projectHours: 1,
+      activities: ["Read CSS and JavaScript chapters", "Watch videos"],
+      materials: { videos: 4, pdfs: 2, references: 3, slides: 1 }
+    },
+    {
+      week: 4,
+      phase: "Week 4 - 2",
+      studyHours: 9,
+      projectHours: 1,
+      activities: ["Practice CSS and JavaScript", "Advanced concepts"],
+      materials: { videos: 3, pdfs: 3, references: 2, slides: 2 }
+    },
+    {
+      week: 5,
+      phase: "Week 5 - 3",
+      studyHours: 8,
+      projectHours: 2,
+      activities: ["React fundamentals", "Component basics"],
+      materials: { videos: 5, pdfs: 2, references: 1, slides: 3 }
+    },
+    {
+      week: 6,
+      phase: "Week 6 - 3", 
+      studyHours: 8,
+      projectHours: 2,
+      activities: ["React advanced", "State management"],
+      materials: { videos: 3, pdfs: 4, references: 2, slides: 1 }
+    },
+    {
+      week: 7,
+      phase: "Week 7 - 4",
+      studyHours: 7,
+      projectHours: 3,
+      activities: ["Final project", "Integration testing"],
+      materials: { videos: 2, pdfs: 3, references: 3, slides: 2 }
+    },
+    {
+      week: 8,
+      phase: "Week 8 - 4",
+      studyHours: 7,
+      projectHours: 3,
+      activities: ["Project completion", "Documentation"],
+      materials: { videos: 1, pdfs: 2, references: 4, slides: 3 }
+    }
+  ]
 
   // Use real user data from AuthContext
   const userProfile = user || {
@@ -75,6 +156,9 @@ const ProfileDashboard: React.FC = () => {
     console.log('✅ Roadmap generation completed:', newRoadmapData);
     setPipelineRoadmap(newRoadmapData);
     setShowRoadmapWizard(false);
+    
+    // Update user's roadmap completion status
+    updateRoadmapCompleted(true);
     
     // Mark wizard as seen for this user
     if (user?.id) {
@@ -136,6 +220,12 @@ const ProfileDashboard: React.FC = () => {
       return 'bg-gray-100 text-gray-400';
     }
   };
+
+  const handleWeekClick = (weekNumber: number) => {
+    console.log(`Week ${weekNumber} clicked - navigating to study materials`)
+    // Navigate to study materials/library page where users can open PDFs and videos
+    navigate('/study-materials')
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -282,7 +372,7 @@ const ProfileDashboard: React.FC = () => {
                       <RefreshCw className={`h-4 w-4 ${roadmapLoading ? 'animate-spin' : ''}`} />
                     </button>
                   )}
-                  {!pipelineRoadmap && hasCheckedRoadmap && (
+                  {!pipelineRoadmap && !user?.roadmapCompleted && hasCheckedRoadmap && (
                     <button
                       onClick={() => setShowRoadmapWizard(true)}
                       className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
@@ -311,19 +401,39 @@ const ProfileDashboard: React.FC = () => {
                       >
                         Retry
                       </button>
-                      <button
-                        onClick={() => setShowRoadmapWizard(true)}
-                        className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
-                      >
-                        Create New Roadmap
-                      </button>
+                      {!user?.roadmapCompleted && (
+                        <button
+                          onClick={() => setShowRoadmapWizard(true)}
+                          className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                        >
+                          Create New Roadmap
+                        </button>
+                      )}
                     </div>
                   </div>
-                ) : pipelineRoadmap?.generated_roadmap?.phases ? (
-                  <RoadmapTimeline 
-                    roadmapData={pipelineRoadmap} 
-                    onPhaseClick={handlePhaseClick}
+                ) : (pipelineRoadmap?.generated_roadmap || pipelineRoadmap?.learning_schedule) ? (
+                  <VerticalProgressStepper 
+                    weekData={weekData} 
+                    onWeekClick={handleWeekClick}
                   />
+                ) : user?.roadmapCompleted ? (
+                  <>
+                    <div className="text-center py-6">
+                      <div className="bg-gradient-to-br from-green-50 to-blue-100 rounded-xl p-6 max-w-lg mx-auto mb-6">
+                        <Star className="h-12 w-12 text-green-500 mx-auto mb-3" />
+                        <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                          Roadmap Ready!
+                        </h3>
+                        <p className="text-gray-600 text-sm">
+                          Track your learning progress below.
+                        </p>
+                      </div>
+                    </div>
+                    <VerticalProgressStepper 
+                      weekData={weekData} 
+                      onWeekClick={handleWeekClick}
+                    />
+                  </>
                 ) : (
                   <div className="text-center py-12">
                     <div className="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl p-8 max-w-lg mx-auto">
@@ -395,13 +505,11 @@ const ProfileDashboard: React.FC = () => {
         )}
       </div>
       
-      {/* Roadmap Wizard Modal */}
-      {user?.id && (
-        <RoadmapWizard
-          isOpen={showRoadmapWizard}
-          onClose={handleWizardClose}
+      {/* Simple Roadmap Wizard Modal */}
+      {showRoadmapWizard && (
+        <SimpleRoadmapWizard
           onComplete={handleRoadmapComplete}
-          userId={user.id}
+          onCancel={handleWizardClose}
         />
       )}
     </div>

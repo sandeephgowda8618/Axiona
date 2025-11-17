@@ -9,6 +9,7 @@ const { Highlight } = require('./Highlight');
 const { WatchHistory } = require('./WatchHistory');
 const { SavedVideo } = require('./SavedVideo');
 const { LikedVideo } = require('./LikedVideo');
+const { DownloadedVideo } = require('./DownloadedVideo');
 const { Streak } = require('./Streak');
 
 // Study-related models
@@ -36,6 +37,7 @@ module.exports = {
   WatchHistory,
   SavedVideo,
   LikedVideo,
+  DownloadedVideo,
   Streak,
   Room,
   RoomMessage,
